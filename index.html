@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<!-- © Turnover International Federation - TIF | © SuperC is a Turnover Variant. | Updated on October, 2020. -->
+
+<head>
+	<title>Super C</title>
+</head>
+<style>
+	td {
+		border: 0;
+		padding: 0;
+	}
+
+	table.Board {
+		border: 0;
+		border-spacing: 0;
+		height: 480px;
+		width: 480px;
+		margin-left: auto;
+		margin-right: auto;
+	}
+</style>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+	<body>
+		<table class="Board">
+			<tr>
+				<td><svg id="PlayerUP" height="40" width="480">
+					</svg></td>
+				<td><svg id="PlayerUPRight" height="40" width="40">
+					</svg></td>
+			</tr>
+			<tr>
+				<td><svg id="Board" height="480" width="480">
+					</svg></td>
+				<td><svg id="GameDisplay" height="480" width="300">
+					</svg></td>
+			</tr>
+			<tr>
+				<td><svg id="PlayerDown" height="40" width="480">
+					</svg></td>
+				<td><svg id="PlayerDownRight" height="40" width="40">
+					</svg></td>
+			</tr>
+		</table>
+		<script src="js/landingsInCheck.js"></script>
+		<script src="js/movePiece.js"></script>
+		<script src="js/castlesInCheck.js"></script>
+		<script src="js/clickSquare.js"></script>
+		<script src="js/initial.js"></script>
+	</body>
+
+</html>
