@@ -298,7 +298,7 @@ function reversePieces() {
 
       //find and reposition all pieces to flip board
       if (extMoves[MoveWatch][i] !== 0) {
-         document.getElementById("extA" + extMoves[MoveWatch][i]).setAttributeNS(null, "cx", pX);
+         document.getElementById("extA" + extMoves[MoveWatch ][i]).setAttributeNS(null, "cx", pX);
          document.getElementById("extA" + extMoves[MoveWatch][i]).setAttributeNS(null, "cy", pY);
          document.getElementById("extB" + extMoves[MoveWatch][i]).setAttributeNS(null, "cx", pX);
          document.getElementById("extB" + extMoves[MoveWatch][i]).setAttributeNS(null, "cy", pY);
@@ -338,10 +338,10 @@ function reversePieces() {
    //wb control marks used to show where pieces move
    if (MMoveLeaving !== 0) {
 
-      mMLeaving1x = parseInt(document.getElementById("butSquare" + (MMoveLeaving)).getAttributeNS(null, "x"));
-      mMLeaving1y = parseInt(document.getElementById("butSquare" + (MMoveLeaving)).getAttributeNS(null, "y"));
-      mMLanding2x = parseInt(document.getElementById("butSquare" + (MMoveLanding)).getAttributeNS(null, "x"));
-      mMLanding2y = parseInt(document.getElementById("butSquare" + (MMoveLanding)).getAttributeNS(null, "y"));
+      mMLeaving1x = parseInt(document.getElementById("butSquare" + MMovesLeaving[MoveWatch - 1]).getAttributeNS(null, "x"));
+      mMLeaving1y = parseInt(document.getElementById("butSquare" + MMovesLeaving[MoveWatch - 1]).getAttributeNS(null, "y"));
+      mMLanding2x = parseInt(document.getElementById("butSquare" + MMovesLanding[MoveWatch - 1]).getAttributeNS(null, "x"));
+      mMLanding2y = parseInt(document.getElementById("butSquare" + MMovesLanding[MoveWatch - 1]).getAttributeNS(null, "y"));
 
       document.getElementById("mMove1").setAttributeNS(null, "x", mMLeaving1x);
       document.getElementById("mMove1").setAttributeNS(null, "y", mMLeaving1y);

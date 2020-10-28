@@ -124,10 +124,10 @@ function backForward(side) {
 
 function moveMarks() {
    if (MoveWatch > 0) {
-      mMLeaving1x = parseInt(document.getElementById("butSquare" + (MMovesLeaving[MoveWatch - 1])).getAttributeNS(null, "x"));
-      mMLeaving1y = parseInt(document.getElementById("butSquare" + (MMovesLeaving[MoveWatch - 1])).getAttributeNS(null, "y"));
-      mMLanding2x = parseInt(document.getElementById("butSquare" + (MMovesLanding[MoveWatch - 1])).getAttributeNS(null, "x"));
-      mMLanding2y = parseInt(document.getElementById("butSquare" + (MMovesLanding[MoveWatch - 1])).getAttributeNS(null, "y"));
+      mMLeaving1x = parseInt(document.getElementById("butSquare" + MMovesLeaving[MoveWatch - 1]).getAttributeNS(null, "x"));
+      mMLeaving1y = parseInt(document.getElementById("butSquare" + MMovesLeaving[MoveWatch - 1]).getAttributeNS(null, "y"));
+      mMLanding2x = parseInt(document.getElementById("butSquare" + MMovesLanding[MoveWatch - 1]).getAttributeNS(null, "x"));
+      mMLanding2y = parseInt(document.getElementById("butSquare" + MMovesLanding[MoveWatch - 1]).getAttributeNS(null, "y"));
    } else if (MoveWatch === 0) {
       mMLeaving1x = 1000;
       mMLeaving1y = 1000;
