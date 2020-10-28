@@ -198,26 +198,6 @@ function animePiece(leaving, landing, piecesToMove) {
   animeEMI();
 }
 
-let fillColor = "rgba(0,0,0,0.0)";
-let strokeColor = "rgba(0,0,0,0.0)";
-
-function fillStroke(c) {
-  switch (c) {
-    case "disable":
-      fillColor = "rgba(0,0,0,0.0)";
-      strokeColor = "rgba(0,0,0,0.0)";
-      break;
-    case "white":
-      fillColor = "rgba(255,255,255,1.0)";
-      strokeColor = "rgba(0,0,0,1.0)";
-      break;
-    case "black":
-      fillColor = "rgba(0,0,0,1.0)";
-      strokeColor = "rgba(255,255,255,1.0)";
-      break;
-  }
-}
-
 function coloring(p, q, landing) {
   let pSq;
   if (p === "ext") {
@@ -227,8 +207,8 @@ function coloring(p, q, landing) {
   } else if (p === "int") {
     pSq = intPiecesPosition[landing - 1];
   }
-  document.getElementById(p + "A" + pSq).setAttributeNS(null, q, strokeColor);
-  document.getElementById(p + "B" + pSq).setAttributeNS(null, q, fillColor);
+  document.getElementById(p + "A" + pSq).setAttributeNS(null, q, Stroker);
+  document.getElementById(p + "B" + pSq).setAttributeNS(null, q, Filler);
 }
 
 function coloringPieces(leaving, landing) {
@@ -237,140 +217,140 @@ function coloringPieces(leaving, landing) {
   let ppLanding = PiecesPosition[landing - 1];
 
   if (ppLanding === "C" || ppLanding === "c") {
-    fillStroke("disable");
+    fillerStroker("disable");
     coloring("ext", "stroke", landing);
     coloring("mid", "stroke", landing);
     coloring("int", "fill", landing);
-    extppLanding = 0;
-    midppLanding = 0;
-    intppLanding = 0;
+    extPiecesPosition[landing - 1] = 0;
+    midPiecesPosition[landing - 1] = 0;
+    intPiecesPosition[landing - 1] = 0;
 
   } else if (ppLanding === "P") {
     if (ppLeaving === "c" || ppLeaving === "p" || ppLeaving === "r" || ppLeaving === "n") {
-      fillStroke("disable");
+      fillerStroker("disable");
       coloring("ext", "stroke", landing);
-      extppLanding = 0;
+      extPiecesPosition[landing - 1] = 0;
     } else if (ppLeaving === "b" || ppLeaving === "q") {
-      fillStroke("black");
+      fillerStroker("black");
       coloring("ext", "stroke", landing);
     }
 
   } else if (ppLanding === "p") {
     if (ppLeaving === "C" || ppLeaving === "P" || ppLeaving === "R" || ppLeaving === "N") {
-      fillStroke("disable");
+      fillerStroker("disable");
       coloring("ext", "stroke", landing);
-      extppLanding = 0;
+      extPiecesPosition[landing - 1] = 0;
     } else if (ppLeaving === "B" || ppLeaving === "Q") {
-      fillStroke("white");
+      fillerStroker("white");
       coloring("ext", "stroke", landing);
     }
 
   } else if (ppLanding === "B") {
     if (ppLeaving === "b" || ppLeaving === "q") {
-      fillStroke("disable");
+      fillerStroker("disable");
       coloring("mid", "stroke", landing);
-      midppLanding = 0;
+      midPiecesPosition[landing - 1] = 0;
     } else if (ppLeaving === "c") {
       if (BlackCastlesInCheck.includes(BSqSel)) {
-        fillStroke("disable");
+        fillerStroker("disable");
         coloring("mid", "stroke", landing);
-        midppLanding = 0;
+        midPiecesPosition[landing - 1] = 0;
       } else {
-        fillStroke("black");
+        fillerStroker("black");
         coloring("mid", "stroke", landing);
       }
     } else if (ppLeaving === "p" || ppLeaving === "n" || ppLeaving === "r") {
-      fillStroke("black");
+      fillerStroker("black");
       coloring("mid", "stroke", landing);
     }
 
   } else if (ppLanding === "b") {
     if (ppLeaving === "B" || ppLeaving === "Q") {
-      fillStroke("disable");
+      fillerStroker("disable");
       coloring("mid", "stroke", landing);
-      midppLanding = 0;
+      midPiecesPosition[landing - 1] = 0;
     } else if (ppLeaving === "C") {
       if (WhiteCastlesInCheck.includes(BSqSel)) {
-        fillStroke("disable");
+        fillerStroker("disable");
         coloring("mid", "stroke", landing);
-        midppLanding = 0;
+        midPiecesPosition[landing - 1] = 0;
       } else {
-        fillStroke("white");
+        fillerStroker("white");
         coloring("mid", "stroke", landing);
       }
     } else if (ppLeaving === "P" || ppLeaving === "N" || ppLeaving === "R") {
-      fillStroke("white");
+      fillerStroker("white");
       coloring("mid", "stroke", landing);
     }
 
   } else if (ppLanding === "Q") {
     if (ppLeaving === "b" || ppLeaving === "q" || ppLeaving === "r" || ppLeaving === "c") {
-      fillStroke("disable");
+      fillerStroker("disable");
       coloring("mid", "stroke", landing);
       coloring("int", "fill", landing);
-      midppLanding = 0;
-      intppLanding = 0;
+      midPiecesPosition[landing - 1] = 0;
+      intPiecesPosition[landing - 1] = 0;
     } else if (ppLeaving === "p" || ppLeaving === "n") {
-      fillStroke("black");
+      fillerStroker("black");
       coloring("mid", "stroke", landing);
       coloring("int", "fill", landing);
     }
 
   } else if (ppLanding === "q") {
     if (ppLeaving === "B" || ppLeaving === "C" || ppLeaving === "Q" || ppLeaving === "R") {
-      fillStroke("disable");
+      fillerStroker("disable");
       coloring("mid", "stroke", landing);
       coloring("int", "fill", landing);
-      midppLanding = 0;
-      intppLanding = 0;
+      midPiecesPosition[landing - 1] = 0;
+      intPiecesPosition[landing - 1] = 0;
     } else if (ppLeaving === "P" || ppLeaving === "N") {
-      fillStroke("white");
+      fillerStroker("white");
       coloring("mid", "stroke", landing);
       coloring("int", "fill", landing);
     }
 
   } else if (ppLanding === "R") {
     if (ppLeaving === "b" || ppLeaving === "q") {
-      fillStroke("black");
+      fillerStroker("black");
       coloring("int", "fill", landing);
     } else if (ppLeaving === "c" || ppLeaving === "p" || ppLeaving === "n" || ppLeaving === "r") {
-      fillStroke("disable");
+      fillerStroker("disable");
       coloring("int", "fill", landing);
-      intppLanding = 0;
+      intPiecesPosition[landing - 1] = 0;
     }
 
   } else if (ppLanding === "r") {
     if (ppLeaving === "B" || ppLeaving === "Q") {
-      fillStroke("white");
+      fillerStroker("white");
       coloring("int", "fill", landing);
     } else if (ppLeaving === "C" || ppLeaving === "P" || ppLeaving === "N" || ppLeaving === "R") {
-      fillStroke("disable");
+      fillerStroker("disable");
       coloring("int", "fill", landing);
-      intppLanding = 0;
+      intPiecesPosition[landing - 1] = 0;
     }
 
   } else if (ppLanding === "N") {
     if (ppLeaving === "b" || ppLeaving === "q" || ppLeaving === "c" || ppLeaving === "p" || ppLeaving === "n") {
-      fillStroke("disable");
+      fillerStroker("disable");
       coloring("ext", "stroke", landing);
       coloring("mid", "stroke", landing);
-      extppLanding = 0;
-      midppLanding = 0;
+      extPiecesPosition[landing - 1] = 0;
+      midPiecesPosition[landing - 1] = 0;
     } else if (ppLeaving === "r") {
-      fillStroke("black");
+      fillerStroker("black");
       coloring("ext", "stroke", landing);
       coloring("mid", "stroke", landing);
     }
 
   } else if (ppLanding === "n") {
     if (ppLeaving === "B" || ppLeaving === "Q" || ppLeaving === "C" || ppLeaving === "P" || ppLeaving === "N") {
-      fillStroke("disable");
+      fillerStroker("disable");
       coloring("ext", "stroke", landing);
       coloring("mid", "stroke", landing);
-      extppLanding = 0;
-      midppLanding = 0;
+      extPiecesPosition[landing - 1] = 0;
+      midPiecesPosition[landing - 1] = 0;
     } else if (ppLeaving === "R") {
-      fillStroke("white");
+      fillerStroker("white");
       coloring("ext", "stroke", landing);
       coloring("mid", "stroke", landing);
     }
@@ -383,6 +363,10 @@ function movingPiece(i) {
 
   MMoveLeaving = i;
   MMoveLanding = BSqSel;
+
+  MMovesLanding.push(MMoveLanding);
+  MMovesLeaving.push(MMoveLeaving);
+
   let leaving = BSqSel - 1;
   let landing = i;
 

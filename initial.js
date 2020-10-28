@@ -1,4 +1,5 @@
 /*jshint esversion: 6 */
+
 //link to cast svg
 const SvgNS = "http://www.w3.org/2000/svg";
 
@@ -37,6 +38,8 @@ var MarkerCount = 0;
 var MatchStatus = 0;
 var MMoveLanding = 0;
 var MMoveLeaving = 0;
+var MMovesLanding = [];
+var MMovesLeaving = [];
 var Numbers = [];
 var PieceFill1;
 var PieceFill2;
@@ -111,6 +114,14 @@ var extPiecesPosition = [1, 2, 3, 4, 5, 6, 7, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 var midPiecesPosition = [1, 2, 3, 4, 5, 6, 7, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 57, 58, 59, 60, 61, 62, 63, 64];
 var intPiecesPosition = [1, 2, 3, 4, 5, 6, 7, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 57, 58, 59, 60, 61, 62, 63, 64];
 
+var extMoves = [];
+var midMoves = [];
+var intMoves = [];
+
+extMoves[0] = Array.from(extPiecesPosition);
+midMoves[0] = Array.from(midPiecesPosition);
+intMoves[0] = Array.from(intPiecesPosition);
+
 //take initial pieces position
 const InitialNotation = "8c48O8C"; //compact code to initial position on board
 
@@ -154,7 +165,10 @@ var GhostPiecesPosition = [];
 
 //compact code to send it
 var TurnNotation = [];
+var TurnsPiecesPosition = [];
+TurnsPiecesPosition[0] = Array.from(PiecesPosition);
 var Move = 0;
+var MoveWatch = 0;
 
 //compact code to send it to db and opponent player
 function shortCode() {
@@ -186,7 +200,24 @@ function shortCode() {
 
    console.log(Move + " " + evenOdd + " | Cc " + TotalWCastles + "·" + TotalBCastles + " | BR " + TotalWBishops + "·" + TotalWRooks + " | br " + TotalBBishops + "·" + TotalBRooks + " | " + TurnNotation[Move]);
 
+   //console.log(extMoves[Move] + " " + midMoves[Move] + " " + intMoves[Move]);
+
+   //Pieces Position controller
+   extMoves[Move] = Array.from(extPiecesPosition);
+   midMoves[Move] = Array.from(midPiecesPosition);
+   intMoves[Move] = Array.from(intPiecesPosition);
+   TurnsPiecesPosition[Move] = Array.from(PiecesPosition);
+
    Move++;
+   MoveWatch = Move - 1;
+
+   //refresh display buttons
+   if (Move > 1) {
+      fillerStroker("greyColor");
+      document.getElementById("iconStepBack").setAttributeNS(null, "fill", Filler);
+      document.getElementById("iconMoveToStart").setAttributeNS(null, "fill", Filler);
+   }
+
 }
 shortCode();
 
@@ -231,6 +262,17 @@ function squarer(I) {
 //reverse control to flip pieces on board game.
 function reversePieces() {
    VerseReverse = VerseReverse === "wb" ? "bw" : "wb";
+   if (VerseReverse === "wb") {
+      fillerStroker("greyColor");
+      document.getElementById("arcIconTop").setAttributeNS(null, "stroke", Stroker);
+      fillerStroker("lightWhiteColor");
+      document.getElementById("arcIconBot").setAttributeNS(null, "stroke", Stroker);
+   } else {
+      fillerStroker("greyColor");
+      document.getElementById("arcIconBot").setAttributeNS(null, "stroke", Stroker);
+      fillerStroker("lightWhiteColor");
+      document.getElementById("arcIconTop").setAttributeNS(null, "stroke", Stroker);
+   }
 
    unClickSquare();
    clearMarkers();
@@ -255,23 +297,23 @@ function reversePieces() {
 
 
       //find and reposition all pieces to flip board
-      if (extPiecesPosition[i] !== 0) {
-         document.getElementById("extA" + extPiecesPosition[i]).setAttributeNS(null, "cx", pX);
-         document.getElementById("extA" + extPiecesPosition[i]).setAttributeNS(null, "cy", pY);
-         document.getElementById("extB" + extPiecesPosition[i]).setAttributeNS(null, "cx", pX);
-         document.getElementById("extB" + extPiecesPosition[i]).setAttributeNS(null, "cy", pY);
+      if (extMoves[MoveWatch][i] !== 0) {
+         document.getElementById("extA" + extMoves[MoveWatch][i]).setAttributeNS(null, "cx", pX);
+         document.getElementById("extA" + extMoves[MoveWatch][i]).setAttributeNS(null, "cy", pY);
+         document.getElementById("extB" + extMoves[MoveWatch][i]).setAttributeNS(null, "cx", pX);
+         document.getElementById("extB" + extMoves[MoveWatch][i]).setAttributeNS(null, "cy", pY);
       }
-      if (midPiecesPosition[i] !== 0) {
-         document.getElementById("midA" + midPiecesPosition[i]).setAttributeNS(null, "cx", pX);
-         document.getElementById("midA" + midPiecesPosition[i]).setAttributeNS(null, "cy", pY);
-         document.getElementById("midB" + midPiecesPosition[i]).setAttributeNS(null, "cx", pX);
-         document.getElementById("midB" + midPiecesPosition[i]).setAttributeNS(null, "cy", pY);
+      if (midMoves[MoveWatch][i] !== 0) {
+         document.getElementById("midA" + midMoves[MoveWatch][i]).setAttributeNS(null, "cx", pX);
+         document.getElementById("midA" + midMoves[MoveWatch][i]).setAttributeNS(null, "cy", pY);
+         document.getElementById("midB" + midMoves[MoveWatch][i]).setAttributeNS(null, "cx", pX);
+         document.getElementById("midB" + midMoves[MoveWatch][i]).setAttributeNS(null, "cy", pY);
       }
-      if (intPiecesPosition[i] !== 0) {
-         document.getElementById("intA" + intPiecesPosition[i]).setAttributeNS(null, "cx", pX);
-         document.getElementById("intA" + intPiecesPosition[i]).setAttributeNS(null, "cy", pY);
-         document.getElementById("intB" + intPiecesPosition[i]).setAttributeNS(null, "cx", pX);
-         document.getElementById("intB" + intPiecesPosition[i]).setAttributeNS(null, "cy", pY);
+      if (intMoves[MoveWatch][i] !== 0) {
+         document.getElementById("intA" + intMoves[MoveWatch][i]).setAttributeNS(null, "cx", pX);
+         document.getElementById("intA" + intMoves[MoveWatch][i]).setAttributeNS(null, "cy", pY);
+         document.getElementById("intB" + intMoves[MoveWatch][i]).setAttributeNS(null, "cx", pX);
+         document.getElementById("intB" + intMoves[MoveWatch][i]).setAttributeNS(null, "cy", pY);
       }
 
       i++;
@@ -388,9 +430,11 @@ boardLimits();
 function drawSquares() {
    let actualSquareColor;
    if (SquareColor === "white") {
-      actualSquareColor = "rgba(210,225,195,1.0)";
+      fillerStroker("whiteSquare");
+      actualSquareColor = Filler;
    } else {
-      actualSquareColor = "rgba(102,153,51,1.0)";
+      fillerStroker("blackSquare");
+      actualSquareColor = Filler;
    }
    const shape1 = document.createElementNS(SvgNS, "rect");
    shape1.setAttributeNS(null, "id", DrawCanvas);
@@ -404,6 +448,7 @@ function drawSquares() {
    Board.appendChild(shape1);
 }
 
+//draw marks moves
 function drawMarkMoves() {
 
    const shapeMoves1 = document.createElementNS(SvgNS, "rect");
@@ -445,6 +490,7 @@ function drawBoardLetters() {
       lettering.setAttribute("font-family", "Helvetica");
       lettering.setAttribute("font-weight", "bold");
       lettering.setAttribute("font-size", 13);
+      lettering.setAttribute("style", "-webkit-touch-callout: none;-webkit-user-select: none;-khtml-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;");
       lettering.textContent = Letters[i];
       Board.appendChild(lettering);
 
@@ -456,6 +502,7 @@ function drawBoardLetters() {
       numbering.setAttribute("font-family", "Helvetica");
       numbering.setAttribute("font-weight", "bold");
       numbering.setAttribute("font-size", 13);
+      numbering.setAttribute("style", "-webkit-touch-callout: none;-webkit-user-select: none;-khtml-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;");
       numbering.textContent = Numbers[i];
       Board.appendChild(numbering);
 
@@ -933,7 +980,7 @@ function drawButtons(i) {
       Cli++;
       clearTimeout(Timer);
       Timer = setTimeout(function() {
-         if (Cli === 1) {
+         if (Cli === 1 && MoveWatch === Move - 1) {
             simpleClick();
             clearTimeout(Timer);
          } else if (Cli === 2) {
@@ -987,10 +1034,10 @@ while (I < 64) {
    if (J === 0) {
       drawSquares();
    } else if (J === 1) {
-      drawBoardLetters();
+      drawMarkMoves();
       I = 64;
    } else if (J === 2) {
-      drawMarkMoves();
+      drawBoardLetters();
       I = 64;
    } else if (J === 3) {
       setPieces();
@@ -1015,6 +1062,26 @@ while (I < 64) {
 //set Colors
 function fillerStroker(c) {
    switch (c) {
+      case "disable":
+         Filler = "rgba(0,0,0,0.0)";
+         Stroker = "rgba(0,0,0,0.0)";
+         break;
+      case "white":
+         Filler = "rgba(255,255,255,1.0)";
+         Stroker = "rgba(0,0,0,1.0)";
+         break;
+      case "black":
+         Filler = "rgba(0,0,0,1.0)";
+         Stroker = "rgba(255,255,255,1.0)";
+         break;
+      case "blackSquare":
+         Filler = "rgba(102, 153, 51, 1.0)";
+         Stroker = "rgba(102, 153, 51, 1.0)";
+         break;
+      case "whiteSquare":
+         Filler = "rgba(210,225,195,1.0)";
+         Stroker = "rgba(210,225,195,1.0)";
+         break;
       case "turnover":
          Filler = "rgba(0,200,200,0.5)";
          Stroker = "rgba(0,0,0,0.3)";
@@ -1031,10 +1098,6 @@ function fillerStroker(c) {
          Filler = "rgba(255,0,0,0.9)";
          Stroker = "rgba(100,0,0,0.9)";
          break;
-      case "disable":
-         Filler = "rgba(0,0,0,0.0)";
-         Stroker = "rgba(0,0,0,0.0)";
-         break;
       case "square":
          Filler = "rgba(0,50,100,0.5)";
          Stroker = "rgba(0,0,0,0.3)";
@@ -1042,6 +1105,22 @@ function fillerStroker(c) {
       case "colorError":
          Filler = "rgba(143,19,233,0.7)";
          Stroker = "rgba(0,0,0,0.3)";
+         break;
+      case "greenColor":
+         Filler = "rgba(100,240,100,1.0)";
+         Stroker = "rgba(100,240,100,1.0)";
+         break;
+      case "greyColor":
+         Filler = "rgba(160,160,160,1.0)";
+         Stroker = "rgba(160,160,160,1.0)";
+         break;
+      case "iceWhiteColor":
+         Filler = "rgba(230,230,225,1.0)";
+         Stroker = "rgba(230,230,225,1.0)";
+         break;
+      case "lightWhiteColor":
+         Filler = "rgba(255,250,255,1.0)";
+         Stroker = "rgba(255,250,255,1.0)";
          break;
    }
 }
