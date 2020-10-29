@@ -120,6 +120,10 @@ function backForward(side) {
       i++;
    }
 
+   if (MoveWatch === Move - 1) {
+      castlesInCheck();
+   }
+
 }
 
 function moveMarks() {

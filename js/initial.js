@@ -3,6 +3,31 @@
 //link to cast svg
 const SvgNS = "http://www.w3.org/2000/svg";
 
+//sounds
+function Sound(src) {
+   this.sound = document.createElement("audio");
+   this.sound.src = src;
+   this.sound.setAttribute("preload", "auto");
+   this.sound.setAttribute("controls", "none");
+   this.sound.setAttribute("auto-loop", "false");
+   this.sound.style.display = "none";
+   this.play = function() {
+      this.sound.play();
+   };
+   this.stop = function() {
+      this.sound.pause();
+   };
+}
+
+var soundCastle = new Sound("sounds/castle.mp3");
+var soundRook = new Sound("sounds/rook.mp3");
+var soundBishop = new Sound("sounds/bishop.mp3");
+var soundQueen = new Sound("sounds/queen.mp3");
+var soundPawn = new Sound("sounds/pawn.mp3");
+var soundKnight = new Sound("sounds/knight.mp3");
+var soundRewind = new Sound("sounds/rewind.mp3");
+
+
 //get board on html
 const PlayerUP = document.getElementById("PlayerUP");
 const Board = document.getElementById("Board"); //game board where match happens
@@ -109,6 +134,10 @@ const marksToN = [82, 84, 96, 100, 126, 130, 142, 144];
 
 const marksToR = [8, 23, 38, 53, 68, 83, 98, 128, 143, 158, 173, 188, 203, 218, 106, 107, 108, 109, 110, 111, 112, 114, 115, 116, 117, 118, 119, 120];
 
+//board notation
+var squaresNotation = ["8a", "8b", "8c", "8d", "8e", "8f", "8g", "8h", "7a", "7b", "7c", "7d", "7e", "7f", "7g", "7h", "6a", "6b", "6c", "6d", "6e", "6f", "6g", "6h", "5a", "5b", "5c", "5d", "5e", "5f", "5g", "5h", "4a", "4b", "4c", "4d", "4e", "4f", "4g", "4h", "3a", "3b", "3c", "3d", "3e", "3f", "3g", "3h", "2a", "2b", "2c", "2d", "2e", "2f", "2g", "2h", "1a", "1b", "1c", "1d", "1e", "1f", "1g", "1h"];
+var Notation = ["0"];
+
 //control pieces position by id
 var extPiecesPosition = [1, 2, 3, 4, 5, 6, 7, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 57, 58, 59, 60, 61, 62, 63, 64];
 var midPiecesPosition = [1, 2, 3, 4, 5, 6, 7, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 57, 58, 59, 60, 61, 62, 63, 64];
@@ -198,7 +227,7 @@ function shortCode() {
    TurnNotation.push(turnPush);
    evenOdd = Move % 2 === 0 ? "b" : "w";
 
-   console.log(Move + " " + evenOdd + " | Cc " + TotalWCastles + "·" + TotalBCastles + " | BR " + TotalWBishops + "·" + TotalWRooks + " | br " + TotalBBishops + "·" + TotalBRooks + " | " + TurnNotation[Move]);
+   console.log(Move + " " + evenOdd + " | " + Notation[Move] + " | Cc " + TotalWCastles + "·" + TotalBCastles + " | BR " + TotalWBishops + "·" + TotalWRooks + " | br " + TotalBBishops + "·" + TotalBRooks);
 
    //console.log(extMoves[Move] + " " + midMoves[Move] + " " + intMoves[Move]);
 
@@ -298,7 +327,7 @@ function reversePieces() {
 
       //find and reposition all pieces to flip board
       if (extMoves[MoveWatch][i] !== 0) {
-         document.getElementById("extA" + extMoves[MoveWatch ][i]).setAttributeNS(null, "cx", pX);
+         document.getElementById("extA" + extMoves[MoveWatch][i]).setAttributeNS(null, "cx", pX);
          document.getElementById("extA" + extMoves[MoveWatch][i]).setAttributeNS(null, "cy", pY);
          document.getElementById("extB" + extMoves[MoveWatch][i]).setAttributeNS(null, "cx", pX);
          document.getElementById("extB" + extMoves[MoveWatch][i]).setAttributeNS(null, "cy", pY);

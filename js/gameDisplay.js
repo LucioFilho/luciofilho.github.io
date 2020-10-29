@@ -1,10 +1,5 @@
 /*jshint esversion: 6 */
 
-// greenColor rgba(100,240,100,1.0)
-// greyColor rgba(200,200,200,1.0)
-// iceWhiteColor rgba(240,240,250,1.0)
-// lightWhiteColor rgba(255,250,255,1.0)
-
 //arc
 function polarToCartesian(centerX, centerY, radius, angleInDegrees) {
    var angleInRadians = (angleInDegrees - 90) * Math.PI / 180.0;
@@ -142,18 +137,22 @@ function displayActions(k) {
    } else if (k === "butStepBack") {
       if (MoveWatch > 0 && LockFlipBoard === 0) {
          backForward("left");
+         soundRewind.play();
       }
    } else if (k === "butStepForward") {
       if (MoveWatch < Move - 1 && LockFlipBoard === 0) {
          backForward("right");
+         soundRewind.play();
       }
    } else if (k === "butMoveToEnd") {
       if (MoveWatch < Move - 1 && LockFlipBoard === 0) {
          backForward("end");
+         soundRewind.play();
       }
    } else if (k === "butMoveToStart") {
       if (MoveWatch > 0 && LockFlipBoard === 0) {
          backForward("start");
+         soundRewind.play();
       }
    }
 }
