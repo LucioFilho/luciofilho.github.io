@@ -27,6 +27,19 @@ var soundPawn = new Sound("sounds/pawn.mp3");
 var soundKnight = new Sound("sounds/knight.mp3");
 var soundRewind = new Sound("sounds/rewind.mp3");
 
+//tooltips show/hide
+function showTooltip(text) {
+  let tooltip = document.getElementById("tooltip");
+  tooltip.innerHTML = text;
+  tooltip.style.display = "inline-block";
+  tooltip.style.left = event.pageX + 10 + "px";
+  tooltip.style.top = event.pageY + 10 + "px";
+}
+
+function hideTooltip() {
+  var tooltip = document.getElementById("tooltip");
+  tooltip.style.display = "none";
+}
 
 //get board on html
 const PlayerUP = document.getElementById("PlayerUP");
@@ -389,8 +402,6 @@ function reversePieces() {
          document.getElementById("mMove2").setAttributeNS(null, "x", mMLanding2x);
          document.getElementById("mMove2").setAttributeNS(null, "y", mMLanding2y);
 
-         MMoveLeaving = MMoveLeaving;
-         MMoveLanding = MMoveLanding;
       }
 
    }
@@ -1158,8 +1169,8 @@ function fillerStroker(c) {
          Stroker = "rgba(100,240,100,1.0)";
          break;
       case "greyColor":
-         Filler = "rgba(160,160,160,1.0)";
-         Stroker = "rgba(160,160,160,1.0)";
+         Filler = "rgba(140,140,140,1.0)";
+         Stroker = "rgba(140,140,140,1.0)";
          break;
       case "iceWhiteColor":
          Filler = "rgba(230,230,225,1.0)";
@@ -1215,3 +1226,5 @@ function call888() {
 call888();
 
 castlesInCheck(); //get first array with all castles in check
+
+logo_superc.setAttribute("style", "-webkit-touch-callout: none;-webkit-user-select: none;-khtml-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;");

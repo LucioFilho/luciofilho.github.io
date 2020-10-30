@@ -14,6 +14,14 @@
 		background-color: rgba(31, 31, 31, 1.0);
 	}
 
+	#tooltip {
+		background: cornsilk;
+		font: 12px Arial, sans-serif;
+		border: 1px solid black;
+		border-radius: 4px;
+		padding: 3px;
+	}
+
 	table.Board {
 		border: 0;
 		border-spacing: 0;
@@ -28,8 +36,9 @@
 
 	<body>
 		<table class="Board">
+			<div id="tooltip" display="none" style="position: absolute; display: none;"></div>
 			<tr>
-				<td><img src="logo_superc.png" alt="Super C" srcset="svg/logo_superc.svg" height="64" width="160"></td>
+				<td><img id="logo_superc" src="logo_superc.png" alt="Super C" title="Super C" srcset="svg/logo_superc.svg" height="64" width="160"></td>
 				<td><svg id="PlayerUP" height="40" width="480"></svg></td>
 				<td><svg id="PlayerUPRight" height="40" width="40"></svg></td>
 			</tr>

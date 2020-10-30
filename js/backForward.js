@@ -1,5 +1,30 @@
 /*jshint esversion: 6 */
 
+function iconsSetColor() {
+
+   //set icon colors. enable/disable buttons
+   if (MoveWatch === 0) {
+      fillerStroker("lightWhiteColor");
+      document.getElementById("iconStepBack").setAttributeNS(null, "fill", Filler);
+      document.getElementById("iconMoveToStart").setAttributeNS(null, "fill", Filler);
+   } else {
+      fillerStroker("greyColor");
+      document.getElementById("iconStepBack").setAttributeNS(null, "fill", Filler);
+      document.getElementById("iconMoveToStart").setAttributeNS(null, "fill", Filler);
+   }
+
+   if (MoveWatch === Move - 1) {
+      fillerStroker("lightWhiteColor");
+      document.getElementById("iconStepForward").setAttributeNS(null, "fill", Filler);
+      document.getElementById("iconMoveToEnd").setAttributeNS(null, "fill", Filler);
+   } else {
+      fillerStroker("greyColor");
+      document.getElementById("iconStepForward").setAttributeNS(null, "fill", Filler);
+      document.getElementById("iconMoveToEnd").setAttributeNS(null, "fill", Filler);
+   }
+
+}
+
 function backForwardColoring(p, q, landing, but) {
    let pSq = landing;
    let Xpos = parseInt(document.getElementById("butSquare" + but).getAttributeNS(null, "x")) + 30;
@@ -29,27 +54,13 @@ function backForward(side) {
    } else if (side === "start") {
       MoveWatch = 0;
       moveMarks();
+   } else if (side === "takeback") {
+      MoveWatch--;
+      moveMarks();
    }
 
-   //set icon colors. enable/disable button color
-   if (MoveWatch === 0) {
-      fillerStroker("lightWhiteColor");
-      document.getElementById("iconStepBack").setAttributeNS(null, "fill", Filler);
-      document.getElementById("iconMoveToStart").setAttributeNS(null, "fill", Filler);
-   } else {
-      fillerStroker("greyColor");
-      document.getElementById("iconStepBack").setAttributeNS(null, "fill", Filler);
-      document.getElementById("iconMoveToStart").setAttributeNS(null, "fill", Filler);
-   }
-
-   if (MoveWatch === Move - 1) {
-      fillerStroker("lightWhiteColor");
-      document.getElementById("iconStepForward").setAttributeNS(null, "fill", Filler);
-      document.getElementById("iconMoveToEnd").setAttributeNS(null, "fill", Filler);
-   } else {
-      fillerStroker("greyColor");
-      document.getElementById("iconStepForward").setAttributeNS(null, "fill", Filler);
-      document.getElementById("iconMoveToEnd").setAttributeNS(null, "fill", Filler);
+   if (side !== "takeback") {
+      iconsSetColor();
    }
 
    //set every piece transparent
@@ -87,6 +98,7 @@ function backForward(side) {
       i++;
    }
 
+   //repositioning all pieces
    i = 0;
    while (i < 64) {
       if (TurnsPiecesPosition[MoveWatch][i] !== "O" && TurnsPiecesPosition[MoveWatch][i] === TurnsPiecesPosition[MoveWatch][i].toUpperCase()) {
