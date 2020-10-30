@@ -1,4 +1,17 @@
 /*jshint esversion: 6 */
+var pPoints;
+
+let GameDate = new Date();
+let UTCGame = GameDate.toUTCString();
+
+//save file
+function download(text) {
+   var a = document.getElementById("a");
+   var file = new Blob([text], {
+      type: "text/plain;charset=utf-8"
+   });
+   window.open(URL.createObjectURL(file));
+}
 
 //arc
 function polarToCartesian(centerX, centerY, radius, angleInDegrees) {
@@ -45,7 +58,7 @@ function drawObjects(drawID, w, h, x, y, setColor, b) {
    shape1.setAttributeNS(null, "height", h);
    shape1.setAttributeNS(null, "x", x);
    shape1.setAttributeNS(null, "y", y);
-   shape1.setAttributeNS(null, "fill", Stroker);
+   shape1.setAttributeNS(null, "fill", Filler);
    shape1.setAttributeNS(null, "stroke-width", 0);
    shape1.setAttributeNS(null, "shape-rendering", "geometricPrecision");
    GameDisplay.appendChild(shape1);
@@ -84,11 +97,14 @@ function drawIcons(drawID, pPoints, setColor) {
    GameDisplay.appendChild(polygon1);
 }
 
+//bg
+drawObjects("gameDisplayBG", 280, 256, 20, 110, "lightWhiteColor", 0);
+
 drawObjects("topTime", 150, 60, 20, 50, "whiteSquare", 0);
 drawObjects("topTimeline", 280, 4, 20, 110, "blackSquare", 0);
 drawObjects("botTime", 150, 60, 20, 370, "whiteSquare", 0);
 drawObjects("botTimeline", 280, 4, 20, 366, "blackSquare", 0);
-drawObjects("botButsline", 280, 2, 20, 150, "blackSquare", 0);
+drawObjects("topButsline", 280, 2, 20, 150, "blackSquare", 0);
 
 //buttons
 drawObjects("butFlipBoardBG", 56, 36, 20, 114, "whiteSquare", 0);
@@ -97,9 +113,22 @@ drawObjects("butStepBackBG", 56, 36, 132, 114, "whiteSquare", 0);
 drawObjects("butStepForwardBG", 56, 36, 188, 114, "whiteSquare", 0);
 drawObjects("butMoveToEndBG", 56, 36, 244, 114, "whiteSquare", 0);
 
+//bottom buttons
+drawObjects("butSaveFileBG", 56, 36, 20, 330, "whiteSquare", 0);
+drawObjects("botButsline", 280, 2, 20, 328, "blackSquare", 0);
+
+//icon Save File
+pPoints = "40,342 56,342 56,343 40,343";
+drawIcons("iconSaveFile0", pPoints, "greyColor");
+pPoints = "40,347 56,347 56,348 40,348";
+drawIcons("iconSaveFile1", pPoints, "greyColor");
+pPoints = "40,352 56,352 56,353 40,353";
+drawIcons("iconSaveFile2", pPoints, "greyColor");
+pPoints = "36,336, 36,335 60,335 60,360 36,360 36,336 37,336 37,359 59,359 59,342 53,336";
+drawIcons("iconSaveFile3", pPoints, "greyColor");
 
 //button Step Forward
-let pPoints = "220,131 220,123 222,123 222,139 220,139 220,131, 211,139 211,123";
+pPoints = "220,131 220,123 222,123 222,139 220,139 220,131, 211,139 211,123";
 drawIcons("iconStepForward", pPoints, "lightWhiteColor");
 
 //button Stepback
@@ -130,29 +159,40 @@ drawObjects("butStepBack", 56, 36, 132, 114, "disable", 1);
 drawObjects("butStepForward", 56, 36, 188, 114, "disable", 1);
 drawObjects("butMoveToEnd", 56, 36, 244, 114, "disable", 1);
 
+drawObjects("butSaveFile", 56, 36, 20, 330, "disable", 1);
+
 //displayActions
 function displayActions(k) {
-   if (k === "butFlipBoard" && LockFlipBoard === 0) {
-      reversePieces();
-   } else if (k === "butStepBack") {
-      if (MoveWatch > 0 && LockFlipBoard === 0) {
-         backForward("left");
-         soundRewind.play();
-      }
-   } else if (k === "butStepForward") {
-      if (MoveWatch < Move - 1 && LockFlipBoard === 0) {
-         backForward("right");
-         soundRewind.play();
-      }
-   } else if (k === "butMoveToEnd") {
-      if (MoveWatch < Move - 1 && LockFlipBoard === 0) {
-         backForward("end");
-         soundRewind.play();
-      }
-   } else if (k === "butMoveToStart") {
-      if (MoveWatch > 0 && LockFlipBoard === 0) {
-         backForward("start");
-         soundRewind.play();
+   if (LockFlipBoard === 0) {
+      if (k === "butFlipBoard") {
+         reversePieces();
+      } else if (k === "butStepBack") {
+         if (MoveWatch > 0) {
+            backForward("left");
+            soundRewind.play();
+         }
+      } else if (k === "butStepForward") {
+         if (MoveWatch < Move - 1) {
+            backForward("right");
+            soundRewind.play();
+         }
+      } else if (k === "butMoveToEnd") {
+         if (MoveWatch < Move - 1) {
+            backForward("end");
+            soundRewind.play();
+         }
+      } else if (k === "butMoveToStart") {
+         if (MoveWatch > 0) {
+            backForward("start");
+            soundRewind.play();
+         }
+      } else if (k === "butSaveFile") {
+         gameNotation = "";
+         for (i = 0; i < gameLog.length; i++) {
+            gameNotation += gameLog[i] + " \n";
+         }
+         var pgnInfo = "game: Super C \nevent_id: 0 \nmatch_rating: none \nmatch_result: [learning]\nevent_type: Play yourself\nUTCDate: " + UTCGame + "\nwhite: [Visitant, 0, 100]\nblack: [Visitant, 0, 100] \nMatch Point: 0\ntime_mode: none \nmove_id: [none] \nUCI: [" + Notation + "]\n\n" + gameNotation;
+         download(pgnInfo);
       }
    }
 }

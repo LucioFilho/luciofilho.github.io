@@ -361,9 +361,6 @@ function movingPiece(i) {
 
    Turn = PiecesPosition[BSqSel - 1] === PiecesPosition[BSqSel - 1].toUpperCase() ? "b" : "W";
 
-   //get notation
-   Notation[Move] = squaresNotation[BSqSel - 1] + squaresNotation[i - 1];
-
    //back forward control
    MMoveLeaving = i;
    MMoveLanding = BSqSel;
@@ -821,7 +818,15 @@ function movingPiece(i) {
          break;
    }
    call888(); //count how many castles on board
-   shortCode();
    castlesInCheck(); //review castles in check
+
+   //get notation
+   if (Checkered === 0) {
+      Notation[Move] = squaresNotation[BSqSel - 1] + squaresNotation[i - 1];
+   } else {
+      Notation[Move] = squaresNotation[BSqSel - 1] + squaresNotation[i - 1] + "+";
+   }
+
+   shortCode();
 
 }

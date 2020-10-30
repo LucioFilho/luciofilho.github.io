@@ -22,9 +22,11 @@ function uncheckCastles() {
 
 function markCastleInCheck(n) {
   //mark castles in check
-  document.getElementById("extA" + extPiecesPosition[n - 1]).setAttributeNS(null, "stroke", "rgba(255,0,0,1.0)");
-  document.getElementById("midA" + midPiecesPosition[n - 1]).setAttributeNS(null, "stroke", "rgba(255,0,0,1.0)");
-  document.getElementById("intA" + intPiecesPosition[n - 1]).setAttributeNS(null, "fill", "rgba(255,0,0,1.0)");
+  fillerStroker("castleCheck");
+  Checkered = 1;
+  document.getElementById("extA" + extPiecesPosition[n - 1]).setAttributeNS(null, "stroke", Stroker);
+  document.getElementById("midA" + midPiecesPosition[n - 1]).setAttributeNS(null, "stroke", Stroker);
+  document.getElementById("intA" + intPiecesPosition[n - 1]).setAttributeNS(null, "fill", Filler);
 }
 
 function blackC(n) {

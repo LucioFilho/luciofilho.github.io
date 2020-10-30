@@ -43,6 +43,7 @@ var ArrowColor = "";
 var BlackCastlesInCheck = [];
 var BlackLandingsInCheck = [];
 var BSqSel;
+var Checkered = 0;
 var Cli = 0;
 var Clo = 0;
 var ColorBlack = "rgba(50,50,100,1.0)";
@@ -52,6 +53,8 @@ var DrawCanvas;
 var EvenOdd;
 var Filler = "rgba(200,200,200,0.5)";
 var FillStyle;
+var gameLog = [];
+var gameNotation;
 var I = 0;
 var J = 0;
 var LandingsAgain = 0;
@@ -227,9 +230,18 @@ function shortCode() {
    TurnNotation.push(turnPush);
    evenOdd = Move % 2 === 0 ? "b" : "w";
 
-   console.log(Move + " " + evenOdd + " | " + Notation[Move] + " | Cc " + TotalWCastles + "·" + TotalBCastles + " | BR " + TotalWBishops + "·" + TotalWRooks + " | br " + TotalBBishops + "·" + TotalBRooks);
+   //PGN to be saved
+   let noteMove = Move;
+   let notaMate = "";
+   if (Move < 10) {
+      noteMove = " " + Move;
+   }
+   if (TotalWCastles === 0 || TotalBCastles === 0) {
+      notaMate = "++";
+   }
+   console.log(noteMove + " " + evenOdd + " | " + Notation[Move] + notaMate + " | Cc " + TotalWCastles + "·" + TotalBCastles + " | BR " + TotalWBishops + "·" + TotalWRooks + " | br " + TotalBBishops + "·" + TotalBRooks);
+   gameLog.push(noteMove + " " + evenOdd + " | " + Notation[Move] + notaMate + " | Cc " + TotalWCastles + "·" + TotalBCastles + " | BR " + TotalWBishops + "·" + TotalWRooks + " | br " + TotalBBishops + "·" + TotalBRooks + " | " + TurnNotation[Move]);
 
-   //console.log(extMoves[Move] + " " + midMoves[Move] + " " + intMoves[Move]);
 
    //Pieces Position controller
    extMoves[Move] = Array.from(extPiecesPosition);
@@ -366,19 +378,20 @@ function reversePieces() {
 
    //wb control marks used to show where pieces move
    if (MMoveLeaving !== 0) {
+      if (MoveWatch > 0) {
+         mMLeaving1x = parseInt(document.getElementById("butSquare" + MMovesLeaving[MoveWatch - 1]).getAttributeNS(null, "x"));
+         mMLeaving1y = parseInt(document.getElementById("butSquare" + MMovesLeaving[MoveWatch - 1]).getAttributeNS(null, "y"));
+         mMLanding2x = parseInt(document.getElementById("butSquare" + MMovesLanding[MoveWatch - 1]).getAttributeNS(null, "x"));
+         mMLanding2y = parseInt(document.getElementById("butSquare" + MMovesLanding[MoveWatch - 1]).getAttributeNS(null, "y"));
 
-      mMLeaving1x = parseInt(document.getElementById("butSquare" + MMovesLeaving[MoveWatch - 1]).getAttributeNS(null, "x"));
-      mMLeaving1y = parseInt(document.getElementById("butSquare" + MMovesLeaving[MoveWatch - 1]).getAttributeNS(null, "y"));
-      mMLanding2x = parseInt(document.getElementById("butSquare" + MMovesLanding[MoveWatch - 1]).getAttributeNS(null, "x"));
-      mMLanding2y = parseInt(document.getElementById("butSquare" + MMovesLanding[MoveWatch - 1]).getAttributeNS(null, "y"));
+         document.getElementById("mMove1").setAttributeNS(null, "x", mMLeaving1x);
+         document.getElementById("mMove1").setAttributeNS(null, "y", mMLeaving1y);
+         document.getElementById("mMove2").setAttributeNS(null, "x", mMLanding2x);
+         document.getElementById("mMove2").setAttributeNS(null, "y", mMLanding2y);
 
-      document.getElementById("mMove1").setAttributeNS(null, "x", mMLeaving1x);
-      document.getElementById("mMove1").setAttributeNS(null, "y", mMLeaving1y);
-      document.getElementById("mMove2").setAttributeNS(null, "x", mMLanding2x);
-      document.getElementById("mMove2").setAttributeNS(null, "y", mMLanding2y);
-
-      MMoveLeaving = MMoveLeaving;
-      MMoveLanding = MMoveLanding;
+         MMoveLeaving = MMoveLeaving;
+         MMoveLanding = MMoveLanding;
+      }
 
    }
 
@@ -966,6 +979,7 @@ function drawButtons(i) {
                   }
                   if (TotalWCastles > 0 && TotalBCastles > 0) {
                      LockFlipBoard = 1;
+                     Checkered = 0;
                      movingPiece(i);
                   }
 
@@ -1126,6 +1140,10 @@ function fillerStroker(c) {
       case "mate":
          Filler = "rgba(255,0,0,0.9)";
          Stroker = "rgba(100,0,0,0.9)";
+         break;
+      case "castleCheck":
+         Filler = "rgba(255,0,0,1.0)";
+         Stroker = "rgba(255,0,0,1.0)";
          break;
       case "square":
          Filler = "rgba(0,50,100,0.5)";
