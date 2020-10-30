@@ -820,7 +820,7 @@ function movingPiece(i) {
    call888(); //count how many castles on board
    castlesInCheck(); //review castles in check
 
-   //get notation
+   //get notation 
    if (Checkered === 0) {
       Notation[Move] = squaresNotation[BSqSel - 1] + squaresNotation[i - 1];
    } else {

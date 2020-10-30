@@ -2,7 +2,7 @@
 
 function uncheckCastles() {
   let k = 0;
-  while (k < 64) {
+  while (k < 64) { 
 
     if (PiecesPosition[k] === "C") {
       document.getElementById("extA" + extPiecesPosition[k]).setAttributeNS(null, "stroke", "rgba(0,0,0,1.0)");

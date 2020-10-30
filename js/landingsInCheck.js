@@ -12,7 +12,7 @@ function underBlackC(n) {
   }
 }
 
-function landingInCheck(ii, nn) {
+function landingInCheck(ii, nn) { 
 
   GhostPiecesPosition = Array.from(PiecesPosition);
 

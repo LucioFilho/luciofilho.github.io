@@ -4,7 +4,7 @@
 function xyMover(moverVal, xMove, yMove) {
   let m = 0;
   while (m < 225) {
-    m++;
+    m++; 
     if (moverVal === "xNegative") {
       let actualX = parseInt(document.getElementById("Mark" + m).getAttribute("cx")) - xMove;
       document.getElementById("Mark" + m).setAttributeNS(null, "cx", actualX);

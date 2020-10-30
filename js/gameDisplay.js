@@ -4,7 +4,7 @@ var pPoints;
 let GameDate = new Date();
 let UTCGame = GameDate.toUTCString();
 
-//save file
+//save pgn file
 function download(text) {
    var a = document.getElementById("a");
    var file = new Blob([text], {
@@ -38,6 +38,7 @@ function describeArc(x, y, radius, startAngle, endAngle) {
    return d;
 }
 
+//draw icons over button flip board on display to represent color pieces switching on board
 function drawIconFlipBoard(drawID, arcStroke, setColor) {
    fillerStroker(setColor);
    const path1 = document.createElementNS(SvgNS, "path");
@@ -50,7 +51,7 @@ function drawIconFlipBoard(drawID, arcStroke, setColor) {
 }
 
 //buttons
-function drawObjects(drawID, w, h, x, y, setColor, b) {
+function drawObjects(drawID, w, h, x, y, setColor, b, tips) {
    fillerStroker(setColor);
    const shape1 = document.createElementNS(SvgNS, "rect");
    shape1.setAttributeNS(null, "id", drawID);
@@ -62,6 +63,7 @@ function drawObjects(drawID, w, h, x, y, setColor, b) {
    shape1.setAttributeNS(null, "stroke-width", 0);
    shape1.setAttributeNS(null, "shape-rendering", "geometricPrecision");
    GameDisplay.appendChild(shape1);
+
    if (b === 1) {
       const el = document.getElementById(drawID);
       el.onclick = function(event) {
@@ -70,6 +72,7 @@ function drawObjects(drawID, w, h, x, y, setColor, b) {
       el.onmouseover = function(event) {
          fillerStroker("blackSquare");
          document.getElementById(drawID + "BG").setAttributeNS(null, "fill", Filler);
+         showTooltip(tips);
       };
       el.onmousedown = function(event) {
          fillerStroker("lightWhiteColor");
@@ -82,6 +85,7 @@ function drawObjects(drawID, w, h, x, y, setColor, b) {
       el.onmouseout = function(event) {
          fillerStroker("whiteSquare");
          document.getElementById(drawID + "BG").setAttributeNS(null, "fill", Filler);
+         hideTooltip();
       };
    }
 }
@@ -115,6 +119,7 @@ drawObjects("butMoveToEndBG", 56, 36, 244, 114, "whiteSquare", 0);
 
 //bottom buttons
 drawObjects("butSaveFileBG", 56, 36, 20, 330, "whiteSquare", 0);
+drawObjects("butTakebackBG", 56, 36, 76, 330, "whiteSquare", 0);
 drawObjects("botButsline", 280, 2, 20, 328, "blackSquare", 0);
 
 //icon Save File
@@ -148,18 +153,83 @@ document.getElementById("iconMoveToStart").setAttributeNS(null, "transform", "tr
 
 //flip board icon
 drawIconFlipBoard("arcIconTop", 3, "greyColor");
-document.getElementById("arcIconTop").setAttribute("d", describeArc(48, 132, 12, -90, 90));
+document.getElementById("arcIconTop").setAttributeNS(null, "d", describeArc(48, 132, 12, -90, 90));
 drawIconFlipBoard("arcIconBot", 3, "lightWhiteColor");
-document.getElementById("arcIconBot").setAttribute("d", describeArc(48, 132, 12, 90, 270));
+document.getElementById("arcIconBot").setAttributeNS(null, "d", describeArc(48, 132, 12, 90, 270));
+
+//take back icon
+drawIconFlipBoard("arcTakebackTop", 4, "lightWhiteColor");
+document.getElementById("arcTakebackTop").setAttributeNS(null, "d", describeArc(104, 348, 10, 0, 90));
+drawIconFlipBoard("arcTakebackBot", 4, "greyColor");
+document.getElementById("arcTakebackBot").setAttributeNS(null, "d", describeArc(104, 348, 10, 90, 270));
+//draw arrow icon
+pPoints = "104,344 96,338 104,332";
+drawIcons("iconArrowTakeback", pPoints, "lightWhiteColor");
+
 
 //buttons with actions
-drawObjects("butFlipBoard", 56, 36, 20, 114, "disable", 1);
-drawObjects("butMoveToStart", 56, 36, 76, 114, "disable", 1);
-drawObjects("butStepBack", 56, 36, 132, 114, "disable", 1);
-drawObjects("butStepForward", 56, 36, 188, 114, "disable", 1);
-drawObjects("butMoveToEnd", 56, 36, 244, 114, "disable", 1);
+drawObjects("butFlipBoard", 56, 36, 20, 114, "disable", 1, "Flip Board");
+drawObjects("butMoveToStart", 56, 36, 76, 114, "disable", 1, "Move to Start");
+drawObjects("butStepBack", 56, 36, 132, 114, "disable", 1, "Move step Back");
+drawObjects("butStepForward", 56, 36, 188, 114, "disable", 1, "Move Step Forward");
+drawObjects("butMoveToEnd", 56, 36, 244, 114, "disable", 1, "Come to End");
 
-drawObjects("butSaveFile", 56, 36, 20, 330, "disable", 1);
+drawObjects("butSaveFile", 56, 36, 20, 330, "disable", 1, "Load PGN File");
+drawObjects("butTakeback", 56, 36, 76, 330, "disable", 1, "Take Back");
+
+//execute actions to takeback move
+let cli = 0;
+function takeback() {
+   cli++; 
+   clearTimeout(Timer);
+   if (cli === 1) {
+
+      Turn = Turn === "W" ? "b" : "W";
+
+      fillerStroker("disable");
+      document.getElementById("iconArrowTakeback").setAttributeNS(null, "fill", Filler);
+      document.getElementById("arcTakebackBot").setAttributeNS(null, "stroke", Filler);
+      document.getElementById("arcTakebackTop").setAttributeNS(null, "stroke", Filler);
+
+      backForward("takeback");
+
+      unClickSquare();
+      clearMarkers();
+
+      TurnsPiecesPosition.pop();
+      extMoves.pop();
+      midMoves.pop();
+      intMoves.pop();
+      TurnNotation.pop();
+      MMovesLeaving.pop();
+      MMovesLanding.pop();
+      Notation.pop();
+      gameLog.pop();
+
+      Move--;
+
+      extPiecesPosition = Array.from(extMoves[MoveWatch]);
+      midPiecesPosition = Array.from(midMoves[MoveWatch]);
+      intPiecesPosition = Array.from(intMoves[MoveWatch]);
+      PiecesPosition = Array.from(TurnsPiecesPosition[MoveWatch]);
+
+      iconsSetColor();
+
+      castlesInCheck();
+
+      clearTimeout(Timer);
+
+      soundRewind.play();
+   }
+   Timer = setTimeout(function() {
+      cli = 0;
+      fillerStroker("lightWhiteColor");
+      document.getElementById("iconArrowTakeback").setAttributeNS(null, "fill", Filler);
+      document.getElementById("arcTakebackTop").setAttributeNS(null, "stroke", Filler);
+      fillerStroker("greyColor");
+      document.getElementById("arcTakebackBot").setAttributeNS(null, "stroke", Filler);
+   }, 1000);
+}
 
 //displayActions
 function displayActions(k) {
@@ -185,6 +255,10 @@ function displayActions(k) {
          if (MoveWatch > 0) {
             backForward("start");
             soundRewind.play();
+         }
+      } else if (k === "butTakeback") {
+         if (MoveWatch > 0) {
+            takeback();
          }
       } else if (k === "butSaveFile") {
          gameNotation = "";
