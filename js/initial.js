@@ -51,7 +51,7 @@ const GameDisplay = document.getElementById("GameDisplay");
 const PlayerDownRight = document.getElementById("PlayerDownRight");
 
 //vars to manage loops
-var Again;
+var Again = 0;
 var ArrowColor = "";
 var BlackCastlesInCheck = [];
 var BlackLandingsInCheck = [];

@@ -180,11 +180,15 @@ drawObjects("butTakeback", 56, 36, 76, 330, "disable", 1, "Take Back");
 //execute actions to takeback move
 let cli = 0;
 function takeback() {
-   cli++; 
+   cli++;
    clearTimeout(Timer);
+
    if (cli === 1) {
 
       Turn = Turn === "W" ? "b" : "W";
+
+      LandingsAgain = 0;
+      Again = 0;
 
       fillerStroker("disable");
       document.getElementById("iconArrowTakeback").setAttributeNS(null, "fill", Filler);
