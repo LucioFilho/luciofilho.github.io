@@ -259,7 +259,7 @@ function displayActions(k) {
             backForward("start");
             soundRewind.play();
          }
-      } else if (k === "butTakeback" && gameover === 0) {
+      } else if (k === "butTakeback" && gameover === 0 && Move > 1) {
          if (MoveWatch === Move - 1) {
             takeback();
          }
