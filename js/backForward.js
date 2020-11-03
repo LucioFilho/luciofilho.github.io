@@ -1,5 +1,29 @@
 /*jshint esversion: 6 */
 
+function allPiecesTransp() {
+
+   //set every piece transparent
+   let i = 0;
+   fillerStroker("disable");
+   while (i < 86) {
+
+      i++;
+      if (i < 65) {
+         document.getElementById("extA" + i).setAttributeNS(null, "stroke", Stroker);
+         document.getElementById("extB" + i).setAttributeNS(null, "stroke", Filler);
+      }
+      document.getElementById("midA" + i).setAttributeNS(null, "stroke", Stroker);
+      document.getElementById("midB" + i).setAttributeNS(null, "stroke", Filler);
+      document.getElementById("intA" + i).setAttributeNS(null, "fill", Stroker);
+      document.getElementById("intB" + i).setAttributeNS(null, "fill", Filler);
+
+      i = i === 8 ? 56 : i;
+      i = i === 64 ? 70 : i;
+
+   }
+
+}
+
 function iconsSetColor() {
 
    //set icon colors. enable/disable buttons
@@ -63,40 +87,7 @@ function backForward(side) {
       iconsSetColor();
    }
 
-   //set every piece transparent
-   let i = 0;
-   fillerStroker("disable");
-   while (i < 8) {
-
-      i++;
-      document.getElementById("extA" + i).setAttributeNS(null, "stroke", Stroker);
-      document.getElementById("extB" + i).setAttributeNS(null, "stroke", Filler);
-      document.getElementById("midA" + i).setAttributeNS(null, "stroke", Stroker);
-      document.getElementById("midB" + i).setAttributeNS(null, "stroke", Filler);
-      document.getElementById("intA" + i).setAttributeNS(null, "fill", Stroker);
-      document.getElementById("intB" + i).setAttributeNS(null, "fill", Filler);
-   }
-   i = 56;
-   while (i < 64) {
-
-      i++;
-      document.getElementById("extA" + i).setAttributeNS(null, "stroke", Stroker);
-      document.getElementById("extB" + i).setAttributeNS(null, "stroke", Filler);
-      document.getElementById("midA" + i).setAttributeNS(null, "stroke", Stroker);
-      document.getElementById("midB" + i).setAttributeNS(null, "stroke", Filler);
-      document.getElementById("intA" + i).setAttributeNS(null, "fill", Stroker);
-      document.getElementById("intB" + i).setAttributeNS(null, "fill", Filler);
-   }
-
-   i = 71;
-   while (i < 87) {
-      document.getElementById("midA" + i).setAttributeNS(null, "stroke", Stroker);
-      document.getElementById("midB" + i).setAttributeNS(null, "stroke", Filler);
-      document.getElementById("intA" + i).setAttributeNS(null, "fill", Stroker);
-      document.getElementById("intB" + i).setAttributeNS(null, "fill", Filler);
-
-      i++;
-   }
+   allPiecesTransp();
 
    //repositioning all pieces
    i = 0;

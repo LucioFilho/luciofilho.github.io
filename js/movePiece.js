@@ -190,6 +190,20 @@ function animePiece(leaving, landing, piecesToMove) {
                PromoID++;
                PromoControl = 0;
             }
+
+            // test checkmate
+            /*if (countCheckmate > 0 && BlackLandingsInCheck.length === countCheckmate) {
+               gameover = 1;
+               winner = "white";
+               loserPiecesTransp();
+            }
+            if (countCheckmate > 0 && WhiteLandingsInCheck.length === countCheckmate) {
+               gameover = 1;
+               winner = "black";
+               loserPiecesTransp();
+            }*/
+            //console.log("movePiece count: " + countCheckmate + " W: " + WhiteLandingsInCheck.length  + " B: " + BlackLandingsInCheck.length);
+
             LockFlipBoard = 0;
          }
       }, 1);
@@ -359,6 +373,13 @@ function coloringPieces(leaving, landing) {
 
 function movingPiece(i) {
 
+   LockFlipBoard = 1;
+   Checkered = 0;
+   countCheckmate = 0;
+
+   DeathPathsBlack.push(DeathPathBlack);
+   DeathPathsWhite.push(DeathPathWhite);
+
    Turn = PiecesPosition[BSqSel - 1] === PiecesPosition[BSqSel - 1].toUpperCase() ? "b" : "W";
 
    //back forward control
@@ -370,10 +391,20 @@ function movingPiece(i) {
    let leaving = BSqSel - 1;
    let landing = i;
 
+   if (TotalWCastles === 1) {
+      WhiteCastlesInCheck.push(BSqSel);
+   }
+   if (TotalBCastles === 1) {
+      BlackCastlesInCheck.push(BSqSel);
+   }
+
    coloringPieces(leaving, landing);
 
    LandingsAgain = 0;
    Again = 0;
+   DeathPathBlack = [];
+   DeathPathWhite = [];
+
    switch (PiecesPosition[BSqSel - 1]) { //identify leaving piece
       case "C":
          soundCastle.play();
@@ -820,7 +851,10 @@ function movingPiece(i) {
    call888(); //count how many castles on board
    castlesInCheck(); //review castles in check
 
-   //get notation 
+   console.log("tbc: " + TotalBCastles + " bcc: " + BlackCastlesInCheck + " dpb: " + DeathPathBlack);
+   console.log("twc: " + TotalWCastles + " wcc: " + WhiteCastlesInCheck + " dpw: " + DeathPathWhite);
+
+   //get notation
    if (Checkered === 0) {
       Notation[Move] = squaresNotation[BSqSel - 1] + squaresNotation[i - 1];
    } else {

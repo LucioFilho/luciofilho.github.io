@@ -190,11 +190,6 @@ function takeback() {
       LandingsAgain = 0;
       Again = 0;
 
-      fillerStroker("disable");
-      document.getElementById("iconArrowTakeback").setAttributeNS(null, "fill", Filler);
-      document.getElementById("arcTakebackBot").setAttributeNS(null, "stroke", Filler);
-      document.getElementById("arcTakebackTop").setAttributeNS(null, "stroke", Filler);
-
       backForward("takeback");
 
       unClickSquare();
@@ -210,6 +205,12 @@ function takeback() {
       Notation.pop();
       gameLog.pop();
 
+      DeathPathsBlack.pop();
+      DeathPathsWhite.pop();
+
+      DeathPathBlack = DeathPathsBlack[DeathPathsBlack.length - 1];
+      DeathPathWhite = DeathPathsWhite[DeathPathsWhite.length - 1];
+
       Move--;
 
       extPiecesPosition = Array.from(extMoves[MoveWatch]);
@@ -219,19 +220,17 @@ function takeback() {
 
       iconsSetColor();
 
+      call888();
+
       castlesInCheck();
+
+      soundRewind.play();
 
       clearTimeout(Timer);
 
-      soundRewind.play();
    }
    Timer = setTimeout(function() {
       cli = 0;
-      fillerStroker("lightWhiteColor");
-      document.getElementById("iconArrowTakeback").setAttributeNS(null, "fill", Filler);
-      document.getElementById("arcTakebackTop").setAttributeNS(null, "stroke", Filler);
-      fillerStroker("greyColor");
-      document.getElementById("arcTakebackBot").setAttributeNS(null, "stroke", Filler);
    }, 1000);
 }
 
@@ -260,8 +259,8 @@ function displayActions(k) {
             backForward("start");
             soundRewind.play();
          }
-      } else if (k === "butTakeback") {
-         if (MoveWatch > 0) {
+      } else if (k === "butTakeback" && gameover === 0) {
+         if (MoveWatch === Move - 1) {
             takeback();
          }
       } else if (k === "butSaveFile") {

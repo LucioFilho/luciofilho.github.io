@@ -29,16 +29,16 @@ var soundRewind = new Sound("sounds/rewind.mp3");
 
 //tooltips show/hide
 function showTooltip(text) {
-  let tooltip = document.getElementById("tooltip");
-  tooltip.innerHTML = text;
-  tooltip.style.display = "inline-block";
-  tooltip.style.left = event.pageX + 10 + "px";
-  tooltip.style.top = event.pageY + 10 + "px";
+   let tooltip = document.getElementById("tooltip");
+   tooltip.innerHTML = text;
+   tooltip.style.display = "inline-block";
+   tooltip.style.left = event.pageX + 10 + "px";
+   tooltip.style.top = event.pageY + 10 + "px";
 }
 
 function hideTooltip() {
-  var tooltip = document.getElementById("tooltip");
-  tooltip.style.display = "none";
+   var tooltip = document.getElementById("tooltip");
+   tooltip.style.display = "none";
 }
 
 //get board on html
@@ -62,12 +62,18 @@ var Clo = 0;
 var ColorBlack = "rgba(50,50,100,1.0)";
 var ColorOh = "rgba(50,100,50,1.0)";
 var ColorWhite = "rgba(130,80,0,1.0)";
+var countCheckmate = 0;
+var DeathPathBlack = [];
+var DeathPathWhite = [];
+var DeathPathsBlack = [];
+var DeathPathsWhite = [];
 var DrawCanvas;
 var EvenOdd;
 var Filler = "rgba(200,200,200,0.5)";
 var FillStyle;
 var gameLog = [];
 var gameNotation;
+var gameover = 0;
 var I = 0;
 var J = 0;
 var LandingsAgain = 0;
@@ -116,6 +122,7 @@ var TotalWCastles = 8;
 var TotalWRooks = 8;
 var Turn = "W";
 var VerseReverse = "wb";
+var winner;
 var WhiteCastlesInCheck = [];
 var WhiteLandingsInCheck = [];
 var XLeaving;
@@ -204,6 +211,7 @@ while (R < ReadInitialNotation.length) {
 
 //piecesPosition keep open code to manage local moves
 var PiecesPosition = InitialPiecesPosition.split(""); //get deciphered code to work with Letters and Numbers
+var letPiecesPosition = []; //check if piece protect last castle
 
 //ghost array to test last castle move in check
 var GhostPiecesPosition = [];
@@ -918,6 +926,130 @@ function clearMarkers() {
    MarkerCount = 0;
 }
 
+function callMovingPiece(i) {
+
+   if (gameover === 0 && TotalWCastles > 0 && TotalBCastles > 0) {
+
+      if (Turn === Turn.toUpperCase()) {
+
+         if (TotalWCastles > 2) {
+            movingPiece(i);
+            console.log("a");
+         } else if (TotalWCastles === 2) {
+            if (WhiteCastlesInCheck.length === 1) {
+               if (PiecesPosition[BSqSel - 1] === "C") {
+                  if (WhiteCastlesInCheck.includes(BSqSel) === true) {
+                     movingPiece(i);
+                     console.log("b");
+                  } else if (DeathPathWhite.includes(i) === true) {
+                     movingPiece(i);
+                     console.log("c");
+                  }
+               } else {
+                  movingPiece(i);
+                  console.log("d");
+               }
+            } else {
+               movingPiece(i);
+               console.log("e");
+            }
+         } else if (TotalWCastles === 1) {
+            castlesInCheck();
+            if (WhiteCastlesInCheck.length === 1) {
+               if (PiecesPosition[BSqSel - 1] === "C") {
+                  movingPiece(i);
+                  console.log("f");
+               } else if (DeathPathWhite.includes(i) === true) {
+                  movingPiece(i);
+                  console.log("g");
+               } else if ((PiecesPosition[BSqSel - 1] === "R" && PiecesPosition[i - 1] === "n") || (PiecesPosition[BSqSel - 1] === "P" && PiecesPosition[i - 1] === "q") || (PiecesPosition[BSqSel - 1] === "N" && PiecesPosition[i - 1] === "q") || (PiecesPosition[BSqSel - 1] === "R" && PiecesPosition[i - 1] === "N") || (PiecesPosition[BSqSel - 1] === "P" && PiecesPosition[i - 1] === "Q") || (PiecesPosition[BSqSel - 1] === "N" && PiecesPosition[i - 1] === "Q")) {
+                  movingPiece(i);
+                  console.log("u");
+               }
+            } else {
+               letPiecesPosition = Array.from(PiecesPosition);
+               if (PiecesPosition[BSqSel - 1] === "C" || PiecesPosition[BSqSel - 1] === "R" || PiecesPosition[BSqSel - 1] === "B" || PiecesPosition[BSqSel - 1] === "P") {
+                  letPiecesPosition[BSqSel - 1] = "O";
+                  letCastleInCheck();
+
+                  if (DeathPathWhite.includes(BSqSel) === false) {
+                     movingPiece(i);
+                     console.log("h");
+                  } else if (DeathPathWhite.includes(i) === true) {
+                     movingPiece(i);
+                     console.log("i");
+                  }
+
+               } else {
+                  movingPiece(i);
+                  console.log("j");
+               }
+            }
+         }
+
+      } else {
+
+         if (TotalBCastles > 2) {
+            movingPiece(i);
+            console.log("k");
+         } else if (TotalBCastles === 2) {
+            if (BlackCastlesInCheck.length === 1) {
+               if (PiecesPosition[BSqSel - 1] === "c") {
+                  if (BlackCastlesInCheck.includes(BSqSel) === true) {
+                     movingPiece(i);
+                     console.log("l");
+                  } else if (DeathPathBlack.includes(i) === true) {
+                     movingPiece(i);
+                     console.log("m");
+                  }
+               } else {
+                  movingPiece(i);
+                  console.log("n");
+               }
+            } else {
+               movingPiece(i);
+               console.log("o");
+            }
+         } else if (TotalBCastles === 1) {
+            castlesInCheck();
+            if (BlackCastlesInCheck.length === 1) {
+               if (PiecesPosition[BSqSel - 1] === "c") {
+                  movingPiece(i);
+                  console.log("p");
+               } else if (DeathPathBlack.includes(i) === true) {
+                  movingPiece(i);
+                  console.log("q");
+               } else if ((PiecesPosition[BSqSel - 1] === "r" && PiecesPosition[i - 1] === "n") || (PiecesPosition[BSqSel - 1] === "p" && PiecesPosition[i - 1] === "q") || (PiecesPosition[BSqSel - 1] === "n" && PiecesPosition[i - 1] === "q") || (PiecesPosition[BSqSel - 1] === "r" && PiecesPosition[i - 1] === "N") || (PiecesPosition[BSqSel - 1] === "p" && PiecesPosition[i - 1] === "Q") || (PiecesPosition[BSqSel - 1] === "n" && PiecesPosition[i - 1] === "Q")) {
+                  movingPiece(i);
+                  console.log("u");
+               }
+            } else {
+               letPiecesPosition = Array.from(PiecesPosition);
+               if (PiecesPosition[BSqSel - 1] === "c" || PiecesPosition[BSqSel - 1] === "r" || PiecesPosition[BSqSel - 1] === "b" || PiecesPosition[BSqSel - 1] === "p") {
+                  letPiecesPosition[BSqSel - 1] = "O";
+                  letCastleInCheck();
+
+                  if (DeathPathBlack.includes(BSqSel) === false) {
+                     movingPiece(i);
+                     console.log("r");
+                  } else if (DeathPathBlack.includes(i) === true) {
+                     movingPiece(i);
+                     console.log("s");
+                  }
+
+               } else {
+                  movingPiece(i);
+                  console.log("t");
+               }
+            }
+         }
+
+      }
+
+   }
+
+}
+
 //draw buttons to click squares
 function drawButtons(i) {
    const shape4 = document.createElementNS(SvgNS, "rect");
@@ -952,17 +1084,17 @@ function drawButtons(i) {
          if ((PiecesPosition[BSqSel - 1] === PiecesPosition[BSqSel - 1].toUpperCase() && Turn === Turn.toUpperCase()) || (PiecesPosition[BSqSel - 1] === PiecesPosition[BSqSel - 1].toLowerCase() && Turn === Turn.toLowerCase())) {
 
             let t = 0;
-            let transp = "rgba(200,50,0," + (t / 300) + ")";
+            let transp = "rgba(200,50,0," + (t / 100) + ")";
             let travel = setInterval(function() {
 
                //animation square border coloring. time to cancel move.
                t++;
-               transp = "rgba(200,50,0," + (t / 300) + ")";
+               transp = "rgba(200,50,0," + (t / 100) + ")";
 
                document.getElementById("butSquare" + (i)).setAttributeNS(null, "stroke", transp);
                document.getElementById("butSquare" + (i)).setAttributeNS(null, "stroke-width", 3);
 
-               if (t > 300) {
+               if (t > 100) {
                   clearInterval(travel);
                   document.getElementById("butSquare" + (i)).setAttributeNS(null, "stroke", "rgba(0,0,0,0)");
                   document.getElementById("butSquare" + (i)).setAttributeNS(null, "stroke-width", 0);
@@ -982,17 +1114,7 @@ function drawButtons(i) {
                   SelectPieceStatus = 0;
                   unClickSquare();
 
-                  if (TotalWCastles === 0) {
-                     Turn = "BLACK WINS";
-                  }
-                  if (TotalBCastles === 0) {
-                     Turn = "WHITE WINS";
-                  }
-                  if (TotalWCastles > 0 && TotalBCastles > 0) {
-                     LockFlipBoard = 1;
-                     Checkered = 0;
-                     movingPiece(i);
-                  }
+                  callMovingPiece(i);
 
                   BSqSel = i;
 
@@ -1015,7 +1137,7 @@ function drawButtons(i) {
                }
                Clo = 0;
 
-            }, 700);
+            }, 300);
          }
 
       } else {
@@ -1128,6 +1250,14 @@ function fillerStroker(c) {
          Filler = "rgba(0,0,0,1.0)";
          Stroker = "rgba(255,255,255,1.0)";
          break;
+      case "whiteloser":
+         Filler = "rgba(255,255,255,0.5)";
+         Stroker = "rgba(0,0,0,0.5)";
+         break;
+      case "blackloser":
+         Filler = "rgba(0,0,0,0.5)";
+         Stroker = "rgba(255,255,255,0.5)";
+         break;
       case "blackSquare":
          Filler = "rgba(102, 153, 51, 1.0)";
          Stroker = "rgba(102, 153, 51, 1.0)";
@@ -1228,3 +1358,18 @@ call888();
 castlesInCheck(); //get first array with all castles in check
 
 logo_superc.setAttribute("style", "-webkit-touch-callout: none;-webkit-user-select: none;-khtml-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;");
+
+function GameVersion() {
+   const verser = document.createElementNS(SvgNS, "text");
+   verser.setAttributeNS(null, "id", "version");
+   verser.setAttribute("x", 10);
+   verser.setAttribute("y", 10);
+   verser.setAttribute("fill", "rgba(255,255,255,0.3)");
+   verser.setAttribute("font-family", "Helvetica");
+   verser.setAttribute("font-weight", "normal");
+   verser.setAttribute("font-size", 10);
+   verser.setAttribute("style", "-webkit-touch-callout: none;-webkit-user-select: none;-khtml-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;");
+   verser.textContent = "Alpha_0.0.2";
+   PlayerDownRight.appendChild(verser);
+}
+GameVersion();
