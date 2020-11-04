@@ -19,13 +19,13 @@ function Sound(src) {
    };
 }
 
-var soundCastle = new Sound("sounds/castle.mp3");
-var soundRook = new Sound("sounds/rook.mp3");
-var soundBishop = new Sound("sounds/bishop.mp3");
-var soundQueen = new Sound("sounds/queen.mp3");
-var soundPawn = new Sound("sounds/pawn.mp3");
-var soundKnight = new Sound("sounds/knight.mp3");
-var soundRewind = new Sound("sounds/rewind.mp3");
+let soundCastle = new Sound("sounds/castle.mp3");
+let soundRook = new Sound("sounds/rook.mp3");
+let soundBishop = new Sound("sounds/bishop.mp3");
+let soundQueen = new Sound("sounds/queen.mp3");
+let soundPawn = new Sound("sounds/pawn.mp3");
+let soundKnight = new Sound("sounds/knight.mp3");
+let soundRewind = new Sound("sounds/rewind.mp3");
 
 //tooltips show/hide
 function showTooltip(text) {
@@ -37,7 +37,7 @@ function showTooltip(text) {
 }
 
 function hideTooltip() {
-   var tooltip = document.getElementById("tooltip");
+   let tooltip = document.getElementById("tooltip");
    tooltip.style.display = "none";
 }
 
@@ -51,84 +51,84 @@ const GameDisplay = document.getElementById("GameDisplay");
 const PlayerDownRight = document.getElementById("PlayerDownRight");
 
 //vars to manage loops
-var Again = 0;
-var ArrowColor = "";
-var BlackCastlesInCheck = [];
-var BlackLandingsInCheck = [];
-var BSqSel;
-var Checkered = 0;
-var Cli = 0;
-var Clo = 0;
-var ColorBlack = "rgba(50,50,100,1.0)";
-var ColorOh = "rgba(50,100,50,1.0)";
-var ColorWhite = "rgba(130,80,0,1.0)";
-var countCheckmate = 0;
-var DeathPathBlack = [];
-var DeathPathWhite = [];
-var DeathPathsBlack = [];
-var DeathPathsWhite = [];
-var DrawCanvas;
-var EvenOdd;
-var Filler = "rgba(200,200,200,0.5)";
-var FillStyle;
-var gameLog = [];
-var gameNotation;
-var gameover = 0;
-var I = 0;
-var J = 0;
-var LandingsAgain = 0;
-var Letters = [];
-var LockFlipBoard = 0;
-var M = 0;
-var MarkerControl = 0;
-var MarkerCount = 0;
-var MatchStatus = 0;
-var MMoveLanding = 0;
-var MMoveLeaving = 0;
-var MMovesLanding = [];
-var MMovesLeaving = [];
-var Numbers = [];
-var PieceFill1;
-var PieceFill2;
-var PieceID1;
-var PieceID2;
-var PieceRadius1;
-var PieceRadius2;
-var PiecesToRemove;
-var PieceStroke1;
-var PieceStroke2;
-var PieceStrokeWidth1;
-var PieceStrokeWidth2;
-var PPReversed = [];
-var PromoControl = 0;
-var PromoID = 71;
-var R = 0;
-var RowEvenOdd;
-var SelectPieceStatus = 0;
-var ShortPiecePosition = [];
-var Square_x;
-var Square_y;
-var SquareColor;
-var SquaresToGo;
-var Stroker = "rgba(0,0,0,0.3)";
-var StrokeStyle;
-var Timer = 0;
-var Timer2 = 0;
-var TotalBBishops = 8;
-var TotalBCastles = 8;
-var TotalBRooks = 8;
-var TotalWBishops = 8;
-var TotalWCastles = 8;
-var TotalWRooks = 8;
-var Turn = "W";
-var VerseReverse = "wb";
-var winner;
-var WhiteCastlesInCheck = [];
-var WhiteLandingsInCheck = [];
-var XLeaving;
-var XMark = 0;
-var YLeaving;
-var YMark = 0;
+let Again = 0;
+let ArrowColor = "";
+let BlackCastlesInCheck = [];
+let BlackLandingsInCheck = [];
+let BSqSel = null;
+let Checkered = 0;
+let Cli = 0;
+let Clo = 0;
+let ColorBlack = "rgba(50,50,100,1.0)";
+let ColorOh = "rgba(50,100,50,1.0)";
+let ColorWhite = "rgba(130,80,0,1.0)";
+let countCheckmate = 0;
+let DeathPathBlack = [];
+let DeathPathWhite = [];
+let DeathPathsBlack = [];
+let DeathPathsWhite = [];
+let DrawCanvas = null;
+let EvenOdd = null;
+let Filler = "rgba(200,200,200,0.5)";
+let FillStyle = null;
+let gameLog = [];
+let gameNotation = null;
+let gameover = 0;
+let I = 0;
+let J = 0;
+let LandingsAgain = 0;
+let Letters = [];
+let LockFlipBoard = 0;
+let M = 0;
+let MarkerControl = 0;
+let MarkerCount = 0;
+let MatchStatus = 0;
+let MMoveLanding = 0;
+let MMoveLeaving = 0;
+let MMovesLanding = [];
+let MMovesLeaving = [];
+let Numbers = [];
+let PieceFill1 = null;
+let PieceFill2 = null;
+let PieceID1 = null;
+let PieceID2 = null;
+let PieceRadius1 = null;
+let PieceRadius2 = null;
+let PiecesToRemove = null;
+let PieceStroke1 = null;
+let PieceStroke2 = null;
+let PieceStrokeWidth1 = null;
+let PieceStrokeWidth2 = null;
+let PPReversed = [];
+let PromoControl = 0;
+let PromoID = 71;
+let R = 0;
+let RowEvenOdd = null;
+let SelectPieceStatus = 0;
+let ShortPiecePosition = [];
+let Square_x = null;
+let Square_y = null;
+let SquareColor = null;
+let SquaresToGo = null;
+let Stroker = "rgba(0,0,0,0.3)";
+let StrokeStyle = null;
+let Timer = 0;
+let Timer2 = 0;
+let TotalBBishops = 8;
+let TotalBCastles = 8;
+let TotalBRooks = 8;
+let TotalWBishops = 8;
+let TotalWCastles = 8;
+let TotalWRooks = 8;
+let Turn = "W";
+let VerseReverse = "wb";
+let winner = null;
+let WhiteCastlesInCheck = [];
+let WhiteLandingsInCheck = [];
+let XLeaving = null;
+let XMark = 0;
+let YLeaving = null;
+let YMark = 0;
 
 //mark numbers to manage show/hide marks for each kind of piece
 const marksToO = [];
@@ -158,17 +158,17 @@ const marksToN = [82, 84, 96, 100, 126, 130, 142, 144];
 const marksToR = [8, 23, 38, 53, 68, 83, 98, 128, 143, 158, 173, 188, 203, 218, 106, 107, 108, 109, 110, 111, 112, 114, 115, 116, 117, 118, 119, 120];
 
 //board notation
-var squaresNotation = ["8a", "8b", "8c", "8d", "8e", "8f", "8g", "8h", "7a", "7b", "7c", "7d", "7e", "7f", "7g", "7h", "6a", "6b", "6c", "6d", "6e", "6f", "6g", "6h", "5a", "5b", "5c", "5d", "5e", "5f", "5g", "5h", "4a", "4b", "4c", "4d", "4e", "4f", "4g", "4h", "3a", "3b", "3c", "3d", "3e", "3f", "3g", "3h", "2a", "2b", "2c", "2d", "2e", "2f", "2g", "2h", "1a", "1b", "1c", "1d", "1e", "1f", "1g", "1h"];
-var Notation = ["0"];
+let squaresNotation = ["8a", "8b", "8c", "8d", "8e", "8f", "8g", "8h", "7a", "7b", "7c", "7d", "7e", "7f", "7g", "7h", "6a", "6b", "6c", "6d", "6e", "6f", "6g", "6h", "5a", "5b", "5c", "5d", "5e", "5f", "5g", "5h", "4a", "4b", "4c", "4d", "4e", "4f", "4g", "4h", "3a", "3b", "3c", "3d", "3e", "3f", "3g", "3h", "2a", "2b", "2c", "2d", "2e", "2f", "2g", "2h", "1a", "1b", "1c", "1d", "1e", "1f", "1g", "1h"];
+let Notation = ["0"];
 
 //control pieces position by id
-var extPiecesPosition = [1, 2, 3, 4, 5, 6, 7, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 57, 58, 59, 60, 61, 62, 63, 64];
-var midPiecesPosition = [1, 2, 3, 4, 5, 6, 7, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 57, 58, 59, 60, 61, 62, 63, 64];
-var intPiecesPosition = [1, 2, 3, 4, 5, 6, 7, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 57, 58, 59, 60, 61, 62, 63, 64];
+let extPiecesPosition = [1, 2, 3, 4, 5, 6, 7, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 57, 58, 59, 60, 61, 62, 63, 64];
+let midPiecesPosition = [1, 2, 3, 4, 5, 6, 7, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 57, 58, 59, 60, 61, 62, 63, 64];
+let intPiecesPosition = [1, 2, 3, 4, 5, 6, 7, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 57, 58, 59, 60, 61, 62, 63, 64];
 
-var extMoves = [];
-var midMoves = [];
-var intMoves = [];
+let extMoves = [];
+let midMoves = [];
+let intMoves = [];
 
 extMoves[0] = Array.from(extPiecesPosition);
 midMoves[0] = Array.from(midPiecesPosition);
@@ -181,7 +181,7 @@ const InitialNotation = "8c48O8C"; //compact code to initial position on board
 const ReadInitialNotation = InitialNotation.split("");
 
 //here we insert decoded code
-var InitialPiecesPosition = "";
+let InitialPiecesPosition = "";
 
 //open code to place pieces on board
 while (R < ReadInitialNotation.length) {
@@ -210,18 +210,18 @@ while (R < ReadInitialNotation.length) {
 }
 
 //piecesPosition keep open code to manage local moves
-var PiecesPosition = InitialPiecesPosition.split(""); //get deciphered code to work with Letters and Numbers
-var letPiecesPosition = []; //check if piece protect last castle
+let PiecesPosition = InitialPiecesPosition.split(""); //get deciphered code to work with Letters and Numbers
+let letPiecesPosition = []; //check if piece protect last castle
 
 //ghost array to test last castle move in check
-var GhostPiecesPosition = [];
+let GhostPiecesPosition = [];
 
 //compact code to send it
-var TurnNotation = [];
-var TurnsPiecesPosition = [];
+let TurnNotation = [];
+let TurnsPiecesPosition = [];
 TurnsPiecesPosition[0] = Array.from(PiecesPosition);
-var Move = 0;
-var MoveWatch = 0;
+let Move = 0;
+let MoveWatch = 0;
 
 //compact code to send it to db and opponent player
 function shortCode() {
@@ -886,12 +886,12 @@ function drawMarker(i) {
          marker.setAttribute('markerWidth', '10');
          marker.setAttribute('markerHeight', '10');
          marker.setAttributeNS(null, "orient", "auto-start-reverse");
-         var path = document.createElementNS(SvgNS, "path");
+         let path = document.createElementNS(SvgNS, "path");
          path.setAttributeNS(null, "d", "m 0 0 L 2 2 L 0 4 z");
          marker.appendChild(path);
          Board.appendChild(marker);
 
-         var polyline = document.createElementNS(SvgNS, "polyline");
+         let polyline = document.createElementNS(SvgNS, "polyline");
          polyline.setAttributeNS(null, "id", "polyline" + MarkerCount);
          polyline.setAttributeNS(null, 'points', xy);
          polyline.setAttributeNS(null, "fill", "none");
@@ -1369,7 +1369,7 @@ function GameVersion() {
    verser.setAttribute("font-weight", "normal");
    verser.setAttribute("font-size", 10);
    verser.setAttribute("style", "-webkit-touch-callout: none;-webkit-user-select: none;-khtml-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;");
-   verser.textContent = "Alpha_0.0.2";
+   verser.textContent = "Alpha_0.0.3";
    PlayerDownRight.appendChild(verser);
 }
 GameVersion();
