@@ -3,6 +3,8 @@
 function letCastleInCheck() {
    WhiteCastlesInCheck = [];
    BlackCastlesInCheck = [];
+   DeathPathBlack = [];
+   DeathPathWhite = [];
 
    //clear castles in check marksTo
    uncheckCastles();
@@ -195,6 +197,10 @@ function letCastleInCheck() {
                               s++;
                            }
                            let r = 0;
+                           deathLineWhite = [];
+                           deathLineBlack = [];
+                           deathLineWhite = [];
+                           deathLineBlack = [];
                            while (r < lineSize) {
                               r++;
                               P = i - (1 + r * 9);
@@ -263,6 +269,8 @@ function letCastleInCheck() {
                               s++;
                            }
                            let r = 0;
+                           deathLineWhite = [];
+                           deathLineBlack = [];
                            while (r < lineSize) {
                               r++;
                               P = i - (1 + r * 7);
@@ -331,6 +339,8 @@ function letCastleInCheck() {
                               s++;
                            }
                            let r = 0;
+                           deathLineWhite = [];
+                           deathLineBlack = [];
                            while (r < lineSize) {
                               r++;
                               P = i + (r * 7 - 1);
@@ -399,6 +409,8 @@ function letCastleInCheck() {
                               s++;
                            }
                            let r = 0;
+                           deathLineWhite = [];
+                           deathLineBlack = [];
                            while (r < lineSize) {
                               r++;
                               P = i + (r * 9 - 1);
@@ -469,6 +481,8 @@ function letCastleInCheck() {
                               s++;
                            }
                            let r = 0;
+                           deathLineWhite = [];
+                           deathLineBlack = [];
                            while (r < lineSize) {
                               r++;
                               P = i - (1 + r * 8);
@@ -537,6 +551,8 @@ function letCastleInCheck() {
                               s++;
                            }
                            let r = 0;
+                           deathLineWhite = [];
+                           deathLineBlack = [];
                            while (r < lineSize) {
                               r++;
                               P = i - (1 + r);
@@ -605,6 +621,8 @@ function letCastleInCheck() {
                               s++;
                            }
                            let r = 0;
+                           deathLineWhite = [];
+                           deathLineBlack = [];
                            while (r < lineSize) {
                               r++;
                               P = i + (r - 1);
@@ -673,6 +691,8 @@ function letCastleInCheck() {
                               s++;
                            }
                            let r = 0;
+                           deathLineWhite = [];
+                           deathLineBlack = [];
                            while (r < lineSize) {
                               r++;
                               P = i + (r * 8 - 1);
@@ -744,6 +764,8 @@ function letCastleInCheck() {
                               s++;
                            }
                            let r = 0;
+                           deathLineWhite = [];
+                           deathLineBlack = [];
                            while (r < lineSize) {
                               r++;
                               P = i - (1 + r * 9);
@@ -812,6 +834,8 @@ function letCastleInCheck() {
                               s++;
                            }
                            let r = 0;
+                           deathLineWhite = [];
+                           deathLineBlack = [];
                            while (r < lineSize) {
                               r++;
                               P = i - (1 + r * 7);
@@ -880,6 +904,8 @@ function letCastleInCheck() {
                               s++;
                            }
                            let r = 0;
+                           deathLineWhite = [];
+                           deathLineBlack = [];
                            while (r < lineSize) {
                               r++;
                               P = i + (r * 7 - 1);
@@ -948,6 +974,8 @@ function letCastleInCheck() {
                               s++;
                            }
                            let r = 0;
+                           deathLineWhite = [];
+                           deathLineBlack = [];
                            while (r < lineSize) {
                               r++;
                               P = i + (r * 9 - 1);
@@ -1017,6 +1045,8 @@ function letCastleInCheck() {
                               s++;
                            }
                            let r = 0;
+                           deathLineWhite = [];
+                           deathLineBlack = [];
 
                            while (r < lineSize) {
                               r++;
@@ -1086,6 +1116,8 @@ function letCastleInCheck() {
                               s++;
                            }
                            let r = 0;
+                           deathLineWhite = [];
+                           deathLineBlack = [];
                            while (r < lineSize) {
                               r++;
                               P = i - (1 + r);
@@ -1154,6 +1186,8 @@ function letCastleInCheck() {
                               s++;
                            }
                            let r = 0;
+                           deathLineWhite = [];
+                           deathLineBlack = [];
                            while (r < lineSize) {
                               r++;
                               P = i + (r - 1);
@@ -1222,6 +1256,8 @@ function letCastleInCheck() {
                               s++;
                            }
                            let r = 0;
+                           deathLineWhite = [];
+                           deathLineBlack = [];
                            while (r < lineSize) {
                               r++;
                               P = i + (r * 8 - 1);
@@ -1287,8 +1323,14 @@ function letCastleInCheck() {
                         if (pPn === "C" || pPn === "c") {
                            if (pP === pP.toUpperCase() && pPn === pPn.toLowerCase()) {
                               blackC(n);
+                              if (DeathPathBlack.includes(i) === false) {
+                                 DeathPathBlack.push(i);
+                              }
                            } else if (pP === pP.toLowerCase() && pPn === pPn.toUpperCase()) {
                               whiteC(n);
+                              if (DeathPathWhite.includes(i) === false) {
+                                 DeathPathWhite.push(i);
+                              }
                            }
                         }
                      }

@@ -99,6 +99,7 @@ let PieceStroke1 = null;
 let PieceStroke2 = null;
 let PieceStrokeWidth1 = null;
 let PieceStrokeWidth2 = null;
+let PPos = null;
 let PPReversed = [];
 let PromoControl = 0;
 let PromoID = 71;
@@ -621,14 +622,15 @@ function drawPieces() {
 
 //set attributes to draw pieces
 function setPieces() {
-   if (PiecesPosition[I - 1] === PiecesPosition[I - 1].toLowerCase()) {
+   PPos = PiecesPosition[I - 1];
+   if (PPos === PPos.toLowerCase()) {
       FillStyle = "rgba(0,0,0,1.0)";
       StrokeStyle = "rgba(255,255,255,1.0)";
    } else {
       FillStyle = "rgba(255,255,255,1.0)";
       StrokeStyle = "rgba(0,0,0,1.0)";
    }
-   if (PiecesPosition[I - 1] === "q" || PiecesPosition[I - 1] === "c" || PiecesPosition[I - 1] === "r" || PiecesPosition[I - 1] === "Q" || PiecesPosition[I - 1] === "C" || PiecesPosition[I - 1] === "R") {
+   if (PPos === "q" || PPos === "c" || PPos === "r" || PPos === "Q" || PPos === "C" || PPos === "R") {
       PieceID1 = "intA" + I;
       PieceID2 = "intB" + I;
       PieceRadius1 = 15;
@@ -642,7 +644,7 @@ function setPieces() {
       drawPieces();
    }
 
-   if (PiecesPosition[I - 1] === "q" || PiecesPosition[I - 1] === "b" || PiecesPosition[I - 1] === "c" || PiecesPosition[I - 1] === "n" || PiecesPosition[I - 1] === "Q" || PiecesPosition[I - 1] === "B" || PiecesPosition[I - 1] === "C" || PiecesPosition[I - 1] === "N") {
+   if (PPos === "q" || PPos === "b" || PPos === "c" || PPos === "n" || PPos === "Q" || PPos === "B" || PPos === "C" || PPos === "N") {
       PieceID1 = "midA" + I;
       PieceID2 = "midB" + I;
       PieceRadius1 = 18;
@@ -656,7 +658,7 @@ function setPieces() {
       drawPieces();
    }
 
-   if (PiecesPosition[I - 1] === "c" || PiecesPosition[I - 1] === "p" || PiecesPosition[I - 1] === "n" || PiecesPosition[I - 1] === "C" || PiecesPosition[I - 1] === "P" || PiecesPosition[I - 1] === "N") {
+   if (PPos === "c" || PPos === "p" || PPos === "n" || PPos === "C" || PPos === "P" || PPos === "N") {
       PieceID1 = "extA" + I;
       PieceID2 = "extB" + I;
       PieceRadius1 = 25;
@@ -954,7 +956,6 @@ function callMovingPiece(i) {
                console.log("e");
             }
          } else if (TotalWCastles === 1) {
-            castlesInCheck();
             if (WhiteCastlesInCheck.length === 1) {
                if (PiecesPosition[BSqSel - 1] === "C") {
                   movingPiece(i);
@@ -1011,7 +1012,6 @@ function callMovingPiece(i) {
                console.log("o");
             }
          } else if (TotalBCastles === 1) {
-            castlesInCheck();
             if (BlackCastlesInCheck.length === 1) {
                if (PiecesPosition[BSqSel - 1] === "c") {
                   movingPiece(i);
@@ -1050,6 +1050,13 @@ function callMovingPiece(i) {
 
 }
 
+//double click
+function doubleClick() {
+   SelectPieceStatus = 0;
+   reversePieces();
+   clearMarkers();
+}
+
 //draw buttons to click squares
 function drawButtons(i) {
    const shape4 = document.createElementNS(SvgNS, "rect");
@@ -1061,13 +1068,6 @@ function drawButtons(i) {
    shape4.setAttributeNS(null, "fill", "transparent");
    shape4.setAttributeNS(null, "stroke-width", 0);
    Board.appendChild(shape4);
-
-   //double click
-   function doubleClick() {
-      SelectPieceStatus = 0;
-      reversePieces();
-      clearMarkers();
-   }
 
    function simpleClick() { // click
       if (SelectPieceStatus === 0) {
