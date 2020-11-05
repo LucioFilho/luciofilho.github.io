@@ -968,8 +968,9 @@ function callMovingPiece(i) {
                   console.log("u");
                }
             } else {
-               letPiecesPosition = Array.from(PiecesPosition);
                if (PiecesPosition[BSqSel - 1] === "C" || PiecesPosition[BSqSel - 1] === "R" || PiecesPosition[BSqSel - 1] === "B" || PiecesPosition[BSqSel - 1] === "P") {
+                  letPiecesPosition = Array.from(PiecesPosition);
+                  letPiecesPosition[i - 1] = PiecesPosition[BSqSel - 1];
                   letPiecesPosition[BSqSel - 1] = "O";
                   letCastleInCheck();
 
@@ -1024,8 +1025,9 @@ function callMovingPiece(i) {
                   console.log("u");
                }
             } else {
-               letPiecesPosition = Array.from(PiecesPosition);
                if (PiecesPosition[BSqSel - 1] === "c" || PiecesPosition[BSqSel - 1] === "r" || PiecesPosition[BSqSel - 1] === "b" || PiecesPosition[BSqSel - 1] === "p") {
+                  letPiecesPosition = Array.from(PiecesPosition);
+                  letPiecesPosition[i - 1] = PiecesPosition[BSqSel - 1];
                   letPiecesPosition[BSqSel - 1] = "O";
                   letCastleInCheck();
 
