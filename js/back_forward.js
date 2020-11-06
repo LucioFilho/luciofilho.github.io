@@ -65,6 +65,25 @@ function backForwardColoring(p, q, landing, but) {
    document.getElementById(p + "B" + pSq).setAttributeNS(null, "cy", Ypos);
 }
 
+function moveMarks() {
+   if (MoveWatch > 0) {
+      mMLeaving1x = parseInt(document.getElementById("butSquare" + MMovesLeaving[MoveWatch - 1]).getAttributeNS(null, "x"));
+      mMLeaving1y = parseInt(document.getElementById("butSquare" + MMovesLeaving[MoveWatch - 1]).getAttributeNS(null, "y"));
+      mMLanding2x = parseInt(document.getElementById("butSquare" + MMovesLanding[MoveWatch - 1]).getAttributeNS(null, "x"));
+      mMLanding2y = parseInt(document.getElementById("butSquare" + MMovesLanding[MoveWatch - 1]).getAttributeNS(null, "y"));
+   } else if (MoveWatch === 0) {
+      mMLeaving1x = 1000;
+      mMLeaving1y = 1000;
+      mMLanding2x = 1000;
+      mMLanding2y = 1000;
+   }
+
+   document.getElementById("mMove1").setAttributeNS(null, "x", mMLeaving1x);
+   document.getElementById("mMove1").setAttributeNS(null, "y", mMLeaving1y);
+   document.getElementById("mMove2").setAttributeNS(null, "x", mMLanding2x);
+   document.getElementById("mMove2").setAttributeNS(null, "y", mMLanding2y);
+}
+
 function backForward(side) {
    if (side === "left") {
       MoveWatch--;
@@ -127,23 +146,4 @@ function backForward(side) {
       castlesInCheck();
    }
 
-}
-
-function moveMarks() {
-   if (MoveWatch > 0) {
-      mMLeaving1x = parseInt(document.getElementById("butSquare" + MMovesLeaving[MoveWatch - 1]).getAttributeNS(null, "x"));
-      mMLeaving1y = parseInt(document.getElementById("butSquare" + MMovesLeaving[MoveWatch - 1]).getAttributeNS(null, "y"));
-      mMLanding2x = parseInt(document.getElementById("butSquare" + MMovesLanding[MoveWatch - 1]).getAttributeNS(null, "x"));
-      mMLanding2y = parseInt(document.getElementById("butSquare" + MMovesLanding[MoveWatch - 1]).getAttributeNS(null, "y"));
-   } else if (MoveWatch === 0) {
-      mMLeaving1x = 1000;
-      mMLeaving1y = 1000;
-      mMLanding2x = 1000;
-      mMLanding2y = 1000;
-   }
-
-   document.getElementById("mMove1").setAttributeNS(null, "x", mMLeaving1x);
-   document.getElementById("mMove1").setAttributeNS(null, "y", mMLeaving1y);
-   document.getElementById("mMove2").setAttributeNS(null, "x", mMLanding2x);
-   document.getElementById("mMove2").setAttributeNS(null, "y", mMLanding2y);
 }

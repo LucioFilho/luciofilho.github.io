@@ -204,9 +204,13 @@ function animePiece(leaving, landing, piecesToMove) {
             }*/
             //console.log("movePiece count: " + countCheckmate + " W: " + WhiteLandingsInCheck.length  + " B: " + BlackLandingsInCheck.length);
 
+            shortCode();
+
             LockFlipBoard = 0;
          }
+
       }, 1);
+
    };
 
    animeEMI();
@@ -928,7 +932,5 @@ function movingPiece(i) {
    } else {
       Notation[Move] = squaresNotation[BSqSel - 1] + squaresNotation[i - 1] + "+";
    }
-
-   shortCode();
 
 }
