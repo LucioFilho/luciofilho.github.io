@@ -91,10 +91,15 @@ function blackC(n) {
       markCastleInCheck(n);
       //checkmate White Won
       if (TotalBCastles === 1) {
+         RealBCheck = 1;
          clickSquare(n);
+         LastBSquaresToGo = [];
+         LastBSquaresToGo = Array.from(SquaresToGo);
          unClickSquare();
          clearMarkers();
          Again = 1;
+      } else {
+         RealBCheck = 0;
       }
 
    }
@@ -106,10 +111,15 @@ function whiteC(n) {
       markCastleInCheck(n);
       //checkmate Black Won
       if (TotalWCastles === 1) {
+         RealWCheck = 1;
          clickSquare(n);
+         LastWSquaresToGo = [];
+         LastWSquaresToGo = Array.from(SquaresToGo);
          unClickSquare();
          clearMarkers();
          Again = 1;
+      } else {
+         RealWCheck = 0;
       }
 
    }

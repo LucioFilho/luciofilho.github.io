@@ -192,7 +192,8 @@ function animePiece(leaving, landing, piecesToMove) {
             }
 
             // test checkmate
-            /*if (countCheckmate > 0 && BlackLandingsInCheck.length === countCheckmate) {
+            /*
+            if (countCheckmate > 0 && BlackLandingsInCheck.length === countCheckmate) {
                gameover = 1;
                winner = "white";
                loserPiecesTransp();
@@ -201,7 +202,8 @@ function animePiece(leaving, landing, piecesToMove) {
                gameover = 1;
                winner = "black";
                loserPiecesTransp();
-            }*/
+            }
+            */
             //console.log("movePiece count: " + countCheckmate + " W: " + WhiteLandingsInCheck.length  + " B: " + BlackLandingsInCheck.length);
 
             shortCode();
@@ -923,8 +925,8 @@ function movingPiece(i) {
    call888(); //count how many castles on board
    castlesInCheck(); //review castles in check
 
-   console.log("tbc: " + TotalBCastles + " bcc: " + BlackCastlesInCheck + " dpb: " + DeathPathBlack);
-   console.log("twc: " + TotalWCastles + " wcc: " + WhiteCastlesInCheck + " dpw: " + DeathPathWhite);
+   console.log("tbc: " + TotalBCastles + " togo: " + LastWSquaresToGo + " bcc: " + BlackCastlesInCheck + " dpb: " + DeathPathBlack);
+   console.log("twc: " + TotalWCastles + " togo: " + LastWSquaresToGo + " wcc: " + WhiteCastlesInCheck + " dpw: " + DeathPathWhite);
 
    //get notation
    if (Checkered === 0) {

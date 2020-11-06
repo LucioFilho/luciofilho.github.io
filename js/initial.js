@@ -77,6 +77,8 @@ let gameover = 0;
 let I = 0;
 let J = 0;
 let LandingsAgain = 0;
+let LastBSquaresToGo = [];
+let LastWSquaresToGo = [];
 let Letters = [];
 let LockFlipBoard = 0;
 let M = 0;
@@ -104,6 +106,8 @@ let PPReversed = [];
 let PromoControl = 0;
 let PromoID = 71;
 let R = 0;
+let RealBCheck = 0;
+let RealWCheck = 0;
 let RowEvenOdd = null;
 let SelectPieceStatus = 0;
 let ShortPiecePosition = [];
@@ -840,6 +844,7 @@ function callDrawMarks() {
 function unClickSquare() {
    let m = 0;
    SquaresToGo = [];
+
    while (m < 225) {
       m++;
       document.getElementById("Mark" + m).setAttributeNS(null, "fill", "rgba(0,0,0,0)");
@@ -956,7 +961,7 @@ function callMovingPiece(i) {
                console.log("e");
             }
          } else if (TotalWCastles === 1) {
-            if (WhiteCastlesInCheck.length === 1) {
+            if (RealWCheck === 1) {
                if (PiecesPosition[BSqSel - 1] === "C") {
                   movingPiece(i);
                   console.log("f");
@@ -1013,7 +1018,7 @@ function callMovingPiece(i) {
                console.log("o");
             }
          } else if (TotalBCastles === 1) {
-            if (BlackCastlesInCheck.length === 1) {
+            if (RealBCheck === 1) {
                if (PiecesPosition[BSqSel - 1] === "c") {
                   movingPiece(i);
                   console.log("p");
