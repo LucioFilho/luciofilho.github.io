@@ -26,14 +26,23 @@ let soundQueen = new Sound("sounds/queen.mp3");
 let soundPawn = new Sound("sounds/pawn.mp3");
 let soundKnight = new Sound("sounds/knight.mp3");
 let soundRewind = new Sound("sounds/rewind.mp3");
+let soundTimeout = new Sound("sounds/timeout.mp3");
+
 
 //tooltips show/hide
 function showTooltip(text) {
+
    let tooltip = document.getElementById("tooltip");
    tooltip.innerHTML = text;
    tooltip.style.display = "inline-block";
-   tooltip.style.left = event.pageX + 10 + "px";
-   tooltip.style.top = event.pageY + 10 + "px";
+
+   onmousemove = function(e) {
+
+      tooltip.style.left = e.clientX + 10 + "px";
+      tooltip.style.top = e.clientY + 10 + "px";
+
+   };
+
 }
 
 function hideTooltip() {
@@ -58,11 +67,9 @@ let BlackLandingsInCheck = [];
 let BSqSel = null;
 let Checkered = 0;
 let Cli = 0;
-let Clo = 0;
 let ColorBlack = "rgba(50,50,100,1.0)";
 let ColorOh = "rgba(50,100,50,1.0)";
 let ColorWhite = "rgba(130,80,0,1.0)";
-let countCheckmate = 0;
 let DeathPathBlack = [];
 let DeathPathWhite = [];
 let DeathPathsBlack = [];
@@ -81,10 +88,16 @@ let LastBSquaresToGo = [];
 let LastWSquaresToGo = [];
 let Letters = [];
 let LockFlipBoard = 0;
+let LookOutSir = true;
 let M = 0;
 let MarkerControl = 0;
 let MarkerCount = 0;
-let MatchStatus = 0;
+let miliseconds = 0;
+let MilisecondsB = 0;
+let MilisecondsW = 0;
+let minutes = "00";
+let MinutesB = "00";
+let MinutesW = "00";
 let MMoveLanding = 0;
 let MMoveLeaving = 0;
 let MMovesLanding = [];
@@ -102,13 +115,15 @@ let PieceStroke2 = null;
 let PieceStrokeWidth1 = null;
 let PieceStrokeWidth2 = null;
 let PPos = null;
-let PPReversed = [];
 let PromoControl = 0;
 let PromoID = 71;
 let R = 0;
 let RealBCheck = 0;
 let RealWCheck = 0;
 let RowEvenOdd = null;
+let seconds = "00";
+let SecondsB = "00";
+let SecondsW = "00";
 let SelectPieceStatus = 0;
 let ShortPiecePosition = [];
 let Square_x = null;
@@ -136,7 +151,6 @@ let YLeaving = null;
 let YMark = 0;
 
 //mark numbers to manage show/hide marks for each kind of piece
-const marksToO = [];
 const marksToP = [97, 98, 99];
 const marksTop = [127, 128, 129];
 
@@ -231,7 +245,6 @@ let MoveWatch = 0;
 //compact code to send it to db and opponent player
 function shortCode() {
 
-   let i = 0;
    ShortPiecePosition = Array.from(PiecesPosition);
 
    let r = 0;
@@ -334,12 +347,32 @@ function reversePieces() {
       document.getElementById("arcIconTop").setAttributeNS(null, "stroke", Stroker);
       fillerStroker("lightWhiteColor");
       document.getElementById("arcIconBot").setAttributeNS(null, "stroke", Stroker);
+
    } else {
       fillerStroker("greyColor");
       document.getElementById("arcIconBot").setAttributeNS(null, "stroke", Stroker);
       fillerStroker("lightWhiteColor");
       document.getElementById("arcIconTop").setAttributeNS(null, "stroke", Stroker);
+
    }
+
+   if (VerseReverse === "wb") {
+      document.getElementById("digitMinutsB").setAttributeNS(null, "y", 97);
+      document.getElementById("digitSecondsB").setAttributeNS(null, "y", 97);
+      document.getElementById("digitMilisecondsB").setAttributeNS(null, "y", 97);
+      document.getElementById("digitMinutsW").setAttributeNS(null, "y", 420);
+      document.getElementById("digitSecondsW").setAttributeNS(null, "y", 420);
+      document.getElementById("digitMilisecondsW").setAttributeNS(null, "y", 420);
+   } else {
+      document.getElementById("digitMinutsB").setAttributeNS(null, "y", 420);
+      document.getElementById("digitSecondsB").setAttributeNS(null, "y", 420);
+      document.getElementById("digitMilisecondsB").setAttributeNS(null, "y", 420);
+      document.getElementById("digitMinutsW").setAttributeNS(null, "y", 97);
+      document.getElementById("digitSecondsW").setAttributeNS(null, "y", 97);
+      document.getElementById("digitMilisecondsW").setAttributeNS(null, "y", 97);
+   }
+
+
 
    unClickSquare();
    clearMarkers();
@@ -1109,42 +1142,21 @@ function drawButtons(i) {
 
             }, 1);
 
-            Clo++;
-
             Timer2 = setTimeout(function() {
 
-               if (Clo === 1) {
+               document.getElementById("butSquare" + (i)).setAttributeNS(null, "stroke", "rgba(0,0,0,0)");
+               document.getElementById("butSquare" + (i)).setAttributeNS(null, "stroke-width", 0);
 
-                  document.getElementById("butSquare" + (i)).setAttributeNS(null, "stroke", "rgba(0,0,0,0)");
-                  document.getElementById("butSquare" + (i)).setAttributeNS(null, "stroke-width", 0);
+               SelectPieceStatus = 0;
+               unClickSquare();
 
-                  SelectPieceStatus = 0;
-                  unClickSquare();
+               callMovingPiece(i);
 
-                  callMovingPiece(i);
+               BSqSel = i;
 
-                  BSqSel = i;
+               clearTimeout(Timer2);
 
-                  Clo = 0;
-                  clearTimeout(Timer2);
-
-               } else if (Clo > 1) {
-
-                  document.getElementById("butSquare" + (i)).setAttributeNS(null, "stroke", "rgba(0,0,0,0)");
-                  document.getElementById("butSquare" + (i)).setAttributeNS(null, "stroke-width", 0);
-
-                  SelectPieceStatus = 0;
-                  unClickSquare();
-                  BSqSel = i;
-
-                  Clo = 0;
-                  clearTimeout(Timer2);
-                  LockFlipBoard = 0;
-
-               }
-               Clo = 0;
-
-            }, 300);
+            }, 200);
          }
 
       } else {

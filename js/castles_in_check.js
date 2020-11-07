@@ -20,15 +20,6 @@ function uncheckCastles() {
    }
 }
 
-function markCastleInCheck(n) {
-   //mark castles in check
-   fillerStroker("castleCheck");
-   Checkered = 1;
-   document.getElementById("extA" + extPiecesPosition[n - 1]).setAttributeNS(null, "stroke", Stroker);
-   document.getElementById("midA" + midPiecesPosition[n - 1]).setAttributeNS(null, "stroke", Stroker);
-   document.getElementById("intA" + intPiecesPosition[n - 1]).setAttributeNS(null, "fill", Filler);
-}
-
 //set loser transp
 function loserPiecesTransp() {
 
@@ -83,6 +74,15 @@ function loserPiecesTransp() {
 
    }
 
+}
+
+function markCastleInCheck(n) {
+   //mark castles in check
+   fillerStroker("castleCheck");
+   Checkered = 1;
+   document.getElementById("extA" + extPiecesPosition[n - 1]).setAttributeNS(null, "stroke", Stroker);
+   document.getElementById("midA" + midPiecesPosition[n - 1]).setAttributeNS(null, "stroke", Stroker);
+   document.getElementById("intA" + intPiecesPosition[n - 1]).setAttributeNS(null, "fill", Filler);
 }
 
 function blackC(n) {

@@ -191,24 +191,27 @@ function animePiece(leaving, landing, piecesToMove) {
                PromoControl = 0;
             }
 
-            // test checkmate
-            /*
-            if (countCheckmate > 0 && BlackLandingsInCheck.length === countCheckmate) {
+            // test gameover
+            if (TotalBCastles === 0) {
+
+               // White won
                gameover = 1;
                winner = "white";
                loserPiecesTransp();
-            }
-            if (countCheckmate > 0 && WhiteLandingsInCheck.length === countCheckmate) {
+
+            } else if (TotalWCastles === 0) {
+
+               // Black won
                gameover = 1;
                winner = "black";
                loserPiecesTransp();
+
             }
-            */
-            //console.log("movePiece count: " + countCheckmate + " W: " + WhiteLandingsInCheck.length  + " B: " + BlackLandingsInCheck.length);
 
             shortCode();
 
             LockFlipBoard = 0;
+
          }
 
       }, 1);
@@ -381,12 +384,21 @@ function movingPiece(i) {
 
    LockFlipBoard = 1;
    Checkered = 0;
-   countCheckmate = 0;
 
    DeathPathsBlack.push(DeathPathBlack);
    DeathPathsWhite.push(DeathPathWhite);
 
+   if (Turn === "W" && timeWLength < 10000) {
+      timeWLength = 10000;
+   } else if (Turn === "b" && timeBLength < 10000) {
+      timeBLength = 10000;
+   }
+
    Turn = PiecesPosition[BSqSel - 1] === PiecesPosition[BSqSel - 1].toUpperCase() ? "b" : "W";
+
+
+   //call countdown
+   // playGameCount();
 
    //back forward control
    MMoveLeaving = i;
@@ -416,13 +428,13 @@ function movingPiece(i) {
          soundCastle.play();
          switch (PiecesPosition[i - 1]) { //identify if pieces in landing square
             case "O":
-            //fall through
+               //fall through
             case "c":
-            //fall through
+               //fall through
             case "n":
-            //fall through
+               //fall through
             case "q":
-            //fall through
+               //fall through
             case "r":
                PiecesPosition[BSqSel - 1] = WhiteCastlesInCheck.includes(BSqSel) ? "O" : "Q";
 
@@ -480,13 +492,13 @@ function movingPiece(i) {
          soundCastle.play();
          switch (PiecesPosition[i - 1]) { //identify if pieces in landing square
             case "O":
-            //fall through
+               //fall through
             case "C":
-            //fall through
+               //fall through
             case "N":
-            //fall through
+               //fall through
             case "Q":
-            //fall through
+               //fall through
             case "R":
                PiecesPosition[BSqSel - 1] = BlackCastlesInCheck.includes(BSqSel) ? "O" : "q";
 
@@ -543,13 +555,13 @@ function movingPiece(i) {
          soundPawn.play();
          switch (PiecesPosition[i - 1]) { //identify if pieces in landing square
             case "O":
-            //fall through
+               //fall through
             case "c":
-            //fall through
+               //fall through
             case "r":
-            //fall through
+               //fall through
             case "n":
-            //fall through
+               //fall through
             case "p":
                PiecesPosition[BSqSel - 1] = "O";
 
@@ -564,7 +576,7 @@ function movingPiece(i) {
 
                break;
             case "q":
-            //fall through
+               //fall through
             case "Q":
                PiecesPosition[BSqSel - 1] = "O";
                if (i < 9) {
@@ -577,7 +589,7 @@ function movingPiece(i) {
                animePiece(leaving, landing, "E");
                break;
             case "B":
-            //fall through
+               //fall through
             case "b":
                PiecesPosition[BSqSel - 1] = "O";
                PiecesPosition[i - 1] = "N";
@@ -589,13 +601,13 @@ function movingPiece(i) {
          soundPawn.play();
          switch (PiecesPosition[i - 1]) { //identify if pieces in landing square
             case "O":
-            //fall through
+               //fall through
             case "C":
-            //fall through
+               //fall through
             case "R":
-            //fall through
+               //fall through
             case "N":
-            //fall through
+               //fall through
             case "P":
                PiecesPosition[BSqSel - 1] = "O";
                if (i > 56) {
@@ -608,7 +620,7 @@ function movingPiece(i) {
                animePiece(leaving, landing, "E");
                break;
             case "Q":
-            //fall through
+               //fall through
             case "q":
                PiecesPosition[BSqSel - 1] = "O";
                if (i > 56) {
@@ -621,7 +633,7 @@ function movingPiece(i) {
                animePiece(leaving, landing, "E");
                break;
             case "b":
-            //fall through
+               //fall through
             case "B":
                PiecesPosition[BSqSel - 1] = "O";
                PiecesPosition[i - 1] = "n";
@@ -633,27 +645,27 @@ function movingPiece(i) {
          soundQueen.play();
          switch (PiecesPosition[i - 1]) { //identify if pieces in landing square
             case "O":
-            //fall through
+               //fall through
             case "c":
-            //fall through
+               //fall through
             case "b":
-            //fall through
+               //fall through
             case "n":
-            //fall through
+               //fall through
             case "q":
                PiecesPosition[BSqSel - 1] = "R";
                PiecesPosition[i - 1] = "B";
                animePiece(leaving, landing, "M");
                break;
             case "r":
-            //fall through
+               //fall through
             case "R":
                PiecesPosition[BSqSel - 1] = "R";
                PiecesPosition[i - 1] = "Q";
                animePiece(leaving, landing, "M");
                break;
             case "p":
-            //fall through
+               //fall through
             case "P":
                PiecesPosition[BSqSel - 1] = "R";
                PiecesPosition[i - 1] = "N";
@@ -665,27 +677,27 @@ function movingPiece(i) {
          soundQueen.play();
          switch (PiecesPosition[i - 1]) { //identify if pieces in landing square
             case "O":
-            //fall through
+               //fall through
             case "C":
-            //fall through
+               //fall through
             case "B":
-            //fall through
+               //fall through
             case "N":
-            //fall through
+               //fall through
             case "Q":
                PiecesPosition[BSqSel - 1] = "r";
                PiecesPosition[i - 1] = "b";
                animePiece(leaving, landing, "M");
                break;
             case "R":
-            //fall through
+               //fall through
             case "r":
                PiecesPosition[BSqSel - 1] = "r";
                PiecesPosition[i - 1] = "q";
                animePiece(leaving, landing, "M");
                break;
             case "P":
-            //fall through
+               //fall through
             case "p":
                PiecesPosition[BSqSel - 1] = "r";
                PiecesPosition[i - 1] = "n";
@@ -697,27 +709,27 @@ function movingPiece(i) {
          soundBishop.play();
          switch (PiecesPosition[i - 1]) { //identify if pieces in landing square
             case "O":
-            //fall through
+               //fall through
             case "c":
-            //fall through
+               //fall through
             case "b":
-            //fall through
+               //fall through
             case "n":
-            //fall through
+               //fall through
             case "q":
                PiecesPosition[BSqSel - 1] = "O";
                PiecesPosition[i - 1] = "B";
                animePiece(leaving, landing, "M");
                break;
             case "r":
-            //fall through
+               //fall through
             case "R":
                PiecesPosition[BSqSel - 1] = "O";
                PiecesPosition[i - 1] = "Q";
                animePiece(leaving, landing, "M");
                break;
             case "p":
-            //fall through
+               //fall through
             case "P":
                PiecesPosition[BSqSel - 1] = "O";
                PiecesPosition[i - 1] = "N";
@@ -729,27 +741,27 @@ function movingPiece(i) {
          soundBishop.play();
          switch (PiecesPosition[i - 1]) { //identify if pieces in landing square
             case "O":
-            //fall through
+               //fall through
             case "C":
-            //fall through
+               //fall through
             case "B":
-            //fall through
+               //fall through
             case "N":
-            //fall through
+               //fall through
             case "Q":
                PiecesPosition[BSqSel - 1] = "O";
                PiecesPosition[i - 1] = "b";
                animePiece(leaving, landing, "M");
                break;
             case "R":
-            //fall through
+               //fall through
             case "r":
                PiecesPosition[BSqSel - 1] = "O";
                PiecesPosition[i - 1] = "q";
                animePiece(leaving, landing, "M");
                break;
             case "P":
-            //fall through
+               //fall through
             case "p":
                PiecesPosition[BSqSel - 1] = "O";
                PiecesPosition[i - 1] = "n";
@@ -761,27 +773,27 @@ function movingPiece(i) {
          soundRook.play();
          switch (PiecesPosition[i - 1]) { //identify if pieces in landing square
             case "O":
-            //fall through
+               //fall through
             case "p":
-            //fall through
+               //fall through
             case "c":
-            //fall through
+               //fall through
             case "q":
-            //fall through
+               //fall through
             case "r":
                PiecesPosition[BSqSel - 1] = "O";
                PiecesPosition[i - 1] = "R";
                animePiece(leaving, landing, "I");
                break;
             case "b":
-            //fall through
+               //fall through
             case "B":
                PiecesPosition[BSqSel - 1] = "O";
                PiecesPosition[i - 1] = "Q";
                animePiece(leaving, landing, "I");
                break;
             case "n":
-            //fall through
+               //fall through
             case "N":
                PiecesPosition[BSqSel - 1] = "O";
                if (i < 9) {
@@ -799,27 +811,27 @@ function movingPiece(i) {
          soundRook.play();
          switch (PiecesPosition[i - 1]) { //identify if pieces in landing square
             case "O":
-            //fall through
+               //fall through
             case "P":
-            //fall through
+               //fall through
             case "C":
-            //fall through
+               //fall through
             case "Q":
-            //fall through
+               //fall through
             case "R":
                PiecesPosition[BSqSel - 1] = "O";
                PiecesPosition[i - 1] = "r";
                animePiece(leaving, landing, "I");
                break;
             case "B":
-            //fall through
+               //fall through
             case "b":
                PiecesPosition[BSqSel - 1] = "O";
                PiecesPosition[i - 1] = "q";
                animePiece(leaving, landing, "I");
                break;
             case "N":
-            //fall through
+               //fall through
             case "n":
                PiecesPosition[BSqSel - 1] = "O";
                if (i > 56) {
@@ -837,13 +849,13 @@ function movingPiece(i) {
          soundKnight.play();
          switch (PiecesPosition[i - 1]) { //identify if pieces in landing square
             case "O":
-            //fall through
+               //fall through
             case "p":
-            //fall through
+               //fall through
             case "c":
-            //fall through
+               //fall through
             case "r":
-            //fall through
+               //fall through
             case "n":
                PiecesPosition[BSqSel - 1] = "B";
                if (i < 9) {
@@ -856,14 +868,14 @@ function movingPiece(i) {
                animePiece(leaving, landing, "E");
                break;
             case "b":
-            //fall through
+               //fall through
             case "B":
                PiecesPosition[BSqSel - 1] = "B";
                PiecesPosition[i - 1] = "N";
                animePiece(leaving, landing, "E");
                break;
             case "q":
-            //fall through
+               //fall through
             case "Q":
                PiecesPosition[BSqSel - 1] = "B";
                if (i < 9) {
@@ -881,13 +893,13 @@ function movingPiece(i) {
          soundKnight.play();
          switch (PiecesPosition[i - 1]) { //identify if pieces in landing square
             case "O":
-            //fall through
+               //fall through
             case "P":
-            //fall through
+               //fall through
             case "C":
-            //fall through
+               //fall through
             case "R":
-            //fall through
+               //fall through
             case "N":
                PiecesPosition[BSqSel - 1] = "b";
                if (i > 56) {
@@ -900,14 +912,14 @@ function movingPiece(i) {
                animePiece(leaving, landing, "E");
                break;
             case "B":
-            //fall through
+               //fall through
             case "b":
                PiecesPosition[BSqSel - 1] = "b";
                PiecesPosition[i - 1] = "n";
                animePiece(leaving, landing, "E");
                break;
             case "Q":
-            //fall through
+               //fall through
             case "q":
                PiecesPosition[BSqSel - 1] = "b";
                if (i > 56) {
@@ -923,10 +935,9 @@ function movingPiece(i) {
          break;
    }
    call888(); //count how many castles on board
+   RealBCheck = 0;
+   RealWCheck = 0;
    castlesInCheck(); //review castles in check
-
-   console.log("tbc: " + TotalBCastles + " togo: " + LastWSquaresToGo + " bcc: " + BlackCastlesInCheck + " dpb: " + DeathPathBlack);
-   console.log("twc: " + TotalWCastles + " togo: " + LastWSquaresToGo + " wcc: " + WhiteCastlesInCheck + " dpw: " + DeathPathWhite);
 
    //get notation
    if (Checkered === 0) {

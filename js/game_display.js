@@ -1,13 +1,12 @@
 /*jshint esversion: 6 */
-var pPoints;
+let pPoints;
 
 let GameDate = new Date();
 let UTCGame = GameDate.toUTCString();
 
 //save pgn file
 function download(text) {
-   var a = document.getElementById("a");
-   var file = new Blob([text], {
+   let file = new Blob([text], {
       type: "text/plain;charset=utf-8"
    });
    window.open(URL.createObjectURL(file));
@@ -15,7 +14,7 @@ function download(text) {
 
 //arc
 function polarToCartesian(centerX, centerY, radius, angleInDegrees) {
-   var angleInRadians = (angleInDegrees - 90) * Math.PI / 180.0;
+   let angleInRadians = (angleInDegrees - 90) * Math.PI / 180.0;
 
    return {
       x: centerX + (radius * Math.cos(angleInRadians)),
@@ -25,17 +24,93 @@ function polarToCartesian(centerX, centerY, radius, angleInDegrees) {
 
 function describeArc(x, y, radius, startAngle, endAngle) {
 
-   var start = polarToCartesian(x, y, radius, endAngle);
-   var end = polarToCartesian(x, y, radius, startAngle);
+   let start = polarToCartesian(x, y, radius, endAngle);
+   let end = polarToCartesian(x, y, radius, startAngle);
 
-   var largeArcFlag = endAngle - startAngle <= 180 ? "0" : "1";
+   let largeArcFlag = endAngle - startAngle <= 180 ? "0" : "1";
 
-   var d = [
+   let d = [
       "M", start.x, start.y,
       "A", radius, radius, 0, largeArcFlag, 0, end.x, end.y
    ].join(" ");
 
    return d;
+}
+
+function drawCountdown() {
+   let i = 0;
+   let cronoID = "";
+   let digitX = 0;
+   let digitY = 0;
+   let digitSize = 0;
+
+   while (i < 8) {
+
+      const digit = document.createElementNS(SvgNS, "text");
+
+      if (i === 0) {
+         cronoID = "digitMinutsB";
+         digitX = 24;
+         digitY = 97;
+         digitSize = 52;
+         digit.textContent = MinutesB;
+      } else if (i === 1) {
+         cronoID = "digitSecondsB";
+         digitX = 90;
+         digitY = 97;
+         digitSize = 52;
+         digit.textContent = SecondsB;
+      } else if (i === 2) {
+         cronoID = "digitMilisecondsB";
+         digitX = 150;
+         digitY = 97;
+         digitSize = 25;
+         digit.textContent = MilisecondsB;
+      } if (i === 3) {
+         cronoID = "digitMinutsW";
+         digitX = 24;
+         digitY = 420;
+         digitSize = 52;
+         digit.textContent = MinutesW;
+      } else if (i === 4) {
+         cronoID = "digitSecondsW";
+         digitX = 90;
+         digitY = 420;
+         digitSize = 52;
+         digit.textContent = SecondsW;
+      } else if (i === 5) {
+         cronoID = "digitMilisecondsW";
+         digitX = 150;
+         digitY = 420;
+         digitSize = 25;
+         digit.textContent = MilisecondsW;
+      } else if (i === 6) {
+         cronoID = "digitMilisecondsW";
+         digitX = 80;
+         digitY = 90;
+         digitSize = 32;
+         digit.textContent = ":";
+      }  else if (i === 7) {
+         cronoID = "digitMilisecondsW";
+         digitX = 80;
+         digitY = 412;
+         digitSize = 32;
+         digit.textContent = ":";
+      }
+
+      digit.setAttributeNS(null, "id", cronoID);
+      digit.setAttribute("x", digitX);
+      digit.setAttribute("y", digitY);
+      digit.setAttribute("fill", "rgba(0,0,0,0.7)");
+      digit.setAttribute("font-family", "Helvetica");
+      digit.setAttribute("font-weight", "normal");
+      digit.setAttribute("font-size", digitSize);
+      digit.setAttribute("style", "-webkit-touch-callout: none;-webkit-user-select: none;-khtml-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;");
+
+      GameDisplay.appendChild(digit);
+
+      i++;
+   }
 }
 
 //draw icons over button flip board on display to represent color pieces switching on board
@@ -177,8 +252,12 @@ drawObjects("butMoveToEnd", 56, 36, 244, 114, "disable", 1, "Come to End");
 drawObjects("butSaveFile", 56, 36, 20, 330, "disable", 1, "Load PGN File");
 drawObjects("butTakeback", 56, 36, 76, 330, "disable", 1, "Take Back");
 
+//call crono
+drawCountdown();
+
 //execute actions to takeback move
 let cli = 0;
+
 function takeback() {
    cli++;
    clearTimeout(Timer);
@@ -268,7 +347,7 @@ function displayActions(k) {
          for (i = 0; i < gameLog.length; i++) {
             gameNotation += gameLog[i] + " \n";
          }
-         var pgnInfo = "game: Super C \nevent_id: 0 \nmatch_rating: none \nmatch_result: [learning]\nevent_type: Play yourself\nUTCDate: " + UTCGame + "\nwhite: [Visitant, 0, 100]\nblack: [Visitant, 0, 100] \nMatch Point: 0\ntime_mode: none \nmove_id: [none] \nUCI: [" + Notation + "]\n\n" + gameNotation;
+         let pgnInfo = "game: Super C \nevent_id: 0 \nmatch_rating: none \nmatch_result: [learning]\nevent_type: Play yourself\nUTCDate: " + UTCGame + "\nwhite: [Visitant, 0, 100]\nblack: [Visitant, 0, 100] \nMatch Point: 0\ntime_mode: none \nmove_id: [none] \nUCI: [" + Notation + "]\n\n" + gameNotation;
          download(pgnInfo);
       }
    }
