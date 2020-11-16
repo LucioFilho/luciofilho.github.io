@@ -191,26 +191,23 @@ function animePiece(leaving, landing, piecesToMove) {
                PromoControl = 0;
             }
 
-            // test gameover
-            if (TotalBCastles === 0) {
-
-               // White won
-               gameover = 1;
-               winner = "white";
-               loserPiecesTransp();
-
-            } else if (TotalWCastles === 0) {
-
-               // Black won
-               gameover = 1;
-               winner = "black";
-               loserPiecesTransp();
-
-            }
-
             shortCode();
 
             LockFlipBoard = 0;
+
+            //mate.
+            if (TotalWCastles === 0) {
+               gameover = 1;
+               winner = "black";
+               loserPiecesTransp();
+               clearInterval(GameCountdown);
+            }
+            if (TotalBCastles === 0) {
+               gameover = 1;
+               winner = "white";
+               loserPiecesTransp();
+               clearInterval(GameCountdown);
+            }
 
          }
 
@@ -385,15 +382,6 @@ function movingPiece(i) {
    LockFlipBoard = 1;
    Checkered = 0;
 
-   DeathPathsBlack.push(DeathPathBlack);
-   DeathPathsWhite.push(DeathPathWhite);
-
-   if (Turn === "W" && timeWLength < 10000) {
-      timeWLength = 10000;
-   } else if (Turn === "b" && timeBLength < 10000) {
-      timeBLength = 10000;
-   }
-
    Turn = PiecesPosition[BSqSel - 1] === PiecesPosition[BSqSel - 1].toUpperCase() ? "b" : "W";
 
 
@@ -417,11 +405,6 @@ function movingPiece(i) {
    }
 
    coloringPieces(leaving, landing);
-
-   LandingsAgain = 0;
-   Again = 0;
-   DeathPathBlack = [];
-   DeathPathWhite = [];
 
    switch (PiecesPosition[BSqSel - 1]) { //identify leaving piece
       case "C":

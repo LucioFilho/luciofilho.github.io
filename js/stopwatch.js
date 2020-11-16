@@ -1,51 +1,143 @@
 /*jshint esversion: 6 */
 
 let GameCountdown;
-let timeWLength = 180000; // 3 minutos
+let lockB = false;
+let lockRealTime = false;
+let lockW = false;
+let realClock = 0;
+let realDays = 0;
+let realHours = 0;
+let realMilliseconds = 0;
+let realMinutes = 0;
+let realSeconds = 0;
+let realTime = new Date();
 let timeBLength = 180000; // 3 minutos
+let timeBOff = 0;
+let timeBOffset = 0;
+let timeCounter = 180000;
+let timelapseB = 0;
+let timelapseW = 0;
 let timeLength = 180000;
+let timeWLength = 180000; // 3 minutos
+let timeWOff = 0;
+let timeWOffset = 0;
 
 function updateCountdown() {
-   if (Move > 2 && gameover === 0) {
-      if (Turn === "W") {
-         if (timeWLength > 0) {
-            timeWLength -= 100;
-            timeLength = timeWLength;
 
-            if (timeWLength === 0) {
-               gameover = 1;
+   // get match starting time
+   if (lockRealTime === false && Move === 3) {
+      realTime = new Date();
+      realDays = (realTime.getDay() - 1) * 24 * 3600000;
+      realHours = realTime.getHours() * 3600000;
+      realMinutes = realTime.getMinutes() * 60000;
+      realSeconds = realTime.getSeconds() * 1000;
+      realMilliseconds = realTime.getMilliseconds();
+
+      realClock = realDays + realHours + realMinutes + realSeconds + realMilliseconds;
+
+      lockRealTime = true;
+
+      //console.log(realClock + "\n" + realDays + "\n" + realHours + "\n" + realMinutes + "\n" + realSeconds + "\n" + realMilliseconds);
+   }
+
+   // get realtime
+   let checkTime = new Date();
+   let checkDays = (checkTime.getDay() - 1) * 24 * 3600000;
+   if (checkDays < realDays) {
+      checkDays = realDays + (checkTime.getDay() - 1) * 24 * 3600000;
+   }
+   let checkHours = checkTime.getHours() * 3600000;
+   let checkMinutes = checkTime.getMinutes() * 60000;
+   let checkSeconds = checkTime.getSeconds() * 1000;
+   let checkMilliseconds = checkTime.getMilliseconds();
+   let checkWClock = checkDays + checkHours + checkMinutes + checkSeconds + checkMilliseconds - timeWOffset;
+   let checkBClock = checkDays + checkHours + checkMinutes + checkSeconds + checkMilliseconds - timeBOffset;
+
+   //console.log("checkWClock: " + checkWClock + "\n" + "checkBClock: " + checkBClock);
+
+   if (Move > 2 && gameover === 0) {
+
+      if (Turn === "W") {
+         if (lockW === false) {
+            timeWOffset += timeWOff;
+
+            checkWClock = checkDays + checkHours + checkMinutes + checkSeconds + checkMilliseconds - timeWOffset;
+
+            timeLength = checkWClock - realClock;
+            if (timeLength < timeWLength) {
+               timeCounter = timeWLength - timeLength;
+               if (timeCounter < 10000) {
+                  timeWOffset += 10000 - timeCounter;
+                  checkWClock = checkDays + checkHours + checkMinutes + checkSeconds + checkMilliseconds - timeWOffset;
+               }
             }
 
+            timelapseB = checkWClock;
+         }
+         lockW = true;
+         lockB = false;
+
+         timeLength = checkWClock - realClock;
+         timeBOff = checkWClock - timelapseB;
+
+         if (timeLength < timeWLength) {
+            timeCounter = timeWLength - timeLength;
+         } else {
+            timeCounter = 0;
+            gameover = 1;
+            winner = "black";
+            loserPiecesTransp();
          }
 
       } else {
-         if (timeBLength > 0) {
-            timeBLength -= 100;
-            timeLength = timeBLength;
+         if (lockB === false) {
+            timeBOffset += timeBOff;
 
-            if (timeBLength === 0) {
-               gameover = 1;
+            checkBClock = checkDays + checkHours + checkMinutes + checkSeconds + checkMilliseconds - timeBOffset;
+
+            timeLength = checkBClock - realClock;
+            if (timeLength < timeBLength) {
+               timeCounter = timeBLength - timeLength;
+               if (timeCounter < 10000) {
+                  timeBOffset += 10000 - timeCounter;
+                  checkBClock = checkDays + checkHours + checkMinutes + checkSeconds + checkMilliseconds - timeBOffset;
+               }
             }
 
+            timelapseA = checkBClock;
+         }
+         lockB = true;
+         lockW = false;
+
+         timeLength = checkBClock - realClock;
+         timeWOff = checkBClock - timelapseA;
+
+         if (timeLength < timeBLength) {
+            timeCounter = timeBLength - timeLength;
+         } else {
+            timeCounter = 0;
+            gameover = 1;
+            winner = "white";
+            loserPiecesTransp();
          }
 
       }
 
-      minutes = Math.floor(timeLength / 60000);
+      minutes = Math.floor(timeCounter / 60000);
       if (minutes === 3) {
          seconds = 0;
       } else if (minutes === 2) {
-         seconds = Math.floor((timeLength / 1000) - 120);
+         seconds = Math.floor((timeCounter / 1000) - 120);
       } else if (minutes === 1) {
-         seconds = Math.floor((timeLength / 1000) - 60);
+         seconds = Math.floor((timeCounter / 1000) - 60);
       } else if (minutes === 0) {
-         seconds = Math.floor(timeLength / 1000);
+         seconds = Math.floor(timeCounter / 1000);
 
       }
 
-      minutes = minutes < 1 ? "00" : "0" + minutes;
-      seconds = seconds < 10 ? "0" + seconds : seconds;
-      miliseconds = timeLength < 10000 ? (timeLength - (seconds * 1000)) / 100 : "";
+      minutes = minutes < 1 ? "00" : "0" + Math.floor(minutes);
+      seconds = seconds < 10 ? "0" + Math.floor(seconds) : Math.floor(seconds);
+      miliseconds = timeCounter < 10000 ? Math.floor((timeCounter - (seconds * 1000)) / 100) : "";
 
       if (Turn === "W") {
          document.getElementById("digitMinutsW").textContent = minutes;
@@ -60,6 +152,15 @@ function updateCountdown() {
       }
 
    } else if (Move === 1 && gameover === 0) {
+      lockRealTime = false;
+      timeWOffset = 0;
+      timeBOffset = 0;
+      timelapseB = 0;
+      timelapseW = 0;
+      timeWOff = 0;
+      timeBOff = 0;
+      lockW = false;
+      lockB = false;
       document.getElementById("digitMinutsW").textContent = "03";
       document.getElementById("digitSecondsW").textContent = "00";
       document.getElementById("digitMilisecondsW").textContent = "";
@@ -68,11 +169,11 @@ function updateCountdown() {
       document.getElementById("digitMilisecondsB").textContent = "";
    }
 
-   if (timeLength === 10000) {
+   if (Math.floor(timeCounter) < 10000 && Math.floor(timeCounter) > 9500) {
       soundTimeout.play();
-   } else if (timeLength === 5000) {
+   } else if (Math.floor(timeCounter) < 5000 && Math.floor(timeCounter) > 4500) {
       soundTimeout.play();
-   } else if (timeLength < 1000) {
+   } else if (Math.floor(timeCounter) < 1000) {
       soundTimeout.play();
    }
 

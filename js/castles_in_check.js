@@ -89,19 +89,6 @@ function blackC(n) {
    if (BlackCastlesInCheck.includes(n) === false) {
       BlackCastlesInCheck.push(n);
       markCastleInCheck(n);
-      //checkmate White Won
-      if (TotalBCastles === 1) {
-         RealBCheck = 1;
-         clickSquare(n);
-         LastBSquaresToGo = [];
-         LastBSquaresToGo = Array.from(SquaresToGo);
-         unClickSquare();
-         clearMarkers();
-         Again = 1;
-      } else {
-         RealBCheck = 0;
-      }
-
    }
 }
 
@@ -109,27 +96,12 @@ function whiteC(n) {
    if (WhiteCastlesInCheck.includes(n) === false) {
       WhiteCastlesInCheck.push(n);
       markCastleInCheck(n);
-      //checkmate Black Won
-      if (TotalWCastles === 1) {
-         RealWCheck = 1;
-         clickSquare(n);
-         LastWSquaresToGo = [];
-         LastWSquaresToGo = Array.from(SquaresToGo);
-         unClickSquare();
-         clearMarkers();
-         Again = 1;
-      } else {
-         RealWCheck = 0;
-      }
-
    }
 }
 
 function castlesInCheck() {
    WhiteCastlesInCheck = [];
    BlackCastlesInCheck = [];
-   DeathPathBlack = [];
-   DeathPathWhite = [];
 
    //clear castles in check marksTo
    uncheckCastles();
@@ -138,28 +110,26 @@ function castlesInCheck() {
    let i = 0;
    while (i < 64) {
       i++;
-      let marksOnBoardToRookN = [];
-      let marksOnBoardToRookE = [];
-      let marksOnBoardToRookW = [];
-      let marksOnBoardToRookS = [];
-      let marksOnBoardToBishopNW = [];
+      let marksOnBoard = [];
       let marksOnBoardToBishopNE = [];
-      let marksOnBoardToBishopSW = [];
+      let marksOnBoardToBishopNW = [];
       let marksOnBoardToBishopSE = [];
+      let marksOnBoardToBishopSW = [];
+      let marksOnBoardToRookE = [];
+      let marksOnBoardToRookN = [];
+      let marksOnBoardToRookS = [];
+      let marksOnBoardToRookW = [];
+      let marksToType = [];
+      let P = 0;
+      let pP = PiecesPosition[i - 1];
+      let Q = 0;
+      let R = 0;
       let undercx113 = null;
       let undercy113 = null;
       let xButSq = null;
-      let yButSq = null;
       let xMove = 0;
+      let yButSq = null;
       let yMove = 0;
-      let marksToType = [];
-      let marksOnBoard = [];
-      let pP = PiecesPosition[i - 1];
-      let P = 0;
-      let Q = 0;
-      let R = 0;
-      let deathLineBlack = [];
-      let deathLineWhite = [];
 
       //marks positioning
       undercx113 = document.getElementById("underMark113").getAttribute("cx");
@@ -233,16 +203,21 @@ function castlesInCheck() {
             }
          }
 
+         let sqL = parseInt(document.getElementById("BL").getAttributeNS(null, "x"));
+         let sqR = parseInt(document.getElementById("BL").getAttributeNS(null, "x")) + 480;
+         let sqT = parseInt(document.getElementById("BL").getAttributeNS(null, "y"));
+         let sqB = parseInt(document.getElementById("BL").getAttributeNS(null, "y")) + 480;
+
          let p = 0;
          while (p < marksToType.length) { //check Board limit to get only marks inside board
-            let markL = parseInt(document.getElementById("underMark" + marksToType[p]).getAttributeNS(null, "cx")) - 5;
-            let markR = parseInt(document.getElementById("underMark" + marksToType[p]).getAttributeNS(null, "cx")) + 5;
-            let markT = parseInt(document.getElementById("underMark" + marksToType[p]).getAttributeNS(null, "cy")) - 5;
-            let markB = parseInt(document.getElementById("underMark" + marksToType[p]).getAttributeNS(null, "cy")) + 5;
-            let sqL = parseInt(document.getElementById("BL").getAttributeNS(null, "x"));
-            let sqR = parseInt(document.getElementById("BL").getAttributeNS(null, "x")) + 480;
-            let sqT = parseInt(document.getElementById("BL").getAttributeNS(null, "y"));
-            let sqB = parseInt(document.getElementById("BL").getAttributeNS(null, "y")) + 480;
+
+            let uMark = "underMark" + marksToType[p];
+
+            let markL = parseInt(document.getElementById(uMark).getAttributeNS(null, "cx")) - 5;
+            let markR = parseInt(document.getElementById(uMark).getAttributeNS(null, "cx")) + 5;
+            let markT = parseInt(document.getElementById(uMark).getAttributeNS(null, "cy")) - 5;
+            let markB = parseInt(document.getElementById(uMark).getAttributeNS(null, "cy")) + 5;
+
             if (markL < sqR && markR > sqL && markT < sqB && markB > sqT) {
                marksOnBoard.push(parseInt(marksToType[p])); //get array marks to be used
                if (pP === "B" || pP === "b" || pP === "Q" || pP === "q") {
@@ -279,51 +254,45 @@ function castlesInCheck() {
          let m = 0;
          while (m < marksOnBoard.length) {
             m++;
+
+            let mMark = "underMark" + marksOnBoard[m - 1];
+            let markL = parseInt(document.getElementById(mMark).getAttributeNS(null, "cx")) - 5;
+            let markR = parseInt(document.getElementById(mMark).getAttributeNS(null, "cx")) + 5;
+            let markT = parseInt(document.getElementById(mMark).getAttributeNS(null, "cy")) - 5;
+            let markB = parseInt(document.getElementById(mMark).getAttributeNS(null, "cy")) + 5;
+
             let n = 0;
             while (n < 64) {
                n++;
                let pPn = PiecesPosition[n - 1];
-               let markL = parseInt(document.getElementById("underMark" + marksOnBoard[m - 1]).getAttributeNS(null, "cx")) - 5;
-               let markR = parseInt(document.getElementById("underMark" + marksOnBoard[m - 1]).getAttributeNS(null, "cx")) + 5;
-               let markT = parseInt(document.getElementById("underMark" + marksOnBoard[m - 1]).getAttributeNS(null, "cy")) - 5;
-               let markB = parseInt(document.getElementById("underMark" + marksOnBoard[m - 1]).getAttributeNS(null, "cy")) + 5;
-               let sqL = parseInt(document.getElementById("butSquare" + n).getAttributeNS(null, "x"));
-               let sqR = parseInt(document.getElementById("butSquare" + n).getAttributeNS(null, "x")) + 60;
-               let sqT = parseInt(document.getElementById("butSquare" + n).getAttributeNS(null, "y"));
-               let sqB = parseInt(document.getElementById("butSquare" + n).getAttributeNS(null, "y")) + 60;
+
+               let nMark = "butSquare" + n;
+               let sqL = parseInt(document.getElementById(nMark).getAttributeNS(null, "x"));
+               let sqR = parseInt(document.getElementById(nMark).getAttributeNS(null, "x")) + 60;
+               let sqT = parseInt(document.getElementById(nMark).getAttributeNS(null, "y"));
+               let sqB = parseInt(document.getElementById(nMark).getAttributeNS(null, "y")) + 60;
+
                if (markL < sqR && markR > sqL && markT < sqB && markB > sqT) { //check collisions marks/squares
                   if (pP === "C") { //C vs c
                      if (pPn === "c" && n !== i - 16) {
                         if (n === i - 7 || n === i - 9 || WhiteCastlesInCheck.includes(i) || BlackCastlesInCheck.includes(n) || TotalWCastles === 1 || TotalBCastles === 1) { //check exceptions to special Castle's not in check diagonal moves
                            blackC(n);
-                           if (DeathPathBlack.includes(i) === false) {
-                              DeathPathBlack.push(i);
-                           }
                         }
                      }
                   } else if (pP === "c") { //c vs C
                      if (pPn === "C" && n !== i + 16) {
                         if (n === i + 7 || n === i + 9 || WhiteCastlesInCheck.includes(n) || BlackCastlesInCheck.includes(i) || TotalWCastles === 1 || TotalBCastles === 1) { //check exceptions to special Castle's not in check diagonal moves
                            whiteC(n);
-                           if (DeathPathWhite.includes(i) === false) {
-                              DeathPathWhite.push(i);
-                           }
                         }
                      }
                   } else if (tripleCheck === 0) {
                      if (pP === "P") { //P
                         if ((n === i - 9 && pPn === "c") || (n === i - 7 && pPn === "c")) { //P vs c
                            blackC(n);
-                           if (DeathPathBlack.includes(i) === false) {
-                              DeathPathBlack.push(i);
-                           }
                         }
                      } else if (pP === "p") { //p
                         if ((n === i + 9 && pPn === "C") || (n === i + 7 && pPn === "C")) { //p vs C
                            whiteC(n);
-                           if (DeathPathWhite.includes(i) === false) {
-                              DeathPathWhite.push(i);
-                           }
                         }
                      } else if (pP === "B" || pP === "b") { //B
                         if (marksOnBoardToBishopNW.includes(marksOnBoard[m - 1])) { //NW
@@ -334,8 +303,6 @@ function castlesInCheck() {
                               s++;
                            }
                            let r = 0;
-                           deathLineWhite = [];
-                           deathLineBlack = [];
                            while (r < lineSize) {
                               r++;
                               P = i - (1 + r * 9);
@@ -344,53 +311,14 @@ function castlesInCheck() {
 
                               if (PiecesPosition[P] !== "O" && r < lineSize) { //following line
                                  break;
-                              } else {
-                                 if (pP === "B" && deathLineBlack.includes(Q) === false && PiecesPosition[P] === "O") {
-                                    deathLineBlack.push(Q); //death line candidate
-                                 }
-                                 if (pP === "b" && deathLineWhite.includes(Q) === false && PiecesPosition[P] === "O") {
-                                    deathLineWhite.push(Q); //death line candidate
-                                 }
                               }
 
                               if (r === lineSize) {
                                  if (PiecesPosition[P] === "C" || PiecesPosition[P] === "c") {
                                     if (pP === pP.toUpperCase() && PiecesPosition[P] === PiecesPosition[P].toLowerCase()) {
                                        blackC(n);
-
-                                       //catch death line black
-                                       if (BlackCastlesInCheck.includes(R) === true) {
-                                          if (DeathPathBlack.includes(i) === false) {
-                                             DeathPathBlack.push(i);
-                                          }
-                                          let a = 0;
-                                          while (a < deathLineBlack.length) {
-                                             if (DeathPathBlack.includes(deathLineBlack[a]) === false) {
-                                                DeathPathBlack.push(deathLineBlack[a]);
-                                             }
-                                             a++;
-                                          }
-                                          console.log(DeathPathBlack);
-                                       }
-
                                     } else if (pP === pP.toLowerCase() && PiecesPosition[P] === PiecesPosition[P].toUpperCase()) {
                                        whiteC(n);
-
-                                       //catch death line white
-                                       if (WhiteCastlesInCheck.includes(R) === true) {
-                                          if (DeathPathWhite.includes(i) === false) {
-                                             DeathPathWhite.push(i);
-                                          }
-                                          let a = 0;
-                                          while (a < deathLineWhite.length) {
-                                             if (DeathPathWhite.includes(deathLineWhite[a]) === false) {
-                                                DeathPathWhite.push(deathLineWhite[a]);
-                                             }
-                                             a++;
-                                          }
-                                          console.log(DeathPathWhite);
-                                       }
-
                                     }
                                  }
                               }
@@ -403,8 +331,6 @@ function castlesInCheck() {
                               s++;
                            }
                            let r = 0;
-                           deathLineWhite = [];
-                           deathLineBlack = [];
                            while (r < lineSize) {
                               r++;
                               P = i - (1 + r * 7);
@@ -413,53 +339,14 @@ function castlesInCheck() {
 
                               if (PiecesPosition[P] !== "O" && r < lineSize) { //following line
                                  break;
-                              } else {
-                                 if (pP === "B" && deathLineBlack.includes(Q) === false && PiecesPosition[P] === "O") {
-                                    deathLineBlack.push(Q); //death line candidate
-                                 }
-                                 if (pP === "b" && deathLineWhite.includes(Q) === false && PiecesPosition[P] === "O") {
-                                    deathLineWhite.push(Q); //death line candidate
-                                 }
                               }
 
                               if (r === lineSize) {
                                  if (PiecesPosition[P] === "C" || PiecesPosition[P] === "c") {
                                     if (pP === pP.toUpperCase() && PiecesPosition[P] === PiecesPosition[P].toLowerCase()) {
                                        blackC(n);
-
-                                       //catch death line black
-                                       if (BlackCastlesInCheck.includes(R) === true) {
-                                          if (DeathPathBlack.includes(i) === false) {
-                                             DeathPathBlack.push(i);
-                                          }
-                                          let a = 0;
-                                          while (a < deathLineBlack.length) {
-                                             if (DeathPathBlack.includes(deathLineBlack[a]) === false) {
-                                                DeathPathBlack.push(deathLineBlack[a]);
-                                             }
-                                             a++;
-                                          }
-                                          console.log(DeathPathBlack);
-                                       }
-
                                     } else if (pP === pP.toLowerCase() && PiecesPosition[P] === PiecesPosition[P].toUpperCase()) {
                                        whiteC(n);
-
-                                       //catch death line white
-                                       if (WhiteCastlesInCheck.includes(R) === true) {
-                                          if (DeathPathWhite.includes(i) === false) {
-                                             DeathPathWhite.push(i);
-                                          }
-                                          let a = 0;
-                                          while (a < deathLineWhite.length) {
-                                             if (DeathPathWhite.includes(deathLineWhite[a]) === false) {
-                                                DeathPathWhite.push(deathLineWhite[a]);
-                                             }
-                                             a++;
-                                          }
-                                          console.log(DeathPathWhite);
-                                       }
-
                                     }
                                  }
                               }
@@ -472,8 +359,6 @@ function castlesInCheck() {
                               s++;
                            }
                            let r = 0;
-                           deathLineWhite = [];
-                           deathLineBlack = [];
                            while (r < lineSize) {
                               r++;
                               P = i + (r * 7 - 1);
@@ -482,53 +367,14 @@ function castlesInCheck() {
 
                               if (PiecesPosition[P] !== "O" && r < lineSize) { //following line
                                  break;
-                              } else {
-                                 if (pP === "B" && deathLineBlack.includes(Q) === false && PiecesPosition[P] === "O") {
-                                    deathLineBlack.push(Q); //death line candidate
-                                 }
-                                 if (pP === "b" && deathLineWhite.includes(Q) === false && PiecesPosition[P] === "O") {
-                                    deathLineWhite.push(Q); //death line candidate
-                                 }
                               }
 
                               if (r === lineSize) {
                                  if (PiecesPosition[P] === "C" || PiecesPosition[P] === "c") {
                                     if (pP === pP.toUpperCase() && PiecesPosition[P] === PiecesPosition[P].toLowerCase()) {
                                        blackC(n);
-
-                                       //catch death line black
-                                       if (BlackCastlesInCheck.includes(R) === true) {
-                                          if (DeathPathBlack.includes(i) === false) {
-                                             DeathPathBlack.push(i);
-                                          }
-                                          let a = 0;
-                                          while (a < deathLineBlack.length) {
-                                             if (DeathPathBlack.includes(deathLineBlack[a]) === false) {
-                                                DeathPathBlack.push(deathLineBlack[a]);
-                                             }
-                                             a++;
-                                          }
-                                          console.log(DeathPathBlack);
-                                       }
-
                                     } else if (pP === pP.toLowerCase() && PiecesPosition[P] === PiecesPosition[P].toUpperCase()) {
                                        whiteC(n);
-
-                                       //catch death line white
-                                       if (WhiteCastlesInCheck.includes(R) === true) {
-                                          if (DeathPathWhite.includes(i) === false) {
-                                             DeathPathWhite.push(i);
-                                          }
-                                          let a = 0;
-                                          while (a < deathLineWhite.length) {
-                                             if (DeathPathWhite.includes(deathLineWhite[a]) === false) {
-                                                DeathPathWhite.push(deathLineWhite[a]);
-                                             }
-                                             a++;
-                                          }
-                                          console.log(DeathPathWhite);
-                                       }
-
                                     }
                                  }
                               }
@@ -541,8 +387,6 @@ function castlesInCheck() {
                               s++;
                            }
                            let r = 0;
-                           deathLineWhite = [];
-                           deathLineBlack = [];
                            while (r < lineSize) {
                               r++;
                               P = i + (r * 9 - 1);
@@ -551,53 +395,14 @@ function castlesInCheck() {
 
                               if (PiecesPosition[P] !== "O" && r < lineSize) { //following line
                                  break;
-                              } else {
-                                 if (pP === "B" && deathLineBlack.includes(Q) === false && PiecesPosition[P] === "O") {
-                                    deathLineBlack.push(Q); //death line candidate
-                                 }
-                                 if (pP === "b" && deathLineWhite.includes(Q) === false && PiecesPosition[P] === "O") {
-                                    deathLineWhite.push(Q); //death line candidate
-                                 }
                               }
 
                               if (r === lineSize) {
                                  if (PiecesPosition[P] === "C" || PiecesPosition[P] === "c") {
                                     if (pP === pP.toUpperCase() && PiecesPosition[P] === PiecesPosition[P].toLowerCase()) {
                                        blackC(n);
-
-                                       //catch death line black
-                                       if (BlackCastlesInCheck.includes(R) === true) {
-                                          if (DeathPathBlack.includes(i) === false) {
-                                             DeathPathBlack.push(i);
-                                          }
-                                          let a = 0;
-                                          while (a < deathLineBlack.length) {
-                                             if (DeathPathBlack.includes(deathLineBlack[a]) === false) {
-                                                DeathPathBlack.push(deathLineBlack[a]);
-                                             }
-                                             a++;
-                                          }
-                                          console.log(DeathPathBlack);
-                                       }
-
                                     } else if (pP === pP.toLowerCase() && PiecesPosition[P] === PiecesPosition[P].toUpperCase()) {
                                        whiteC(n);
-
-                                       //catch death line white
-                                       if (WhiteCastlesInCheck.includes(R) === true) {
-                                          if (DeathPathWhite.includes(i) === false) {
-                                             DeathPathWhite.push(i);
-                                          }
-                                          let a = 0;
-                                          while (a < deathLineWhite.length) {
-                                             if (DeathPathWhite.includes(deathLineWhite[a]) === false) {
-                                                DeathPathWhite.push(deathLineWhite[a]);
-                                             }
-                                             a++;
-                                          }
-                                          console.log(DeathPathWhite);
-                                       }
-
                                     }
                                  }
                               }
@@ -612,8 +417,7 @@ function castlesInCheck() {
                               s++;
                            }
                            let r = 0;
-                           deathLineWhite = [];
-                           deathLineBlack = [];
+
                            while (r < lineSize) {
                               r++;
                               P = i - (1 + r * 8);
@@ -622,53 +426,14 @@ function castlesInCheck() {
 
                               if (PiecesPosition[P] !== "O" && r < lineSize) { //following line
                                  break;
-                              } else {
-                                 if (pP === "R" && deathLineBlack.includes(Q) === false && PiecesPosition[P] === "O") {
-                                    deathLineBlack.push(Q); //death line candidate
-                                 }
-                                 if (pP === "r" && deathLineWhite.includes(Q) === false && PiecesPosition[P] === "O") {
-                                    deathLineWhite.push(Q); //death line candidate
-                                 }
                               }
 
                               if (r === lineSize) {
                                  if (PiecesPosition[P] === "C" || PiecesPosition[P] === "c") {
                                     if (pP === pP.toUpperCase() && PiecesPosition[P] === PiecesPosition[P].toLowerCase()) {
                                        blackC(n);
-
-                                       //catch death line black
-                                       if (BlackCastlesInCheck.includes(R) === true) {
-                                          if (DeathPathBlack.includes(i) === false) {
-                                             DeathPathBlack.push(i);
-                                          }
-                                          let a = 0;
-                                          while (a < deathLineBlack.length) {
-                                             if (DeathPathBlack.includes(deathLineBlack[a]) === false) {
-                                                DeathPathBlack.push(deathLineBlack[a]);
-                                             }
-                                             a++;
-                                          }
-                                          console.log(DeathPathBlack);
-                                       }
-
                                     } else if (pP === pP.toLowerCase() && PiecesPosition[P] === PiecesPosition[P].toUpperCase()) {
                                        whiteC(n);
-
-                                       //catch death line white
-                                       if (WhiteCastlesInCheck.includes(R) === true) {
-                                          if (DeathPathWhite.includes(i) === false) {
-                                             DeathPathWhite.push(i);
-                                          }
-                                          let a = 0;
-                                          while (a < deathLineWhite.length) {
-                                             if (DeathPathWhite.includes(deathLineWhite[a]) === false) {
-                                                DeathPathWhite.push(deathLineWhite[a]);
-                                             }
-                                             a++;
-                                          }
-                                          console.log(DeathPathWhite);
-                                       }
-
                                     }
                                  }
                               }
@@ -681,8 +446,7 @@ function castlesInCheck() {
                               s++;
                            }
                            let r = 0;
-                           deathLineWhite = [];
-                           deathLineBlack = [];
+
                            while (r < lineSize) {
                               r++;
                               P = i - (1 + r);
@@ -691,53 +455,14 @@ function castlesInCheck() {
 
                               if (PiecesPosition[P] !== "O" && r < lineSize) { //following line
                                  break;
-                              } else {
-                                 if (pP === "R" && deathLineBlack.includes(Q) === false && PiecesPosition[P] === "O") {
-                                    deathLineBlack.push(Q); //death line candidate
-                                 }
-                                 if (pP === "r" && deathLineWhite.includes(Q) === false && PiecesPosition[P] === "O") {
-                                    deathLineWhite.push(Q); //death line candidate
-                                 }
                               }
 
                               if (r === lineSize) {
                                  if (PiecesPosition[P] === "C" || PiecesPosition[P] === "c") {
                                     if (pP === pP.toUpperCase() && PiecesPosition[P] === PiecesPosition[P].toLowerCase()) {
                                        blackC(n);
-
-                                       //catch death line black
-                                       if (BlackCastlesInCheck.includes(R) === true) {
-                                          if (DeathPathBlack.includes(i) === false) {
-                                             DeathPathBlack.push(i);
-                                          }
-                                          let a = 0;
-                                          while (a < deathLineBlack.length) {
-                                             if (DeathPathBlack.includes(deathLineBlack[a]) === false) {
-                                                DeathPathBlack.push(deathLineBlack[a]);
-                                             }
-                                             a++;
-                                          }
-                                          console.log(DeathPathBlack);
-                                       }
-
                                     } else if (pP === pP.toLowerCase() && PiecesPosition[P] === PiecesPosition[P].toUpperCase()) {
                                        whiteC(n);
-
-                                       //catch death line white
-                                       if (WhiteCastlesInCheck.includes(R) === true) {
-                                          if (DeathPathWhite.includes(i) === false) {
-                                             DeathPathWhite.push(i);
-                                          }
-                                          let a = 0;
-                                          while (a < deathLineWhite.length) {
-                                             if (DeathPathWhite.includes(deathLineWhite[a]) === false) {
-                                                DeathPathWhite.push(deathLineWhite[a]);
-                                             }
-                                             a++;
-                                          }
-                                          console.log(DeathPathWhite);
-                                       }
-
                                     }
                                  }
                               }
@@ -750,8 +475,6 @@ function castlesInCheck() {
                               s++;
                            }
                            let r = 0;
-                           deathLineWhite = [];
-                           deathLineBlack = [];
                            while (r < lineSize) {
                               r++;
                               P = i + (r - 1);
@@ -760,53 +483,14 @@ function castlesInCheck() {
 
                               if (PiecesPosition[P] !== "O" && r < lineSize) { //following line
                                  break;
-                              } else {
-                                 if (pP === "R" && deathLineBlack.includes(Q) === false && PiecesPosition[P] === "O") {
-                                    deathLineBlack.push(Q); //death line candidate
-                                 }
-                                 if (pP === "r" && deathLineWhite.includes(Q) === false && PiecesPosition[P] === "O") {
-                                    deathLineWhite.push(Q); //death line candidate
-                                 }
                               }
 
                               if (r === lineSize) {
                                  if (PiecesPosition[P] === "C" || PiecesPosition[P] === "c") {
                                     if (pP === pP.toUpperCase() && PiecesPosition[P] === PiecesPosition[P].toLowerCase()) {
                                        blackC(n);
-
-                                       //catch death line black
-                                       if (BlackCastlesInCheck.includes(R) === true) {
-                                          if (DeathPathBlack.includes(i) === false) {
-                                             DeathPathBlack.push(i);
-                                          }
-                                          let a = 0;
-                                          while (a < deathLineBlack.length) {
-                                             if (DeathPathBlack.includes(deathLineBlack[a]) === false) {
-                                                DeathPathBlack.push(deathLineBlack[a]);
-                                             }
-                                             a++;
-                                          }
-                                          console.log(DeathPathBlack);
-                                       }
-
                                     } else if (pP === pP.toLowerCase() && PiecesPosition[P] === PiecesPosition[P].toUpperCase()) {
                                        whiteC(n);
-
-                                       //catch death line white
-                                       if (WhiteCastlesInCheck.includes(R) === true) {
-                                          if (DeathPathWhite.includes(i) === false) {
-                                             DeathPathWhite.push(i);
-                                          }
-                                          let a = 0;
-                                          while (a < deathLineWhite.length) {
-                                             if (DeathPathWhite.includes(deathLineWhite[a]) === false) {
-                                                DeathPathWhite.push(deathLineWhite[a]);
-                                             }
-                                             a++;
-                                          }
-                                          console.log(DeathPathWhite);
-                                       }
-
                                     }
                                  }
                               }
@@ -819,8 +503,6 @@ function castlesInCheck() {
                               s++;
                            }
                            let r = 0;
-                           deathLineWhite = [];
-                           deathLineBlack = [];
                            while (r < lineSize) {
                               r++;
                               P = i + (r * 8 - 1);
@@ -829,53 +511,14 @@ function castlesInCheck() {
 
                               if (PiecesPosition[P] !== "O" && r < lineSize) { //following line
                                  break;
-                              } else {
-                                 if (pP === "R" && deathLineBlack.includes(Q) === false && PiecesPosition[P] === "O") {
-                                    deathLineBlack.push(Q); //death line candidate
-                                 }
-                                 if (pP === "r" && deathLineWhite.includes(Q) === false && PiecesPosition[P] === "O") {
-                                    deathLineWhite.push(Q); //death line candidate
-                                 }
                               }
 
                               if (r === lineSize) {
                                  if (PiecesPosition[P] === "C" || PiecesPosition[P] === "c") {
                                     if (pP === pP.toUpperCase() && PiecesPosition[P] === PiecesPosition[P].toLowerCase()) {
                                        blackC(n);
-
-                                       //catch death line black
-                                       if (BlackCastlesInCheck.includes(R) === true) {
-                                          if (DeathPathBlack.includes(i) === false) {
-                                             DeathPathBlack.push(i);
-                                          }
-                                          let a = 0;
-                                          while (a < deathLineBlack.length) {
-                                             if (DeathPathBlack.includes(deathLineBlack[a]) === false) {
-                                                DeathPathBlack.push(deathLineBlack[a]);
-                                             }
-                                             a++;
-                                          }
-                                          console.log(DeathPathBlack);
-                                       }
-
                                     } else if (pP === pP.toLowerCase() && PiecesPosition[P] === PiecesPosition[P].toUpperCase()) {
                                        whiteC(n);
-
-                                       //catch death line white
-                                       if (WhiteCastlesInCheck.includes(R) === true) {
-                                          if (DeathPathWhite.includes(i) === false) {
-                                             DeathPathWhite.push(i);
-                                          }
-                                          let a = 0;
-                                          while (a < deathLineWhite.length) {
-                                             if (DeathPathWhite.includes(deathLineWhite[a]) === false) {
-                                                DeathPathWhite.push(deathLineWhite[a]);
-                                             }
-                                             a++;
-                                          }
-                                          console.log(DeathPathWhite);
-                                       }
-
                                     }
                                  }
                               }
@@ -891,8 +534,6 @@ function castlesInCheck() {
                               s++;
                            }
                            let r = 0;
-                           deathLineWhite = [];
-                           deathLineBlack = [];
                            while (r < lineSize) {
                               r++;
                               P = i - (1 + r * 9);
@@ -901,53 +542,14 @@ function castlesInCheck() {
 
                               if (PiecesPosition[P] !== "O" && r < lineSize) { //following line
                                  break;
-                              } else {
-                                 if (pP === "Q" && deathLineBlack.includes(Q) === false && PiecesPosition[P] === "O") {
-                                    deathLineBlack.push(Q); //death line candidate
-                                 }
-                                 if (pP === "q" && deathLineWhite.includes(Q) === false && PiecesPosition[P] === "O") {
-                                    deathLineWhite.push(Q); //death line candidate
-                                 }
                               }
 
                               if (r === lineSize) {
                                  if (PiecesPosition[P] === "C" || PiecesPosition[P] === "c") {
                                     if (pP === pP.toUpperCase() && PiecesPosition[P] === PiecesPosition[P].toLowerCase()) {
                                        blackC(n);
-
-                                       //catch death line black
-                                       if (BlackCastlesInCheck.includes(R) === true) {
-                                          if (DeathPathBlack.includes(i) === false) {
-                                             DeathPathBlack.push(i);
-                                          }
-                                          let a = 0;
-                                          while (a < deathLineBlack.length) {
-                                             if (DeathPathBlack.includes(deathLineBlack[a]) === false) {
-                                                DeathPathBlack.push(deathLineBlack[a]);
-                                             }
-                                             a++;
-                                          }
-                                          console.log(DeathPathBlack);
-                                       }
-
                                     } else if (pP === pP.toLowerCase() && PiecesPosition[P] === PiecesPosition[P].toUpperCase()) {
                                        whiteC(n);
-
-                                       //catch death line white
-                                       if (WhiteCastlesInCheck.includes(R) === true) {
-                                          if (DeathPathWhite.includes(i) === false) {
-                                             DeathPathWhite.push(i);
-                                          }
-                                          let a = 0;
-                                          while (a < deathLineWhite.length) {
-                                             if (DeathPathWhite.includes(deathLineWhite[a]) === false) {
-                                                DeathPathWhite.push(deathLineWhite[a]);
-                                             }
-                                             a++;
-                                          }
-                                          console.log(DeathPathWhite);
-                                       }
-
                                     }
                                  }
                               }
@@ -960,8 +562,6 @@ function castlesInCheck() {
                               s++;
                            }
                            let r = 0;
-                           deathLineWhite = [];
-                           deathLineBlack = [];
                            while (r < lineSize) {
                               r++;
                               P = i - (1 + r * 7);
@@ -970,53 +570,14 @@ function castlesInCheck() {
 
                               if (PiecesPosition[P] !== "O" && r < lineSize) { //following line
                                  break;
-                              } else {
-                                 if (pP === "Q" && deathLineBlack.includes(Q) === false && PiecesPosition[P] === "O") {
-                                    deathLineBlack.push(Q); //death line candidate
-                                 }
-                                 if (pP === "q" && deathLineWhite.includes(Q) === false && PiecesPosition[P] === "O") {
-                                    deathLineWhite.push(Q); //death line candidate
-                                 }
                               }
 
                               if (r === lineSize) {
                                  if (PiecesPosition[P] === "C" || PiecesPosition[P] === "c") {
                                     if (pP === pP.toUpperCase() && PiecesPosition[P] === PiecesPosition[P].toLowerCase()) {
                                        blackC(n);
-
-                                       //catch death line black
-                                       if (BlackCastlesInCheck.includes(R) === true) {
-                                          if (DeathPathBlack.includes(i) === false) {
-                                             DeathPathBlack.push(i);
-                                          }
-                                          let a = 0;
-                                          while (a < deathLineBlack.length) {
-                                             if (DeathPathBlack.includes(deathLineBlack[a]) === false) {
-                                                DeathPathBlack.push(deathLineBlack[a]);
-                                             }
-                                             a++;
-                                          }
-                                          console.log(DeathPathBlack);
-                                       }
-
                                     } else if (pP === pP.toLowerCase() && PiecesPosition[P] === PiecesPosition[P].toUpperCase()) {
                                        whiteC(n);
-
-                                       //catch death line white
-                                       if (WhiteCastlesInCheck.includes(R) === true) {
-                                          if (DeathPathWhite.includes(i) === false) {
-                                             DeathPathWhite.push(i);
-                                          }
-                                          let a = 0;
-                                          while (a < deathLineWhite.length) {
-                                             if (DeathPathWhite.includes(deathLineWhite[a]) === false) {
-                                                DeathPathWhite.push(deathLineWhite[a]);
-                                             }
-                                             a++;
-                                          }
-                                          console.log(DeathPathWhite);
-                                       }
-
                                     }
                                  }
                               }
@@ -1029,8 +590,6 @@ function castlesInCheck() {
                               s++;
                            }
                            let r = 0;
-                           deathLineWhite = [];
-                           deathLineBlack = [];
                            while (r < lineSize) {
                               r++;
                               P = i + (r * 7 - 1);
@@ -1039,53 +598,14 @@ function castlesInCheck() {
 
                               if (PiecesPosition[P] !== "O" && r < lineSize) { //following line
                                  break;
-                              } else {
-                                 if (pP === "Q" && deathLineBlack.includes(Q) === false && PiecesPosition[P] === "O") {
-                                    deathLineBlack.push(Q); //death line candidate
-                                 }
-                                 if (pP === "q" && deathLineWhite.includes(Q) === false && PiecesPosition[P] === "O") {
-                                    deathLineWhite.push(Q); //death line candidate
-                                 }
                               }
 
                               if (r === lineSize) {
                                  if (PiecesPosition[P] === "C" || PiecesPosition[P] === "c") {
                                     if (pP === pP.toUpperCase() && PiecesPosition[P] === PiecesPosition[P].toLowerCase()) {
                                        blackC(n);
-
-                                       //catch death line black
-                                       if (BlackCastlesInCheck.includes(R) === true) {
-                                          if (DeathPathBlack.includes(i) === false) {
-                                             DeathPathBlack.push(i);
-                                          }
-                                          let a = 0;
-                                          while (a < deathLineBlack.length) {
-                                             if (DeathPathBlack.includes(deathLineBlack[a]) === false) {
-                                                DeathPathBlack.push(deathLineBlack[a]);
-                                             }
-                                             a++;
-                                          }
-                                          console.log(DeathPathBlack);
-                                       }
-
                                     } else if (pP === pP.toLowerCase() && PiecesPosition[P] === PiecesPosition[P].toUpperCase()) {
                                        whiteC(n);
-
-                                       //catch death line white
-                                       if (WhiteCastlesInCheck.includes(R) === true) {
-                                          if (DeathPathWhite.includes(i) === false) {
-                                             DeathPathWhite.push(i);
-                                          }
-                                          let a = 0;
-                                          while (a < deathLineWhite.length) {
-                                             if (DeathPathWhite.includes(deathLineWhite[a]) === false) {
-                                                DeathPathWhite.push(deathLineWhite[a]);
-                                             }
-                                             a++;
-                                          }
-                                          console.log(DeathPathWhite);
-                                       }
-
                                     }
                                  }
                               }
@@ -1098,8 +618,7 @@ function castlesInCheck() {
                               s++;
                            }
                            let r = 0;
-                           deathLineWhite = [];
-                           deathLineBlack = [];
+
                            while (r < lineSize) {
                               r++;
                               P = i + (r * 9 - 1);
@@ -1108,53 +627,14 @@ function castlesInCheck() {
 
                               if (PiecesPosition[P] !== "O" && r < lineSize) { //following line
                                  break;
-                              } else {
-                                 if (pP === "Q" && deathLineBlack.includes(Q) === false && PiecesPosition[P] === "O") {
-                                    deathLineBlack.push(Q); //death line candidate
-                                 }
-                                 if (pP === "q" && deathLineWhite.includes(Q) === false && PiecesPosition[P] === "O") {
-                                    deathLineWhite.push(Q); //death line candidate
-                                 }
                               }
 
                               if (r === lineSize) {
                                  if (PiecesPosition[P] === "C" || PiecesPosition[P] === "c") {
                                     if (pP === pP.toUpperCase() && PiecesPosition[P] === PiecesPosition[P].toLowerCase()) {
                                        blackC(n);
-
-                                       //catch death line black
-                                       if (BlackCastlesInCheck.includes(R) === true) {
-                                          if (DeathPathBlack.includes(i) === false) {
-                                             DeathPathBlack.push(i);
-                                          }
-                                          let a = 0;
-                                          while (a < deathLineBlack.length) {
-                                             if (DeathPathBlack.includes(deathLineBlack[a]) === false) {
-                                                DeathPathBlack.push(deathLineBlack[a]);
-                                             }
-                                             a++;
-                                          }
-                                          console.log(DeathPathBlack);
-                                       }
-
                                     } else if (pP === pP.toLowerCase() && PiecesPosition[P] === PiecesPosition[P].toUpperCase()) {
                                        whiteC(n);
-
-                                       //catch death line white
-                                       if (WhiteCastlesInCheck.includes(R) === true) {
-                                          if (DeathPathWhite.includes(i) === false) {
-                                             DeathPathWhite.push(i);
-                                          }
-                                          let a = 0;
-                                          while (a < deathLineWhite.length) {
-                                             if (DeathPathWhite.includes(deathLineWhite[a]) === false) {
-                                                DeathPathWhite.push(deathLineWhite[a]);
-                                             }
-                                             a++;
-                                          }
-                                          console.log(DeathPathWhite);
-                                       }
-
                                     }
                                  }
                               }
@@ -1168,8 +648,7 @@ function castlesInCheck() {
                               s++;
                            }
                            let r = 0;
-                           deathLineWhite = [];
-                           deathLineBlack = [];
+
                            while (r < lineSize) {
                               r++;
                               P = i - (1 + r * 8);
@@ -1178,53 +657,14 @@ function castlesInCheck() {
 
                               if (PiecesPosition[P] !== "O" && r < lineSize) { //following line
                                  break;
-                              } else {
-                                 if (pP === "Q" && deathLineBlack.includes(Q) === false && PiecesPosition[P] === "O") {
-                                    deathLineBlack.push(Q); //death line candidate
-                                 }
-                                 if (pP === "q" && deathLineWhite.includes(Q) === false && PiecesPosition[P] === "O") {
-                                    deathLineWhite.push(Q); //death line candidate
-                                 }
                               }
 
                               if (r === lineSize) {
                                  if (PiecesPosition[P] === "C" || PiecesPosition[P] === "c") {
                                     if (pP === pP.toUpperCase() && PiecesPosition[P] === PiecesPosition[P].toLowerCase()) {
                                        blackC(n);
-
-                                       //catch death line black
-                                       if (BlackCastlesInCheck.includes(R) === true) {
-                                          if (DeathPathBlack.includes(i) === false) {
-                                             DeathPathBlack.push(i);
-                                          }
-                                          let a = 0;
-                                          while (a < deathLineBlack.length) {
-                                             if (DeathPathBlack.includes(deathLineBlack[a]) === false) {
-                                                DeathPathBlack.push(deathLineBlack[a]);
-                                             }
-                                             a++;
-                                          }
-                                          console.log(DeathPathBlack);
-                                       }
-
                                     } else if (pP === pP.toLowerCase() && PiecesPosition[P] === PiecesPosition[P].toUpperCase()) {
                                        whiteC(n);
-
-                                       //catch death line white
-                                       if (WhiteCastlesInCheck.includes(R) === true) {
-                                          if (DeathPathWhite.includes(i) === false) {
-                                             DeathPathWhite.push(i);
-                                          }
-                                          let a = 0;
-                                          while (a < deathLineWhite.length) {
-                                             if (DeathPathWhite.includes(deathLineWhite[a]) === false) {
-                                                DeathPathWhite.push(deathLineWhite[a]);
-                                             }
-                                             a++;
-                                          }
-                                          console.log(DeathPathWhite);
-                                       }
-
                                     }
                                  }
                               }
@@ -1237,8 +677,6 @@ function castlesInCheck() {
                               s++;
                            }
                            let r = 0;
-                           deathLineWhite = [];
-                           deathLineBlack = [];
                            while (r < lineSize) {
                               r++;
                               P = i - (1 + r);
@@ -1247,53 +685,14 @@ function castlesInCheck() {
 
                               if (PiecesPosition[P] !== "O" && r < lineSize) { //following line
                                  break;
-                              } else {
-                                 if (pP === "Q" && deathLineBlack.includes(Q) === false && PiecesPosition[P] === "O") {
-                                    deathLineBlack.push(Q); //death line candidate
-                                 }
-                                 if (pP === "q" && deathLineWhite.includes(Q) === false && PiecesPosition[P] === "O") {
-                                    deathLineWhite.push(Q); //death line candidate
-                                 }
                               }
 
                               if (r === lineSize) {
                                  if (PiecesPosition[P] === "C" || PiecesPosition[P] === "c") {
                                     if (pP === pP.toUpperCase() && PiecesPosition[P] === PiecesPosition[P].toLowerCase()) {
                                        blackC(n);
-
-                                       //catch death line black
-                                       if (BlackCastlesInCheck.includes(R) === true) {
-                                          if (DeathPathBlack.includes(i) === false) {
-                                             DeathPathBlack.push(i);
-                                          }
-                                          let a = 0;
-                                          while (a < deathLineBlack.length) {
-                                             if (DeathPathBlack.includes(deathLineBlack[a]) === false) {
-                                                DeathPathBlack.push(deathLineBlack[a]);
-                                             }
-                                             a++;
-                                          }
-                                          console.log(DeathPathBlack);
-                                       }
-
                                     } else if (pP === pP.toLowerCase() && PiecesPosition[P] === PiecesPosition[P].toUpperCase()) {
                                        whiteC(n);
-
-                                       //catch death line white
-                                       if (WhiteCastlesInCheck.includes(R) === true) {
-                                          if (DeathPathWhite.includes(i) === false) {
-                                             DeathPathWhite.push(i);
-                                          }
-                                          let a = 0;
-                                          while (a < deathLineWhite.length) {
-                                             if (DeathPathWhite.includes(deathLineWhite[a]) === false) {
-                                                DeathPathWhite.push(deathLineWhite[a]);
-                                             }
-                                             a++;
-                                          }
-                                          console.log(DeathPathWhite);
-                                       }
-
                                     }
                                  }
                               }
@@ -1306,8 +705,6 @@ function castlesInCheck() {
                               s++;
                            }
                            let r = 0;
-                           deathLineWhite = [];
-                           deathLineBlack = [];
                            while (r < lineSize) {
                               r++;
                               P = i + (r - 1);
@@ -1316,53 +713,14 @@ function castlesInCheck() {
 
                               if (PiecesPosition[P] !== "O" && r < lineSize) { //following line
                                  break;
-                              } else {
-                                 if (pP === "Q" && deathLineBlack.includes(Q) === false && PiecesPosition[P] === "O") {
-                                    deathLineBlack.push(Q); //death line candidate
-                                 }
-                                 if (pP === "q" && deathLineWhite.includes(Q) === false && PiecesPosition[P] === "O") {
-                                    deathLineWhite.push(Q); //death line candidate
-                                 }
                               }
 
                               if (r === lineSize) {
                                  if (PiecesPosition[P] === "C" || PiecesPosition[P] === "c") {
                                     if (pP === pP.toUpperCase() && PiecesPosition[P] === PiecesPosition[P].toLowerCase()) {
                                        blackC(n);
-
-                                       //catch death line black
-                                       if (BlackCastlesInCheck.includes(R) === true) {
-                                          if (DeathPathBlack.includes(i) === false) {
-                                             DeathPathBlack.push(i);
-                                          }
-                                          let a = 0;
-                                          while (a < deathLineBlack.length) {
-                                             if (DeathPathBlack.includes(deathLineBlack[a]) === false) {
-                                                DeathPathBlack.push(deathLineBlack[a]);
-                                             }
-                                             a++;
-                                          }
-                                          console.log(DeathPathBlack);
-                                       }
-
                                     } else if (pP === pP.toLowerCase() && PiecesPosition[P] === PiecesPosition[P].toUpperCase()) {
                                        whiteC(n);
-
-                                       //catch death line white
-                                       if (WhiteCastlesInCheck.includes(R) === true) {
-                                          if (DeathPathWhite.includes(i) === false) {
-                                             DeathPathWhite.push(i);
-                                          }
-                                          let a = 0;
-                                          while (a < deathLineWhite.length) {
-                                             if (DeathPathWhite.includes(deathLineWhite[a]) === false) {
-                                                DeathPathWhite.push(deathLineWhite[a]);
-                                             }
-                                             a++;
-                                          }
-                                          console.log(DeathPathWhite);
-                                       }
-
                                     }
                                  }
                               }
@@ -1375,8 +733,6 @@ function castlesInCheck() {
                               s++;
                            }
                            let r = 0;
-                           deathLineWhite = [];
-                           deathLineBlack = [];
                            while (r < lineSize) {
                               r++;
                               P = i + (r * 8 - 1);
@@ -1385,53 +741,13 @@ function castlesInCheck() {
 
                               if (PiecesPosition[P] !== "O" && r < lineSize) { //following line
                                  break;
-                              } else {
-                                 if (pP === "Q" && deathLineBlack.includes(Q) === false && PiecesPosition[P] === "O") {
-                                    deathLineBlack.push(Q); //death line candidate
-                                 }
-                                 if (pP === "q" && deathLineWhite.includes(Q) === false && PiecesPosition[P] === "O") {
-                                    deathLineWhite.push(Q); //death line candidate
-                                 }
                               }
-
                               if (r === lineSize) {
                                  if (PiecesPosition[P] === "C" || PiecesPosition[P] === "c") {
                                     if (pP === pP.toUpperCase() && PiecesPosition[P] === PiecesPosition[P].toLowerCase()) {
                                        blackC(n);
-
-                                       //catch death line black
-                                       if (BlackCastlesInCheck.includes(R) === true) {
-                                          if (DeathPathBlack.includes(i) === false) {
-                                             DeathPathBlack.push(i);
-                                          }
-                                          let a = 0;
-                                          while (a < deathLineBlack.length) {
-                                             if (DeathPathBlack.includes(deathLineBlack[a]) === false) {
-                                                DeathPathBlack.push(deathLineBlack[a]);
-                                             }
-                                             a++;
-                                          }
-                                          console.log(DeathPathBlack);
-                                       }
-
                                     } else if (pP === pP.toLowerCase() && PiecesPosition[P] === PiecesPosition[P].toUpperCase()) {
                                        whiteC(n);
-
-                                       //catch death line white
-                                       if (WhiteCastlesInCheck.includes(R) === true) {
-                                          if (DeathPathWhite.includes(i) === false) {
-                                             DeathPathWhite.push(i);
-                                          }
-                                          let a = 0;
-                                          while (a < deathLineWhite.length) {
-                                             if (DeathPathWhite.includes(deathLineWhite[a]) === false) {
-                                                DeathPathWhite.push(deathLineWhite[a]);
-                                             }
-                                             a++;
-                                          }
-                                          console.log(DeathPathWhite);
-                                       }
-
                                     }
                                  }
                               }
@@ -1441,14 +757,8 @@ function castlesInCheck() {
                         if (pPn === "C" || pPn === "c") {
                            if (pP === pP.toUpperCase() && pPn === pPn.toLowerCase()) {
                               blackC(n);
-                              if (DeathPathBlack.includes(i) === false) {
-                                 DeathPathBlack.push(i);
-                              }
                            } else if (pP === pP.toLowerCase() && pPn === pPn.toUpperCase()) {
                               whiteC(n);
-                              if (DeathPathWhite.includes(i) === false) {
-                                 DeathPathWhite.push(i);
-                              }
                            }
                         }
                      }

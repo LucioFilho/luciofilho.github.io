@@ -66,7 +66,8 @@ function drawCountdown() {
          digitY = 97;
          digitSize = 25;
          digit.textContent = MilisecondsB;
-      } if (i === 3) {
+      }
+      if (i === 3) {
          cronoID = "digitMinutsW";
          digitX = 24;
          digitY = 420;
@@ -90,7 +91,7 @@ function drawCountdown() {
          digitY = 90;
          digitSize = 32;
          digit.textContent = ":";
-      }  else if (i === 7) {
+      } else if (i === 7) {
          cronoID = "digitMilisecondsW";
          digitX = 80;
          digitY = 412;
@@ -113,144 +114,85 @@ function drawCountdown() {
    }
 }
 
-//draw icons over button flip board on display to represent color pieces switching on board
-function drawIconFlipBoard(drawID, arcStroke, setColor) {
-   fillerStroker(setColor);
-   const path1 = document.createElementNS(SvgNS, "path");
-   path1.setAttributeNS(null, "id", drawID);
-   path1.setAttributeNS(null, "fill", "rgba(0,0,0,0)");
-   path1.setAttributeNS(null, "stroke", Stroker);
-   path1.setAttributeNS(null, "stroke-width", arcStroke);
-   path1.setAttributeNS(null, "shape-rendering", "geometricPrecision");
-   GameDisplay.appendChild(path1);
-}
-
-//buttons
-function drawObjects(drawID, w, h, x, y, setColor, b, tips) {
-   fillerStroker(setColor);
-   const shape1 = document.createElementNS(SvgNS, "rect");
-   shape1.setAttributeNS(null, "id", drawID);
-   shape1.setAttributeNS(null, "width", w);
-   shape1.setAttributeNS(null, "height", h);
-   shape1.setAttributeNS(null, "x", x);
-   shape1.setAttributeNS(null, "y", y);
-   shape1.setAttributeNS(null, "fill", Filler);
-   shape1.setAttributeNS(null, "stroke-width", 0);
-   shape1.setAttributeNS(null, "shape-rendering", "geometricPrecision");
-   GameDisplay.appendChild(shape1);
-
-   if (b === 1) {
-      const el = document.getElementById(drawID);
-      el.onclick = function(event) {
-         displayActions(drawID);
-      };
-      el.onmouseover = function(event) {
-         fillerStroker("blackSquare");
-         document.getElementById(drawID + "BG").setAttributeNS(null, "fill", Filler);
-         showTooltip(tips);
-      };
-      el.onmousedown = function(event) {
-         fillerStroker("lightWhiteColor");
-         document.getElementById(drawID + "BG").setAttributeNS(null, "fill", Filler);
-      };
-      el.onmouseup = function(event) {
-         fillerStroker("blackSquare");
-         document.getElementById(drawID + "BG").setAttributeNS(null, "fill", Filler);
-      };
-      el.onmouseout = function(event) {
-         fillerStroker("whiteSquare");
-         document.getElementById(drawID + "BG").setAttributeNS(null, "fill", Filler);
-         hideTooltip();
-      };
-   }
-}
-
-function drawIcons(drawID, pPoints, setColor) {
-   fillerStroker(setColor);
-   const polygon1 = document.createElementNS(SvgNS, "polygon");
-   polygon1.setAttributeNS(null, "id", drawID);
-   polygon1.setAttributeNS(null, "points", pPoints);
-   polygon1.setAttributeNS(null, "fill", Stroker);
-   polygon1.setAttributeNS(null, "stroke-width", 0);
-   polygon1.setAttributeNS(null, "shape-rendering", "geometricPrecision");
-   GameDisplay.appendChild(polygon1);
-}
-
 //bg
-drawObjects("gameDisplayBG", 280, 256, 20, 110, "lightWhiteColor", 0);
+svger("lightWhiteColor", "rect", "gameDisplayBG", 280, 256, 20, 110, 0, "geometricPrecision", "GameDisplay", 0, 0, 0);
+svger("whiteSquare", "rect", "topTime", 150, 60, 20, 50, 0, "geometricPrecision", "GameDisplay", 0, 0, 0);
+svger("blackSquare", "rect", "topTimeline", 280, 4, 20, 110, 0, "geometricPrecision", "GameDisplay", 0, 0, 0);
+svger("whiteSquare", "rect", "botTime", 150, 60, 20, 370, 0, "geometricPrecision", "GameDisplay", 0, 0, 0);
+svger("blackSquare", "rect", "botTimeline", 280, 4, 20, 366, 0, "geometricPrecision", "GameDisplay", 0, 0, 0);
+svger("blackSquare", "rect", "topButsline", 280, 2, 20, 150, 0, "geometricPrecision", "GameDisplay", 0, 0, 0);
 
-drawObjects("topTime", 150, 60, 20, 50, "whiteSquare", 0);
-drawObjects("topTimeline", 280, 4, 20, 110, "blackSquare", 0);
-drawObjects("botTime", 150, 60, 20, 370, "whiteSquare", 0);
-drawObjects("botTimeline", 280, 4, 20, 366, "blackSquare", 0);
-drawObjects("topButsline", 280, 2, 20, 150, "blackSquare", 0);
-
-//buttons
-drawObjects("butFlipBoardBG", 56, 36, 20, 114, "whiteSquare", 0);
-drawObjects("butMoveToStartBG", 56, 36, 76, 114, "whiteSquare", 0);
-drawObjects("butStepBackBG", 56, 36, 132, 114, "whiteSquare", 0);
-drawObjects("butStepForwardBG", 56, 36, 188, 114, "whiteSquare", 0);
-drawObjects("butMoveToEndBG", 56, 36, 244, 114, "whiteSquare", 0);
+//buttons bg
+svger("whiteSquare", "rect", "butFlipBoardBG", 56, 36, 20, 114, 0, "geometricPrecision", "GameDisplay", 0, 0, 0);
+svger("whiteSquare", "rect", "butMoveToStartBG", 56, 36, 76, 114, 0, "geometricPrecision", "GameDisplay", 0, 0, 0);
+svger("whiteSquare", "rect", "butStepBackBG", 56, 36, 132, 114, 0, "geometricPrecision", "GameDisplay", 0, 0, 0);
+svger("whiteSquare", "rect", "butStepForwardBG", 56, 36, 188, 114, 0, "geometricPrecision", "GameDisplay", 0, 0, 0);
+svger("whiteSquare", "rect", "butMoveToEndBG", 56, 36, 244, 114, 0, "geometricPrecision", "GameDisplay", 0, 0, 0);
 
 //bottom buttons
-drawObjects("butSaveFileBG", 56, 36, 20, 330, "whiteSquare", 0);
-drawObjects("butTakebackBG", 56, 36, 76, 330, "whiteSquare", 0);
-drawObjects("botButsline", 280, 2, 20, 328, "blackSquare", 0);
+svger("whiteSquare", "rect", "butSaveFileBG", 56, 36, 20, 330, 0, "geometricPrecision", "GameDisplay", 0, 0, 0);
+svger("whiteSquare", "rect", "butTakebackBG", 56, 36, 76, 330, 0, "geometricPrecision", "GameDisplay", 0, 0, 0);
+svger("blackSquare", "rect", "botButsline", 280, 2, 20, 328, 0, "geometricPrecision", "GameDisplay", 0, 0, 0);
 
 //icon Save File
 pPoints = "40,342 56,342 56,343 40,343";
-drawIcons("iconSaveFile0", pPoints, "greyColor");
+drawer("greyColor", "polygon", "iconSaveFile0", 0, "geometricPrecision", "GameDisplay", pPoints);
+
 pPoints = "40,347 56,347 56,348 40,348";
-drawIcons("iconSaveFile1", pPoints, "greyColor");
+drawer("greyColor", "polygon", "iconSaveFile1", 0, "geometricPrecision", "GameDisplay", pPoints);
+
 pPoints = "40,352 56,352 56,353 40,353";
-drawIcons("iconSaveFile2", pPoints, "greyColor");
+drawer("greyColor", "polygon", "iconSaveFile2", 0, "geometricPrecision", "GameDisplay", pPoints);
+
 pPoints = "36,336, 36,335 60,335 60,360 36,360 36,336 37,336 37,359 59,359 59,342 53,336";
-drawIcons("iconSaveFile3", pPoints, "greyColor");
+drawer("greyColor", "polygon", "iconSaveFile3", 0, "geometricPrecision", "GameDisplay", pPoints);
 
 //button Step Forward
 pPoints = "220,131 220,123 222,123 222,139 220,139 220,131, 211,139 211,123";
-drawIcons("iconStepForward", pPoints, "lightWhiteColor");
+drawer("lightWhiteColor", "polygon", "iconStepForward", 0, "geometricPrecision", "GameDisplay", pPoints);
 
 //button Stepback
 pPoints = "284,131 284,123 282,123 282,139 284,139 284,131, 293,139 293,123";
-drawIcons("iconStepBack", pPoints, "lightWhiteColor");
+drawer("lightWhiteColor", "polygon", "iconStepBack", 0, "geometricPrecision", "GameDisplay", pPoints);
 document.getElementById("iconStepBack").setAttributeNS(null, "transform", "translate(-127,0)");
 
 
 //button move to end
 pPoints = "280,131 280,123 282,123 282,139 280,139 280,131, 271,139 271,131, 262,139, 262,123 271,131 271,123";
-drawIcons("iconMoveToEnd", pPoints, "lightWhiteColor");
+drawer("lightWhiteColor", "polygon", "iconMoveToEnd", 0, "geometricPrecision", "GameDisplay", pPoints);
 
 //button move to start
 pPoints = "284,131 284,123 282,123 282,139 284,139 284,131, 293,139 293,131, 302,139, 302,123 293,131 293,123";
-drawIcons("iconMoveToStart", pPoints, "lightWhiteColor");
+drawer("lightWhiteColor", "polygon", "iconMoveToStart", 0, "geometricPrecision", "GameDisplay", pPoints);
 document.getElementById("iconMoveToStart").setAttributeNS(null, "transform", "translate(-188,0)");
 
 //flip board icon
-drawIconFlipBoard("arcIconTop", 3, "greyColor");
+drawer("greyColorStroke", "path", "arcIconTop", 3, "geometricPrecision", "GameDisplay");
 document.getElementById("arcIconTop").setAttributeNS(null, "d", describeArc(48, 132, 12, -90, 90));
-drawIconFlipBoard("arcIconBot", 3, "lightWhiteColor");
+
+drawer("lightWhiteColorStroke", "path", "arcIconBot", 3, "geometricPrecision", "GameDisplay");
 document.getElementById("arcIconBot").setAttributeNS(null, "d", describeArc(48, 132, 12, 90, 270));
 
 //take back icon
-drawIconFlipBoard("arcTakebackTop", 4, "lightWhiteColor");
+drawer("lightWhiteColorStroke", "path", "arcTakebackTop", 4, "geometricPrecision", "GameDisplay");
 document.getElementById("arcTakebackTop").setAttributeNS(null, "d", describeArc(104, 348, 10, 0, 90));
-drawIconFlipBoard("arcTakebackBot", 4, "greyColor");
+
+drawer("greyColorStroke", "path", "arcTakebackBot", 4, "geometricPrecision", "GameDisplay");
 document.getElementById("arcTakebackBot").setAttributeNS(null, "d", describeArc(104, 348, 10, 90, 270));
+
 //draw arrow icon
 pPoints = "104,344 96,338 104,332";
-drawIcons("iconArrowTakeback", pPoints, "lightWhiteColor");
-
+drawer("lightWhiteColor", "polygon", "iconArrowTakeback", 0, "geometricPrecision", "GameDisplay", pPoints);
 
 //buttons with actions
-drawObjects("butFlipBoard", 56, 36, 20, 114, "disable", 1, "Flip Board");
-drawObjects("butMoveToStart", 56, 36, 76, 114, "disable", 1, "Move to Start");
-drawObjects("butStepBack", 56, 36, 132, 114, "disable", 1, "Move step Back");
-drawObjects("butStepForward", 56, 36, 188, 114, "disable", 1, "Move Step Forward");
-drawObjects("butMoveToEnd", 56, 36, 244, 114, "disable", 1, "Come to End");
+svger("disable", "rect", "butFlipBoard", 56, 36, 20, 114, 0, "geometricPrecision", "GameDisplay", 1, 0, 0, "blackSquare", "lightWhiteColor", "blackSquare", "whiteSquare");
+svger("disable", "rect", "butMoveToStart", 56, 36, 76, 114, 0, "geometricPrecision", "GameDisplay", 1, 0, 1, "blackSquare", "lightWhiteColor", "blackSquare", "whiteSquare");
+svger("disable", "rect", "butStepBack", 56, 36, 132, 114, 0, "geometricPrecision", "GameDisplay", 1, 0, 2, "blackSquare", "lightWhiteColor", "blackSquare", "whiteSquare");
+svger("disable", "rect", "butStepForward", 56, 36, 188, 114, 0, "geometricPrecision", "GameDisplay", 1, 0, 3, "blackSquare", "lightWhiteColor", "blackSquare", "whiteSquare");
+svger("disable", "rect", "butMoveToEnd", 56, 36, 244, 114, 0, "geometricPrecision", "GameDisplay", 1, 0, 4, "blackSquare", "lightWhiteColor", "blackSquare", "whiteSquare");
 
-drawObjects("butSaveFile", 56, 36, 20, 330, "disable", 1, "Load PGN File");
-drawObjects("butTakeback", 56, 36, 76, 330, "disable", 1, "Take Back");
+svger("disable", "rect", "butSaveFile", 56, 36, 20, 330, 0, "geometricPrecision", "GameDisplay", 1, 0, 5, "blackSquare", "lightWhiteColor", "blackSquare", "whiteSquare");
+svger("disable", "rect", "butTakeback", 56, 36, 76, 330, 0, "geometricPrecision", "GameDisplay", 1, 0, 6, "blackSquare", "lightWhiteColor", "blackSquare", "whiteSquare");
 
 //call crono
 drawCountdown();
@@ -283,12 +225,6 @@ function takeback() {
       MMovesLanding.pop();
       Notation.pop();
       gameLog.pop();
-
-      DeathPathsBlack.pop();
-      DeathPathsWhite.pop();
-
-      DeathPathBlack = DeathPathsBlack[DeathPathsBlack.length - 1];
-      DeathPathWhite = DeathPathsWhite[DeathPathsWhite.length - 1];
 
       Move--;
 
@@ -328,6 +264,44 @@ function displayActions(k) {
             backForward("right");
             soundRewind.play();
          }
+      } else if (k === "butStepBackMini") {
+
+            soundRewind.play();
+
+      } else if (k === "butStepForwardMini") {
+
+            soundRewind.play();
+
+      } else if (k === "butOptionMini") {
+         opChoice = 0;
+         popups(1, 3, 1, 6);
+         soundRewind.play();
+
+      } else if (k === "butOptionMini1") {
+         opChoice = 1;
+         popups(1, 2, 1, 6);
+         soundRewind.play();
+
+      } else if (k === "butOptionMini2") {
+         opChoice = 2;
+         popups(1, 2, 1, 6);
+         soundRewind.play();
+
+      } else if (k === "butOptionMini3") {
+         opChoice = 3;
+         popups(1, 2, 1, 6);
+         soundRewind.play();
+
+      } else if (k === "butOptionMini4") {
+         opChoice = 4;
+         popups(1, 2, 1, 6);
+         soundRewind.play();
+
+      } else if (k === "butOptionMini5") {
+         opChoice = 5;
+         popups(1, 2, 1, 6);
+         soundRewind.play();
+
       } else if (k === "butMoveToEnd") {
          if (MoveWatch < Move - 1) {
             backForward("end");

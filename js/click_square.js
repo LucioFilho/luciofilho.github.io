@@ -29,13 +29,6 @@ function clickSquare(i) {
 
    unClickSquare();
 
-   countCheckmate = 0;
-
-   if (LandingsAgain === 0) {
-      WhiteLandingsInCheck = [];
-      BlackLandingsInCheck = [];
-      //need give 3 seconds to player time
-   }
    //mark selected square
    fillerStroker("square");
    document.getElementById("butSquare" + i).setAttributeNS(null, "fill", Filler);
@@ -163,21 +156,26 @@ function clickSquare(i) {
       let m = 0;
       while (m < marksOnBoard.length) {
          m++;
+
+         let mMark = "Mark" + marksOnBoard[m - 1];
+         let markL = parseInt(document.getElementById(mMark).getAttributeNS(null, "cx")) - 5;
+         let markR = parseInt(document.getElementById(mMark).getAttributeNS(null, "cx")) + 5;
+         let markT = parseInt(document.getElementById(mMark).getAttributeNS(null, "cy")) - 5;
+         let markB = parseInt(document.getElementById(mMark).getAttributeNS(null, "cy")) + 5;
+
          let n = 0;
          while (n < 64) {
             n++;
-            let markL = parseInt(document.getElementById("Mark" + marksOnBoard[m - 1]).getAttributeNS(null, "cx")) - 5;
-            let markR = parseInt(document.getElementById("Mark" + marksOnBoard[m - 1]).getAttributeNS(null, "cx")) + 5;
-            let markT = parseInt(document.getElementById("Mark" + marksOnBoard[m - 1]).getAttributeNS(null, "cy")) - 5;
-            let markB = parseInt(document.getElementById("Mark" + marksOnBoard[m - 1]).getAttributeNS(null, "cy")) + 5;
-            let sqL = parseInt(document.getElementById("butSquare" + n).getAttributeNS(null, "x"));
-            let sqR = parseInt(document.getElementById("butSquare" + n).getAttributeNS(null, "x")) + 60;
-            let sqT = parseInt(document.getElementById("butSquare" + n).getAttributeNS(null, "y"));
-            let sqB = parseInt(document.getElementById("butSquare" + n).getAttributeNS(null, "y")) + 60;
+
+            let nMark = "butSquare" + n;
+            let sqL = parseInt(document.getElementById(nMark).getAttributeNS(null, "x"));
+            let sqR = parseInt(document.getElementById(nMark).getAttributeNS(null, "x")) + 60;
+            let sqT = parseInt(document.getElementById(nMark).getAttributeNS(null, "y"));
+            let sqB = parseInt(document.getElementById(nMark).getAttributeNS(null, "y")) + 60;
+
             if (markL < sqR && markR > sqL && markT < sqB && markB > sqT) { //check collisions marks/squares
                if (PiecesPosition[i - 1] === "C") { //CASTLE check if type C
                   if (WhiteCastlesInCheck.includes(i)) {
-                     if (TotalWCastles > 1) {
                         if (PiecesPosition[n - 1] !== "O") {
                            if (PiecesPosition[n - 1] !== PiecesPosition[n - 1].toUpperCase()) {
                               fillerStroker("take");
@@ -189,36 +187,9 @@ function clickSquare(i) {
                            fillerStroker("empty");
                            SquaresToGo.push(n);
                         }
-                     } else {
-                        if (TotalBCastles === 1 && PiecesPosition[n - 1] === "c") {
-                           fillerStroker("mate");
-                           SquaresToGo.push(n);
-                        } else {
-                           if (PiecesPosition[n - 1] !== "O") {
-                              if (LandingsAgain === 0 && PiecesPosition[n - 1] !== PiecesPosition[n - 1].toUpperCase()) {
-                                 GhostPiecesPosition = [];
-                                 landingInCheck(i, n);
-                                 Again = 1;
-                              }
-                           } else if (LandingsAgain === 0) {
-                              GhostPiecesPosition = [];
-                              landingInCheck(i, n);
-                              Again = 1;
-                           }
-                           if (WhiteLandingsInCheck.includes(n)) {
-                              fillerStroker("disable");
-                           } else if (PiecesPosition[n - 1] !== "O") {
-                              if (PiecesPosition[n - 1] !== PiecesPosition[n - 1].toUpperCase()) {
-                                 fillerStroker("take");
-                                 SquaresToGo.push(n);
-                              } else {
-                                 fillerStroker("disable");
-                              }
-                           } else {
-                              fillerStroker("empty");
-                              SquaresToGo.push(n);
-                           }
-                        }
+                     if (TotalBCastles === 1 && PiecesPosition[n - 1] === "c") {
+                        fillerStroker("mate");
+                        SquaresToGo.push(n);
                      }
                   } else if (n === i - 9 || n === i - 7) { //check exceptions to special Castle's not in check diagonal moves
                      if (PiecesPosition[n - 1] !== "O") { //check if squares to go are not empty
@@ -288,7 +259,6 @@ function clickSquare(i) {
                   }
                } else if (PiecesPosition[i - 1] === "c") { //castle check if type c
                   if (BlackCastlesInCheck.includes(i)) {
-                     if (TotalBCastles > 1) {
                         if (PiecesPosition[n - 1] !== "O") {
                            if (PiecesPosition[n - 1] !== PiecesPosition[n - 1].toLowerCase()) {
                               fillerStroker("take");
@@ -300,36 +270,9 @@ function clickSquare(i) {
                            fillerStroker("empty");
                            SquaresToGo.push(n);
                         }
-                     } else {
-                        if (TotalWCastles === 1 && PiecesPosition[n - 1] === "C") {
-                           fillerStroker("mate");
-                           SquaresToGo.push(n);
-                        } else {
-                           if (PiecesPosition[n - 1] !== "O") {
-                              if (LandingsAgain === 0 && PiecesPosition[n - 1] !== PiecesPosition[n - 1].toLowerCase()) {
-                                 GhostPiecesPosition = [];
-                                 landingInCheck(i, n);
-                                 Again = 1;
-                              }
-                           } else if (LandingsAgain === 0) {
-                              GhostPiecesPosition = [];
-                              landingInCheck(i, n);
-                              Again = 1;
-                           }
-                           if (BlackLandingsInCheck.includes(n)) {
-                              fillerStroker("disable");
-                           } else if (PiecesPosition[n - 1] !== "O") {
-                              if (PiecesPosition[n - 1] !== PiecesPosition[n - 1].toLowerCase()) {
-                                 fillerStroker("take");
-                                 SquaresToGo.push(n);
-                              } else {
-                                 fillerStroker("disable");
-                              }
-                           } else {
-                              fillerStroker("empty");
-                              SquaresToGo.push(n);
-                           }
-                        }
+                     if (TotalWCastles === 1 && PiecesPosition[n - 1] === "C") {
+                        fillerStroker("mate");
+                        SquaresToGo.push(n);
                      }
                   } else if (n === i + 9 || n === i + 7) { //check exceptions to special Castle's not in check diagonal moves
                      if (PiecesPosition[n - 1] !== "O") { //check if squares to go are empty
@@ -1008,8 +951,5 @@ function clickSquare(i) {
       }
    } else { //clear marks
       unClickSquare();
-   }
-   if (Again === 1) {
-      LandingsAgain = 1;
    }
 }

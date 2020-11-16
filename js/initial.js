@@ -30,24 +30,26 @@ let soundTimeout = new Sound("sounds/timeout.mp3");
 
 
 //tooltips show/hide
-function showTooltip(text) {
+function showTooltip(l1, l2) {
 
    let tooltip = document.getElementById("tooltip");
-   tooltip.innerHTML = text;
+   tooltip.innerHTML = lang[l1][l2][setLang];
    tooltip.style.display = "inline-block";
 
-   onmousemove = function(e) {
+   onmouseover = function(e) {
 
-      tooltip.style.left = e.clientX + 10 + "px";
-      tooltip.style.top = e.clientY + 10 + "px";
+      tooltip.style.left = e.pageX + 10 + "px";
+      tooltip.style.top = e.pageY - 30 + "px";
 
    };
 
-}
+   onmouseout = function(e) {
 
-function hideTooltip() {
-   let tooltip = document.getElementById("tooltip");
-   tooltip.style.display = "none";
+      let tooltip = document.getElementById("tooltip");
+      tooltip.style.display = "none";
+
+   };
+
 }
 
 //get board on html
@@ -63,17 +65,9 @@ const PlayerDownRight = document.getElementById("PlayerDownRight");
 let Again = 0;
 let ArrowColor = "";
 let BlackCastlesInCheck = [];
-let BlackLandingsInCheck = [];
 let BSqSel = null;
 let Checkered = 0;
 let Cli = 0;
-let ColorBlack = "rgba(50,50,100,1.0)";
-let ColorOh = "rgba(50,100,50,1.0)";
-let ColorWhite = "rgba(130,80,0,1.0)";
-let DeathPathBlack = [];
-let DeathPathWhite = [];
-let DeathPathsBlack = [];
-let DeathPathsWhite = [];
 let DrawCanvas = null;
 let EvenOdd = null;
 let Filler = "rgba(200,200,200,0.5)";
@@ -83,7 +77,6 @@ let gameNotation = null;
 let gameover = 0;
 let I = 0;
 let J = 0;
-let LandingsAgain = 0;
 let LastBSquaresToGo = [];
 let LastWSquaresToGo = [];
 let Letters = [];
@@ -95,6 +88,7 @@ let MarkerCount = 0;
 let miliseconds = 0;
 let MilisecondsB = 0;
 let MilisecondsW = 0;
+let Minis = 0;
 let minutes = "00";
 let MinutesB = "00";
 let MinutesW = "00";
@@ -103,6 +97,7 @@ let MMoveLeaving = 0;
 let MMovesLanding = [];
 let MMovesLeaving = [];
 let Numbers = [];
+let opChoice = 0;
 let PieceFill1 = null;
 let PieceFill2 = null;
 let PieceID1 = null;
@@ -114,6 +109,7 @@ let PieceStroke1 = null;
 let PieceStroke2 = null;
 let PieceStrokeWidth1 = null;
 let PieceStrokeWidth2 = null;
+let PieceType = "C";
 let PPos = null;
 let PromoControl = 0;
 let PromoID = 71;
@@ -142,9 +138,8 @@ let TotalWCastles = 8;
 let TotalWRooks = 8;
 let Turn = "W";
 let VerseReverse = "wb";
-let winner = null;
 let WhiteCastlesInCheck = [];
-let WhiteLandingsInCheck = [];
+let winner = null;
 let XLeaving = null;
 let XMark = 0;
 let YLeaving = null;
@@ -278,7 +273,7 @@ function shortCode() {
    if (TotalWCastles === 0 || TotalBCastles === 0) {
       notaMate = "++";
    }
-   console.log(noteMove + " " + evenOdd + " | " + Notation[Move] + notaMate + " | Cc " + TotalWCastles + "·" + TotalBCastles + " | BR " + TotalWBishops + "·" + TotalWRooks + " | br " + TotalBBishops + "·" + TotalBRooks);
+   //console.log(noteMove + " " + evenOdd + " | " + Notation[Move] + notaMate + " | Cc " + TotalWCastles + "·" + TotalBCastles + " | BR " + TotalWBishops + "·" + TotalWRooks + " | br " + TotalBBishops + "·" + TotalBRooks);
    gameLog.push(noteMove + " " + evenOdd + " | " + Notation[Move] + notaMate + " | Cc " + TotalWCastles + "·" + TotalBCastles + " | BR " + TotalWBishops + "·" + TotalWRooks + " | br " + TotalBBishops + "·" + TotalBRooks + " | " + TurnNotation[Move]);
 
 
@@ -304,38 +299,42 @@ shortCode();
 //row by row black and white and square positions controller
 function squarer(I) {
 
-   if (I < 9) {
-      RowEvenOdd = 1;
-      Square_x = (I - 1) * 60;
-      Square_y = 0;
-   } else if (I < 17) {
-      RowEvenOdd = 0;
-      Square_x = (I - 9) * 60;
-      Square_y = 60;
-   } else if (I < 25) {
-      RowEvenOdd = 1;
-      Square_x = (I - 17) * 60;
-      Square_y = 120;
-   } else if (I < 33) {
-      RowEvenOdd = 0;
-      Square_x = (I - 25) * 60;
-      Square_y = 180;
-   } else if (I < 41) {
-      RowEvenOdd = 1;
-      Square_x = (I - 33) * 60;
-      Square_y = 240;
-   } else if (I < 49) {
-      RowEvenOdd = 0;
-      Square_x = (I - 41) * 60;
-      Square_y = 300;
-   } else if (I < 57) {
-      RowEvenOdd = 1;
-      Square_x = (I - 49) * 60;
-      Square_y = 360;
+   if (I < 33) {
+      if (I < 9) {
+         RowEvenOdd = 1;
+         Square_x = (I - 1) * 60;
+         Square_y = 0;
+      } else if (I < 17) {
+         RowEvenOdd = 0;
+         Square_x = (I - 9) * 60;
+         Square_y = 60;
+      } else if (I < 25) {
+         RowEvenOdd = 1;
+         Square_x = (I - 17) * 60;
+         Square_y = 120;
+      } else if (I < 33) {
+         RowEvenOdd = 0;
+         Square_x = (I - 25) * 60;
+         Square_y = 180;
+      }
    } else {
-      RowEvenOdd = 0;
-      Square_x = (I - 57) * 60;
-      Square_y = 420;
+      if (I < 41) {
+         RowEvenOdd = 1;
+         Square_x = (I - 33) * 60;
+         Square_y = 240;
+      } else if (I < 49) {
+         RowEvenOdd = 0;
+         Square_x = (I - 41) * 60;
+         Square_y = 300;
+      } else if (I < 57) {
+         RowEvenOdd = 1;
+         Square_x = (I - 49) * 60;
+         Square_y = 360;
+      } else {
+         RowEvenOdd = 0;
+         Square_x = (I - 57) * 60;
+         Square_y = 420;
+      }
    }
 }
 
@@ -511,66 +510,144 @@ function reversePieces() {
 
 }
 
-//board limit to check marks inside board area. BL
-function boardLimits() {
-   const shapeBoardLimits = document.createElementNS(SvgNS, "rect");
-   shapeBoardLimits.setAttributeNS(null, "id", "BL");
-   shapeBoardLimits.setAttributeNS(null, "width", 480);
-   shapeBoardLimits.setAttributeNS(null, "height", 480);
-   shapeBoardLimits.setAttributeNS(null, "x", 0);
-   shapeBoardLimits.setAttributeNS(null, "y", 0);
-   shapeBoardLimits.setAttributeNS(null, "fill", "transparent");
-   shapeBoardLimits.setAttributeNS(null, "stroke-width", 0);
-   Board.appendChild(shapeBoardLimits);
+//draw paths
+function drawer(setColor, sType, sID, sStrokeWidth, sPrecision, rootSvg, pPoints, strokeLinecap, markerEnd) {
+
+   fillerStroker(setColor);
+
+   const pen = document.createElementNS(SvgNS, sType);
+   pen.setAttributeNS(null, "id", sID);
+   pen.setAttributeNS(null, "fill", Filler);
+   pen.setAttributeNS(null, "stroke", Stroker);
+   pen.setAttributeNS(null, "stroke-width", sStrokeWidth);
+   pen.setAttributeNS(null, "shape-rendering", sPrecision);
+
+   if (sType === "polygon") {
+      pen.setAttributeNS(null, "points", pPoints);
+   } else if (sType === "polyline") {
+      pen.setAttributeNS(null, "points", pPoints);
+      pen.setAttributeNS(null, "fill", "none");
+      pen.setAttributeNS(null, "stroke-linecap", strokeLinecap);
+      pen.setAttributeNS(null, 'marker-end', markerEnd);
+   }
+
+   if (rootSvg === "Board") {
+      Board.appendChild(pen);
+   } else if (rootSvg === "PlayerUPRight") {
+      PlayerUPRight.appendChild(pen);
+   } else if (rootSvg === "infoMain") {
+      infoMain.appendChild(pen);
+   } else if (rootSvg === "GameDisplay") {
+      GameDisplay.appendChild(pen);
+   }
+
 }
-boardLimits();
+
+// svg element creator
+function svger(fS, sType, sID, sWidth, sHeight, sX, sY, sStrokeWidth, sPrecision, rootSvg, b, l1, l2, over, down, up, out) {
+
+   fillerStroker(fS);
+
+   const shapeVger = document.createElementNS(SvgNS, sType);
+   shapeVger.setAttributeNS(null, "id", sID);
+   shapeVger.setAttributeNS(null, "width", sWidth);
+   shapeVger.setAttributeNS(null, "height", sHeight);
+   shapeVger.setAttributeNS(null, "x", sX);
+   shapeVger.setAttributeNS(null, "y", sY);
+   shapeVger.setAttributeNS(null, "fill", Filler);
+   shapeVger.setAttributeNS(null, "stroke", Stroker);
+   shapeVger.setAttributeNS(null, "stroke-width", sStrokeWidth);
+   shapeVger.setAttributeNS(null, "shape-rendering", sPrecision);
+
+   if (rootSvg === "Board") {
+      Board.appendChild(shapeVger);
+   } else if (rootSvg === "PlayerUPRight") {
+      PlayerUPRight.appendChild(shapeVger);
+   } else if (rootSvg === "infoMain") {
+      infoMain.appendChild(shapeVger);
+   } else if (rootSvg === "GameDisplay") {
+      GameDisplay.appendChild(shapeVger);
+   }
+
+   if (b === 1) {
+      const el = document.getElementById(sID);
+
+      el.onclick = function(event) {
+         displayActions(sID); // set it on game_display.js
+      };
+      el.onmouseover = function(event) {
+         fillerStroker(over);
+         document.getElementById(sID + "BG").setAttributeNS(null, "fill", Filler);
+         showTooltip(l1, l2);
+      };
+      el.onmousedown = function(event) {
+         fillerStroker(down);
+         document.getElementById(sID + "BG").setAttributeNS(null, "fill", Filler);
+      };
+      el.onmouseup = function(event) {
+         fillerStroker(up);
+         document.getElementById(sID + "BG").setAttributeNS(null, "fill", Filler);
+      };
+      el.onmouseout = function(event) {
+         fillerStroker(out);
+         document.getElementById(sID + "BG").setAttributeNS(null, "fill", Filler);
+      };
+
+   }
+
+}
+
+function letterer(fS, sType, sID, sX, sY, fontFamily, fontWeight, fontSize, sPrecision, rootSvg, textContent) {
+
+   fillerStroker(fS);
+
+   const lettering = document.createElementNS(SvgNS, sType);
+   lettering.setAttributeNS(null, "id", sID);
+   lettering.setAttribute("x", sX);
+   lettering.setAttribute("y", sY);
+   lettering.setAttribute("fill", Filler);
+   lettering.setAttribute("font-family", fontFamily);
+   lettering.setAttribute("font-weight", fontWeight);
+   lettering.setAttribute("font-size", fontSize);
+   lettering.setAttribute("style", "-webkit-touch-callout: none;-webkit-user-select: none;-khtml-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;");
+   lettering.textContent = textContent;
+
+   if (rootSvg === "Board") {
+      Board.appendChild(lettering);
+   } else if (rootSvg === "PlayerUPRight") {
+      PlayerUPRight.appendChild(lettering);
+   } else if (rootSvg === "infoMain") {
+      infoMain.appendChild(lettering);
+   } else if (rootSvg === "GameDisplay") {
+      GameDisplay.appendChild(lettering);
+   } else if (rootSvg === "PlayerDownRight") {
+      PlayerDownRight.appendChild(lettering);
+   }
+}
+
+//board limit to check marks inside board area. BL
+svger("disable", "rect", "BL", 480, 480, 0, 0, 0, "geometricPrecision", "Board");
 
 //draw board squares
 function drawSquares() {
-   let actualSquareColor;
+   let setColor;
    if (SquareColor === "white") {
-      fillerStroker("whiteSquare");
-      actualSquareColor = Filler;
+      setColor = "whiteSquare";
    } else {
-      fillerStroker("blackSquare");
-      actualSquareColor = Filler;
+      setColor = "blackSquare";
    }
-   const shape1 = document.createElementNS(SvgNS, "rect");
-   shape1.setAttributeNS(null, "id", DrawCanvas);
-   shape1.setAttributeNS(null, "width", 60);
-   shape1.setAttributeNS(null, "height", 60);
-   shape1.setAttributeNS(null, "x", Square_x);
-   shape1.setAttributeNS(null, "y", Square_y);
-   shape1.setAttributeNS(null, "fill", actualSquareColor);
-   shape1.setAttributeNS(null, "stroke-width", 0);
-   shape1.setAttributeNS(null, "shape-rendering", "geometricPrecision");
-   Board.appendChild(shape1);
+
+   svger(setColor, "rect", DrawCanvas, 60, 60, Square_x, Square_y, 0, "geometricPrecision", "Board");
+
 }
 
 //draw marks moves
 function drawMarkMoves() {
 
-   const shapeMoves1 = document.createElementNS(SvgNS, "rect");
-   shapeMoves1.setAttributeNS(null, "id", "mMove1");
-   shapeMoves1.setAttributeNS(null, "width", 60);
-   shapeMoves1.setAttributeNS(null, "height", 60);
-   shapeMoves1.setAttributeNS(null, "x", 600);
-   shapeMoves1.setAttributeNS(null, "y", 600);
-   shapeMoves1.setAttributeNS(null, "fill", "rgba(255,200,0,0.8)");
-   shapeMoves1.setAttributeNS(null, "stroke-width", 0);
-   shapeMoves1.setAttributeNS(null, "shape-rendering", "geometricPrecision");
-   Board.appendChild(shapeMoves1);
+   svger("mMove", "rect", "mMove1", 60, 60, 600, 600, 0, "geometricPrecision", "Board");
 
-   const shapeMoves2 = document.createElementNS(SvgNS, "rect");
-   shapeMoves2.setAttributeNS(null, "id", "mMove2");
-   shapeMoves2.setAttributeNS(null, "width", 60);
-   shapeMoves2.setAttributeNS(null, "height", 60);
-   shapeMoves2.setAttributeNS(null, "x", 600);
-   shapeMoves2.setAttributeNS(null, "y", 600);
-   shapeMoves2.setAttributeNS(null, "fill", "rgba(255,200,0,0.8)");
-   shapeMoves2.setAttributeNS(null, "stroke-width", 0);
-   shapeMoves2.setAttributeNS(null, "shape-rendering", "geometricPrecision");
-   Board.appendChild(shapeMoves2);
+   svger("mMove", "rect", "mMove2", 60, 60, 600, 600, 0, "geometricPrecision", "Board");
+
 }
 
 //lettering to mark squares with numbers and letters
@@ -581,29 +658,9 @@ function drawBoardLetters() {
    let Numbers = ["1", "2", "3", "4", "5", "6", "7", "8"];
 
    while (i < 8) {
-      const lettering = document.createElementNS(SvgNS, "text");
-      lettering.setAttributeNS(null, "id", "letter_" + i);
-      lettering.setAttribute("x", (60 * (i + 1)) - 58);
-      lettering.setAttribute("y", 478);
-      lettering.setAttribute("fill", "rgba(0,0,0,0.4)");
-      lettering.setAttribute("font-family", "Helvetica");
-      lettering.setAttribute("font-weight", "bold");
-      lettering.setAttribute("font-size", 13);
-      lettering.setAttribute("style", "-webkit-touch-callout: none;-webkit-user-select: none;-khtml-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;");
-      lettering.textContent = Letters[i];
-      Board.appendChild(lettering);
+      letterer("lettererBoard", "text", "letter_" + i, (60 * (i + 1)) - 58, 478, "Helvetica", "bold", 13, "geometricPrecision", "Board", Letters[i]);
 
-      const numbering = document.createElementNS(SvgNS, "text");
-      numbering.setAttributeNS(null, "id", "number_" + i);
-      numbering.setAttribute("x", 472);
-      numbering.setAttribute("y", (60 * (8 - i)) - 49);
-      numbering.setAttribute("fill", "rgba(0,0,0,0.4)");
-      numbering.setAttribute("font-family", "Helvetica");
-      numbering.setAttribute("font-weight", "bold");
-      numbering.setAttribute("font-size", 13);
-      numbering.setAttribute("style", "-webkit-touch-callout: none;-webkit-user-select: none;-khtml-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;");
-      numbering.textContent = Numbers[i];
-      Board.appendChild(numbering);
+      letterer("lettererBoard", "text", "number_" + i, 472, (60 * (8 - i)) - 49, "Helvetica", "bold", 13, "geometricPrecision", "Board", Numbers[i]);
 
       i++;
    }
@@ -633,80 +690,79 @@ function underxyMover(moverVal, xMove, yMove) {
    }
 }
 
-//drawPieces
-function drawPieces() {
-   const shape2 = document.createElementNS(SvgNS, "circle");
-   shape2.setAttributeNS(null, "id", PieceID1);
-   shape2.setAttributeNS(null, "cx", Square_x + 30);
-   shape2.setAttributeNS(null, "cy", Square_y + 30);
-   shape2.setAttributeNS(null, "r", PieceRadius1);
-   shape2.setAttributeNS(null, "fill", PieceFill1);
-   shape2.setAttributeNS(null, "stroke", PieceStroke1);
-   shape2.setAttributeNS(null, "stroke-width", PieceStrokeWidth1);
-   shape2.setAttributeNS(null, "shape-rendering", "geometricPrecision");
-   Board.appendChild(shape2);
-   const shape3 = document.createElementNS(SvgNS, "circle");
-   shape3.setAttributeNS(null, "id", PieceID2);
-   shape3.setAttributeNS(null, "cx", Square_x + 30);
-   shape3.setAttributeNS(null, "cy", Square_y + 30);
-   shape3.setAttributeNS(null, "r", PieceRadius2);
-   shape3.setAttributeNS(null, "fill", PieceFill2);
-   shape3.setAttributeNS(null, "stroke", PieceStroke2);
-   shape3.setAttributeNS(null, "stroke-width", PieceStrokeWidth2);
-   shape3.setAttributeNS(null, "shape-rendering", "geometricPrecision");
-   Board.appendChild(shape3);
+function drawCircles(fS, sType, sID, scX, scY, sr, sStrokeWidth, sPrecision, rootSvg) {
+
+   fillerStroker(fS);
+
+   const circles = document.createElementNS(SvgNS, sType);
+   circles.setAttributeNS(null, "id", sID);
+   circles.setAttributeNS(null, "cx", scX);
+   circles.setAttributeNS(null, "cy", scY);
+   circles.setAttributeNS(null, "r", sr);
+   circles.setAttributeNS(null, "fill", Filler);
+   circles.setAttributeNS(null, "stroke", Stroker);
+   circles.setAttributeNS(null, "stroke-width", sStrokeWidth);
+   circles.setAttributeNS(null, "shape-rendering", sPrecision);
+
+   if (rootSvg === "Board") {
+      Board.appendChild(circles);
+   } else if (rootSvg === "PlayerUPRight") {
+      PlayerUPRight.appendChild(circles);
+   } else if (rootSvg === "GameDisplay") {
+      GameDisplay.appendChild(circles);
+   } else if (rootSvg === "infoMain") {
+      infoMain.appendChild(circles);
+   }
 }
 
 //set attributes to draw pieces
 function setPieces() {
+   let fS1 = "";
+   let fS2 = "";
    PPos = PiecesPosition[I - 1];
-   if (PPos === PPos.toLowerCase()) {
-      FillStyle = "rgba(0,0,0,1.0)";
-      StrokeStyle = "rgba(255,255,255,1.0)";
-   } else {
-      FillStyle = "rgba(255,255,255,1.0)";
-      StrokeStyle = "rgba(0,0,0,1.0)";
-   }
+
    if (PPos === "q" || PPos === "c" || PPos === "r" || PPos === "Q" || PPos === "C" || PPos === "R") {
-      PieceID1 = "intA" + I;
-      PieceID2 = "intB" + I;
-      PieceRadius1 = 15;
-      PieceRadius2 = 14;
-      PieceFill1 = StrokeStyle;
-      PieceFill2 = FillStyle;
-      PieceStroke1 = "transparent";
-      PieceStroke2 = "transparent";
-      PieceStrokeWidth1 = 0;
-      PieceStrokeWidth2 = 0;
-      drawPieces();
+
+      if (PPos === PPos.toLowerCase()) {
+         fS1 = "whitePieceFill";
+         fS2 = "blackPieceFill";
+      } else {
+         fS1 = "blackPieceFill";
+         fS2 = "whitePieceFill";
+      }
+
+      drawCircles(fS1, "circle", "intA" + I, Square_x + 30, Square_y + 30, 15, 0, "geometricPrecision", "Board");
+      drawCircles(fS2, "circle", "intB" + I, Square_x + 30, Square_y + 30, 14, 0, "geometricPrecision", "Board");
+
    }
 
    if (PPos === "q" || PPos === "b" || PPos === "c" || PPos === "n" || PPos === "Q" || PPos === "B" || PPos === "C" || PPos === "N") {
-      PieceID1 = "midA" + I;
-      PieceID2 = "midB" + I;
-      PieceRadius1 = 18;
-      PieceRadius2 = 18;
-      PieceFill1 = "transparent";
-      PieceFill2 = "transparent";
-      PieceStroke1 = StrokeStyle;
-      PieceStroke2 = FillStyle;
-      PieceStrokeWidth1 = 8;
-      PieceStrokeWidth2 = 6;
-      drawPieces();
+
+      if (PPos === PPos.toLowerCase()) {
+         fS1 = "whitePieceStroke";
+         fS2 = "blackPieceStroke";
+      } else {
+         fS1 = "blackPieceStroke";
+         fS2 = "whitePieceStroke";
+      }
+
+      drawCircles(fS1, "circle", "midA" + I, Square_x + 30, Square_y + 30, 18, 8, "geometricPrecision", "Board");
+      drawCircles(fS2, "circle", "midB" + I, Square_x + 30, Square_y + 30, 18, 6, "geometricPrecision", "Board");
+
    }
 
    if (PPos === "c" || PPos === "p" || PPos === "n" || PPos === "C" || PPos === "P" || PPos === "N") {
-      PieceID1 = "extA" + I;
-      PieceID2 = "extB" + I;
-      PieceRadius1 = 25;
-      PieceRadius2 = 25;
-      PieceFill1 = "transparent";
-      PieceFill2 = "transparent";
-      PieceStroke1 = StrokeStyle;
-      PieceStroke2 = FillStyle;
-      PieceStrokeWidth1 = 8;
-      PieceStrokeWidth2 = 6;
-      drawPieces();
+
+      if (PPos === PPos.toLowerCase()) {
+         fS1 = "whitePieceStroke";
+         fS2 = "blackPieceStroke";
+      } else {
+         fS1 = "blackPieceStroke";
+         fS2 = "whitePieceStroke";
+      }
+
+      drawCircles(fS1, "circle", "extA" + I, Square_x + 30, Square_y + 30, 25, 8, "geometricPrecision", "Board");
+      drawCircles(fS2, "circle", "extB" + I, Square_x + 30, Square_y + 30, 25, 6, "geometricPrecision", "Board");
    }
 }
 
@@ -714,43 +770,18 @@ function promoPieces() {
    let p = 70;
    let x = 0;
    let idType = "int";
-
+   let fS = "";
    let pRadius1 = 15;
    let pRadius2 = 14;
-
-   let pFill1 = "rgba(0,0,0,1.0)";
-   let pFill2 = "rgba(255,255,255,1.0)";
-
-   let pStroke1 = "transparent";
-   let pStroke2 = "transparent";
-
    let pStrokeWidth1 = 0;
    let pStrokeWidth2 = 0;
 
-   //generate circles to compose board pieces
+   //generate circles to compose promo pieces
    while (p < 86 && x < 2) {
       p++;
-      const shapePromo1 = document.createElementNS(SvgNS, "circle");
-      shapePromo1.setAttributeNS(null, "id", idType + "A" + p);
-      shapePromo1.setAttributeNS(null, "cx", 600);
-      shapePromo1.setAttributeNS(null, "cy", 600);
-      shapePromo1.setAttributeNS(null, "r", pRadius1);
-      shapePromo1.setAttributeNS(null, "fill", pFill1);
-      shapePromo1.setAttributeNS(null, "stroke", pStroke1);
-      shapePromo1.setAttributeNS(null, "stroke-width", pStrokeWidth1);
-      shapePromo1.setAttributeNS(null, "shape-rendering", "geometricPrecision");
-      Board.appendChild(shapePromo1);
 
-      const shapePromo2 = document.createElementNS(SvgNS, "circle");
-      shapePromo2.setAttributeNS(null, "id", idType + "B" + p);
-      shapePromo2.setAttributeNS(null, "cx", 600);
-      shapePromo2.setAttributeNS(null, "cy", 600);
-      shapePromo2.setAttributeNS(null, "r", pRadius2);
-      shapePromo2.setAttributeNS(null, "fill", pFill2);
-      shapePromo2.setAttributeNS(null, "stroke", pStroke2);
-      shapePromo2.setAttributeNS(null, "stroke-width", pStrokeWidth2);
-      shapePromo2.setAttributeNS(null, "shape-rendering", "geometricPrecision");
-      Board.appendChild(shapePromo2);
+      drawCircles(fS, "circle", idType + "A" + p, 600, 600, pRadius1, pStrokeWidth1, "geometricPrecision", "Board");
+      drawCircles(fS, "circle", idType + "B" + p, 600, 600, pRadius2, pStrokeWidth2, "geometricPrecision", "Board");
 
       if (p === 86) {
          idType = "mid";
@@ -759,19 +790,14 @@ function promoPieces() {
       }
 
       if (p === 78 && idType === "int") {
-         pFill1 = "rgba(255,255,255,1.0)";
-         pFill2 = "rgba(0,0,0,1.0)";
+         fS = "whitePieceFill";
       }
 
       if (p === 70 && idType === "mid") {
          pRadius1 = 18;
          pRadius2 = 18;
 
-         pFill1 = "transparent";
-         pFill2 = "transparent";
-
-         pStroke1 = "rgba(0,0,0,1.0)";
-         pStroke2 = "rgba(255,255,255,1.0)";
+         fS = "whitePieceStroke";
 
          pStrokeWidth1 = 8;
          pStrokeWidth2 = 6;
@@ -781,11 +807,7 @@ function promoPieces() {
          pRadius1 = 18;
          pRadius2 = 18;
 
-         pFill1 = "transparent";
-         pFill2 = "transparent";
-
-         pStroke1 = "rgba(255,255,255,1.0)";
-         pStroke2 = "rgba(0,0,0,1.0)";
+         fS = "whitePieceStroke";
 
          pStrokeWidth1 = 8;
          pStrokeWidth2 = 6;
@@ -795,34 +817,13 @@ function promoPieces() {
 
 //draw marks and undermarks
 function drawMarks() {
-   const shapeMarks = document.createElementNS(SvgNS, "circle");
-   shapeMarks.setAttributeNS(null, "id", "Mark" + M);
-   shapeMarks.setAttributeNS(null, "cx", XMark + 30);
-   shapeMarks.setAttributeNS(null, "cy", YMark + 30);
-   shapeMarks.setAttributeNS(null, "r", 10);
-   shapeMarks.setAttributeNS(null, "fill", "rgba(0,0,0,0)");
-   shapeMarks.setAttributeNS(null, "stroke", "rgba(0,0,0,0)");
-   shapeMarks.setAttributeNS(null, "stroke-width", 1);
-   shapeMarks.setAttributeNS(null, "shape-rendering", "geometricPrecision");
-   Board.appendChild(shapeMarks);
 
-   const shapeUnderMarks = document.createElementNS(SvgNS, "circle");
-   shapeUnderMarks.setAttributeNS(null, "id", "underMark" + M);
-   shapeUnderMarks.setAttributeNS(null, "cx", XMark + 30);
-   shapeUnderMarks.setAttributeNS(null, "cy", YMark + 30);
-   shapeUnderMarks.setAttributeNS(null, "r", 10);
-   shapeUnderMarks.setAttributeNS(null, "fill", "rgba(0,0,0,0)");
-   shapeUnderMarks.setAttributeNS(null, "stroke", "rgba(0,0,0,0)");
-   shapeUnderMarks.setAttributeNS(null, "stroke-width", 1);
-   shapeUnderMarks.setAttributeNS(null, "shape-rendering", "optimizeSpeed");
-   Board.appendChild(shapeUnderMarks);
+   drawCircles("disable", "circle", "Mark" + M, XMark + 30, YMark + 30, 10, 1, "geometricPrecision", "Board");
+   drawCircles("disable", "circle", "underMark" + M, XMark + 30, YMark + 30, 10, 1, "optimizeSpeed", "Board");
 }
 
-//set values x y to draw marks inside mc
-function callDrawMarks() {
-   //draw marks
-   while (M < 225) {
-      M++;
+function setxyMark(M) {
+   if (M < 106) {
       if (M < 16) {
          XMark = (M - 1) * 60;
          YMark = 0;
@@ -844,7 +845,9 @@ function callDrawMarks() {
       } else if (M < 106) {
          XMark = (M - 91) * 60;
          YMark = 360;
-      } else if (M < 121) {
+      }
+   } else {
+      if (M < 121) {
          XMark = (M - 106) * 60;
          YMark = 420;
       } else if (M < 136) {
@@ -869,6 +872,16 @@ function callDrawMarks() {
          XMark = (M - 211) * 60;
          YMark = 840;
       }
+   }
+}
+
+//set values x y to draw marks inside mc
+function callDrawMarks() {
+   //draw marks
+
+   while (M < 225) {
+      M++;
+      setxyMark(M);
       drawMarks();
    }
 }
@@ -901,25 +914,49 @@ function drawMarker(i) {
       YLeaving = parseInt(document.getElementById("butSquare" + i).getAttribute("y")) + 30;
 
       if (PiecesPosition[i - 1] === "O") {
-         ArrowColor = ColorOh;
+         ArrowColor = "ColorMarkerOh";
       } else if (PiecesPosition[i - 1] === PiecesPosition[i - 1].toUpperCase()) {
-         ArrowColor = ColorWhite;
+         ArrowColor = "ColorMarkerWhite";
       } else {
-         ArrowColor = ColorBlack;
+         ArrowColor = "ColorMarkerBlack";
       }
    }
 
    if (MarkerControl === 2) {
 
       if (inti !== i) {
+
          let xLanding = parseInt(document.getElementById("butSquare" + i).getAttribute("x")) + 30;
          let yLanding = parseInt(document.getElementById("butSquare" + i).getAttribute("y")) + 30;
 
-         xy = XLeaving + "," + YLeaving + " " + xLanding + "," + yLanding;
+         let xLea = XLeaving;
+         let xLan = xLanding;
+         let yLea = YLeaving;
+         let yLan = yLanding;
+
+         if (XLeaving < xLanding) {
+            xLan = xLanding - 10;
+         }
+         if (YLeaving > yLanding) {
+            yLan = yLanding + 10;
+         }
+
+         if (XLeaving > xLanding) {
+            xLan = xLanding + 10;
+         }
+         if (YLeaving < yLanding) {
+            yLan = yLanding - 10;
+         }
+
+
+
+         xy = XLeaving + "," + YLeaving + " " + xLan + "," + yLan;
+
+         fillerStroker(ArrowColor);
 
          const marker = document.createElementNS(SvgNS, "marker");
          marker.setAttributeNS(null, "id", "marker" + MarkerCount);
-         marker.setAttributeNS(null, "fill", ArrowColor);
+         marker.setAttributeNS(null, "fill", Filler);
          marker.setAttributeNS(null, 'refX', '1');
          marker.setAttributeNS(null, 'refY', '2');
          marker.setAttribute('markerUnits', 'strokeWidth');
@@ -931,16 +968,7 @@ function drawMarker(i) {
          marker.appendChild(path);
          Board.appendChild(marker);
 
-         let polyline = document.createElementNS(SvgNS, "polyline");
-         polyline.setAttributeNS(null, "id", "polyline" + MarkerCount);
-         polyline.setAttributeNS(null, 'points', xy);
-         polyline.setAttributeNS(null, "fill", "none");
-         polyline.setAttributeNS(null, "stroke-linecap", "round");
-         polyline.setAttributeNS(null, "stroke-width", 7);
-         polyline.setAttributeNS(null, "stroke", ArrowColor);
-         polyline.setAttributeNS(null, 'marker-end', "url(#marker" + MarkerCount + ")");
-
-         Board.appendChild(polyline);
+         drawer(ArrowColor, "polyline", "polyline" + MarkerCount, 7, "geometricPrecision", "Board", xy, "round", "url(#marker" + MarkerCount + ")");
 
          MarkerCount++;
          MarkerControl = 0;
@@ -969,125 +997,8 @@ function clearMarkers() {
 function callMovingPiece(i) {
 
    if (gameover === 0 && TotalWCastles > 0 && TotalBCastles > 0) {
-
-      if (Turn === Turn.toUpperCase()) {
-
-         if (TotalWCastles > 2) {
-            movingPiece(i);
-            console.log("a");
-         } else if (TotalWCastles === 2) {
-            if (WhiteCastlesInCheck.length === 1) {
-               if (PiecesPosition[BSqSel - 1] === "C") {
-                  if (WhiteCastlesInCheck.includes(BSqSel) === true) {
-                     movingPiece(i);
-                     console.log("b");
-                  } else if (DeathPathWhite.includes(i) === true) {
-                     movingPiece(i);
-                     console.log("c");
-                  }
-               } else {
-                  movingPiece(i);
-                  console.log("d");
-               }
-            } else {
-               movingPiece(i);
-               console.log("e");
-            }
-         } else if (TotalWCastles === 1) {
-            if (RealWCheck === 1) {
-               if (PiecesPosition[BSqSel - 1] === "C") {
-                  movingPiece(i);
-                  console.log("f");
-               } else if (DeathPathWhite.includes(i) === true) {
-                  movingPiece(i);
-                  console.log("g");
-               } else if ((PiecesPosition[BSqSel - 1] === "R" && PiecesPosition[i - 1] === "n") || (PiecesPosition[BSqSel - 1] === "P" && PiecesPosition[i - 1] === "q") || (PiecesPosition[BSqSel - 1] === "N" && PiecesPosition[i - 1] === "q") || (PiecesPosition[BSqSel - 1] === "R" && PiecesPosition[i - 1] === "N") || (PiecesPosition[BSqSel - 1] === "P" && PiecesPosition[i - 1] === "Q") || (PiecesPosition[BSqSel - 1] === "N" && PiecesPosition[i - 1] === "Q")) {
-                  movingPiece(i);
-                  console.log("u");
-               }
-            } else {
-               if (PiecesPosition[BSqSel - 1] === "C" || PiecesPosition[BSqSel - 1] === "R" || PiecesPosition[BSqSel - 1] === "B" || PiecesPosition[BSqSel - 1] === "P") {
-                  letPiecesPosition = Array.from(PiecesPosition);
-                  letPiecesPosition[i - 1] = PiecesPosition[BSqSel - 1];
-                  letPiecesPosition[BSqSel - 1] = "O";
-                  letCastleInCheck();
-
-                  if (DeathPathWhite.includes(BSqSel) === false) {
-                     movingPiece(i);
-                     console.log("h");
-                  } else if (DeathPathWhite.includes(i) === true) {
-                     movingPiece(i);
-                     console.log("i");
-                  }
-
-               } else {
-                  movingPiece(i);
-                  console.log("j");
-               }
-            }
-         }
-
-      } else {
-
-         if (TotalBCastles > 2) {
-            movingPiece(i);
-            console.log("k");
-         } else if (TotalBCastles === 2) {
-            if (BlackCastlesInCheck.length === 1) {
-               if (PiecesPosition[BSqSel - 1] === "c") {
-                  if (BlackCastlesInCheck.includes(BSqSel) === true) {
-                     movingPiece(i);
-                     console.log("l");
-                  } else if (DeathPathBlack.includes(i) === true) {
-                     movingPiece(i);
-                     console.log("m");
-                  }
-               } else {
-                  movingPiece(i);
-                  console.log("n");
-               }
-            } else {
-               movingPiece(i);
-               console.log("o");
-            }
-         } else if (TotalBCastles === 1) {
-            if (RealBCheck === 1) {
-               if (PiecesPosition[BSqSel - 1] === "c") {
-                  movingPiece(i);
-                  console.log("p");
-               } else if (DeathPathBlack.includes(i) === true) {
-                  movingPiece(i);
-                  console.log("q");
-               } else if ((PiecesPosition[BSqSel - 1] === "r" && PiecesPosition[i - 1] === "n") || (PiecesPosition[BSqSel - 1] === "p" && PiecesPosition[i - 1] === "q") || (PiecesPosition[BSqSel - 1] === "n" && PiecesPosition[i - 1] === "q") || (PiecesPosition[BSqSel - 1] === "r" && PiecesPosition[i - 1] === "N") || (PiecesPosition[BSqSel - 1] === "p" && PiecesPosition[i - 1] === "Q") || (PiecesPosition[BSqSel - 1] === "n" && PiecesPosition[i - 1] === "Q")) {
-                  movingPiece(i);
-                  console.log("u");
-               }
-            } else {
-               if (PiecesPosition[BSqSel - 1] === "c" || PiecesPosition[BSqSel - 1] === "r" || PiecesPosition[BSqSel - 1] === "b" || PiecesPosition[BSqSel - 1] === "p") {
-                  letPiecesPosition = Array.from(PiecesPosition);
-                  letPiecesPosition[i - 1] = PiecesPosition[BSqSel - 1];
-                  letPiecesPosition[BSqSel - 1] = "O";
-                  letCastleInCheck();
-
-                  if (DeathPathBlack.includes(BSqSel) === false) {
-                     movingPiece(i);
-                     console.log("r");
-                  } else if (DeathPathBlack.includes(i) === true) {
-                     movingPiece(i);
-                     console.log("s");
-                  }
-
-               } else {
-                  movingPiece(i);
-                  console.log("t");
-               }
-            }
-         }
-
-      }
-
+      movingPiece(i);
    }
-
 }
 
 //double click
@@ -1099,15 +1010,8 @@ function doubleClick() {
 
 //draw buttons to click squares
 function drawButtons(i) {
-   const shape4 = document.createElementNS(SvgNS, "rect");
-   shape4.setAttributeNS(null, "id", "but" + DrawCanvas);
-   shape4.setAttributeNS(null, "width", 60);
-   shape4.setAttributeNS(null, "height", 60);
-   shape4.setAttributeNS(null, "x", Square_x);
-   shape4.setAttributeNS(null, "y", Square_y);
-   shape4.setAttributeNS(null, "fill", "transparent");
-   shape4.setAttributeNS(null, "stroke-width", 0);
-   Board.appendChild(shape4);
+
+   svger("disable", "rect", "but" + DrawCanvas, 60, 60, Square_x, Square_y, 0, "geometricPrecision", "Board");
 
    function simpleClick() { // click
       if (SelectPieceStatus === 0) {
@@ -1127,7 +1031,7 @@ function drawButtons(i) {
             let transp = "rgba(200,50,0," + (t / 100) + ")";
             let travel = setInterval(function() {
 
-               //animation square border coloring. time to cancel move.
+               //animation square border coloring.
                t++;
                transp = "rgba(200,50,0," + (t / 100) + ")";
 
@@ -1265,6 +1169,22 @@ function fillerStroker(c) {
          Filler = "rgba(255,255,255,1.0)";
          Stroker = "rgba(0,0,0,1.0)";
          break;
+      case "whitePieceStroke":
+         Filler = "rgba(255,255,255,0.0)";
+         Stroker = "rgba(255,255,255,1.0)";
+         break;
+      case "blackPieceStroke":
+         Filler = "rgba(0,0,0,0.0)";
+         Stroker = "rgba(0,0,0,1.0)";
+         break;
+      case "whitePieceFill":
+         Filler = "rgba(255,255,255,1.0)";
+         Stroker = "rgba(255,255,255,0.0)";
+         break;
+      case "blackPieceFill":
+         Filler = "rgba(0,0,0,1.0)";
+         Stroker = "rgba(0,0,0,0.0)";
+         break;
       case "black":
          Filler = "rgba(0,0,0,1.0)";
          Stroker = "rgba(255,255,255,1.0)";
@@ -1277,6 +1197,14 @@ function fillerStroker(c) {
          Filler = "rgba(0,0,0,0.5)";
          Stroker = "rgba(255,255,255,0.5)";
          break;
+      case "textColorWhite":
+         Filler = "rgba(250,250,250,1.0)";
+         Stroker = "rgba(0,0,0,0.0)";
+         break;
+      case "textColorOver":
+         Filler = "rgba(0,150,0,1.0)";
+         Stroker = "rgba(0,0,0,0.0)";
+         break;
       case "blackSquare":
          Filler = "rgba(102, 153, 51, 1.0)";
          Stroker = "rgba(102, 153, 51, 1.0)";
@@ -1284,6 +1212,14 @@ function fillerStroker(c) {
       case "whiteSquare":
          Filler = "rgba(210,225,195,1.0)";
          Stroker = "rgba(210,225,195,1.0)";
+         break;
+      case "blackSquareMini":
+         Filler = "rgba(115, 100, 90, 1.0)";
+         Stroker = "rgba(115, 100, 90, 1.0)";
+         break;
+      case "whiteSquareMini":
+         Filler = "rgba(210,200,180,1.0)";
+         Stroker = "rgba(210,200,180,1.0)";
          break;
       case "turnover":
          Filler = "rgba(0,200,200,0.5)";
@@ -1321,6 +1257,10 @@ function fillerStroker(c) {
          Filler = "rgba(140,140,140,1.0)";
          Stroker = "rgba(140,140,140,1.0)";
          break;
+      case "greyColorStroke":
+         Filler = "rgba(140,140,140,0.0)";
+         Stroker = "rgba(140,140,140,1.0)";
+         break;
       case "iceWhiteColor":
          Filler = "rgba(230,230,225,1.0)";
          Stroker = "rgba(230,230,225,1.0)";
@@ -1328,6 +1268,50 @@ function fillerStroker(c) {
       case "lightWhiteColor":
          Filler = "rgba(255,250,255,1.0)";
          Stroker = "rgba(255,250,255,1.0)";
+         break;
+      case "lightWhiteColorStroke":
+         Filler = "rgba(255,250,255,0.0)";
+         Stroker = "rgba(255,250,255,1.0)";
+         break;
+      case "mMove":
+         Filler = "rgba(255,200,0,0.8)";
+         Stroker = "rgba(255,200,0,0.0)";
+         break;
+      case "bgBlackTransp":
+         Filler = "rgba(31,31,31,0.3)";
+         Stroker = "rgba(31,31,31,0.3)";
+         break;
+      case "blackTransp":
+         Filler = "rgba(100,100,100,0.1)";
+         Stroker = "rgba(100,100,100,0.1)";
+         break;
+      case "lettererBoard":
+         Filler = "rgba(0,0,0,0.4)";
+         Stroker = "rgba(0,0,0,0.0)";
+         break;
+      case "lettererBlackText":
+         Filler = "rgba(0,0,0,1.0)";
+         Stroker = "rgba(0,0,0,0.0)";
+         break;
+      case "lettererWhiteText":
+         Filler = "rgba(250,250,250,1.0)";
+         Stroker = "rgba(0,0,0,0.0)";
+         break;
+      case "lettererWhiteTextTransp":
+         Filler = "rgba(250,250,250,0.3)";
+         Stroker = "rgba(0,0,0,0.0)";
+         break;
+      case "ColorMarkerOh":
+         Filler = "rgba(50,100,50,1.0)";
+         Stroker = "rgba(50,100,50,1.0)";
+         break;
+      case "ColorMarkerWhite":
+         Filler = "rgba(130,80,0,1.0)";
+         Stroker = "rgba(130,80,0,1.0)";
+         break;
+      case "ColorMarkerBlack":
+         Filler = "rgba(50,50,100,1.0)";
+         Stroker = "rgba(50,50,100,1.0)";
          break;
    }
 }
@@ -1379,16 +1363,7 @@ castlesInCheck(); //get first array with all castles in check
 logo_superc.setAttribute("style", "-webkit-touch-callout: none;-webkit-user-select: none;-khtml-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;");
 
 function GameVersion() {
-   const verser = document.createElementNS(SvgNS, "text");
-   verser.setAttributeNS(null, "id", "version");
-   verser.setAttribute("x", 10);
-   verser.setAttribute("y", 10);
-   verser.setAttribute("fill", "rgba(255,255,255,0.3)");
-   verser.setAttribute("font-family", "Helvetica");
-   verser.setAttribute("font-weight", "normal");
-   verser.setAttribute("font-size", 10);
-   verser.setAttribute("style", "-webkit-touch-callout: none;-webkit-user-select: none;-khtml-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;");
-   verser.textContent = "Alpha_0.0.3";
-   PlayerDownRight.appendChild(verser);
+   letterer("lettererWhiteTextTransp", "text", "version", 10, 10, "Helvetica", "normal", 10, "geometricPrecision", "PlayerDownRight", "Alpha_0.0.4");
+
 }
 GameVersion();
