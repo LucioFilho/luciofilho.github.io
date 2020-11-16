@@ -156,6 +156,13 @@ pPoints = "284,131 284,123 282,123 282,139 284,139 284,131, 293,139 293,123";
 drawer("lightWhiteColor", "polygon", "iconStepBack", 0, "geometricPrecision", "GameDisplay", pPoints);
 document.getElementById("iconStepBack").setAttributeNS(null, "transform", "translate(-127,0)");
 
+//add time
+pPoints = "M 27.4499321,9.0769501l-5.168869-5.1688685c-0.4516602-0.4321437-1.1032772-0.390342-1.4836559,0l-0.9332676,0.9332681 c-0.4068089,0.4068089-0.4068089,1.1007771,0,1.507586l0.7657566,0.7657585l-0.909338,0.8854079 c-3.1604519-1.7304196-6.947711-1.6262951-9.9309273,0l-0.909337-0.8854079l0.7657585-0.7657585 c0.4068089-0.4068093,0.4068089-1.0768476,0-1.507586L8.7127838,3.9080815c-0.4037457-0.4037459-1.0693731-0.4142828-1.4836559,0 L2.0363295,9.0769501c-0.399395,0.399395-0.4255123,1.0581436,0,1.4836559l0.9332681,0.9332676 c0.4068091,0.4068098,1.0768473,0.4068098,1.5075867,0l0.8375483-0.8375483l0.741828,0.741828 c-1.0768471,1.6511669-1.7229557,3.5894918-1.7229557,5.7192574c0,5.743187,4.6663389,10.3855972,10.3855963,10.3855972 s10.3855963-4.6663399,10.3855963-10.3855972c0-2.105835-0.6221771-4.0680904-1.7229557-5.6953268l0.7418289-0.7657585 l0.8375473,0.8375483c0.4068089,0.4068098,1.1007767,0.4068098,1.5075874,0l0.9332676-0.9332676 C27.7517109,10.1848783,27.8899593,9.5169773,27.4499321,9.0769501 z M 14.7431297,24.9903622 c-4.3313198,0-7.872952-3.5416317-7.872952-7.8729515s3.5416322-7.8729525,7.872952-7.8729525 s7.8729515,3.5416327,7.8729515,7.8729525C22.6160812,21.472662,19.0744514,24.9903622,14.7431297,24.9903622 z M 16.7053852,16.4473743h-1.2682877v-1.2682886c0-0.3828793-0.3110895-0.6700382-0.6700382-0.6700382 c-0.3828783,0-0.6700382,0.3110886-0.6700382,0.6700382v1.2682886h-1.2682867 c-0.3828783,0-0.6700382,0.3110886-0.6700382,0.6700382c0,0.3828793,0.3110895,0.6700401,0.6700382,0.6700401h1.2443571v1.2682877 c0,0.3828773,0.3110895,0.6700382,0.6700382,0.6700382c0.3828802,0,0.6700382-0.3110905,0.6700382-0.6700382v-1.24436h1.2922173 c0.3828793,0,0.6700401-0.3110905,0.6700401-0.6700401C17.3754253,16.758461,17.0643349,16.4473743,16.7053852,16.4473743 z M 14.7431297,11.3742237c-3.2066116,0-5.8149757,2.6083651-5.8149757,5.8149757s2.6083641,5.8149776,5.8149757,5.8149776 s5.8149757-2.6083641,5.8149757-5.8149776S17.9497414,11.3742237,14.7431297,11.3742237 z M 14.7431297,20.7786922 c-1.9861851,0-3.5894918-1.6033039-3.5894918-3.5894909s1.6033068-3.5894918,3.5894918-3.5894918 s3.5894928,1.6033068,3.5894928,3.5894918S16.7293148,20.7786922,14.7431297,20.7786922 z";
+drawer("lightWhiteColor", "path", "butAddTimeTopBG", 0, "geometricPrecision", "GameDisplay", pPoints);
+drawer("lightWhiteColor", "path", "butAddTimeBotBG", 0, "geometricPrecision", "GameDisplay", pPoints);
+
+document.getElementById("butAddTimeTopBG").setAttributeNS(null, "transform", "translate(270,80)");
+document.getElementById("butAddTimeBotBG").setAttributeNS(null, "transform", "translate(270,370)");
 
 //button move to end
 pPoints = "280,131 280,123 282,123 282,139 280,139 280,131, 271,139 271,131, 262,139, 262,123 271,131 271,123";
@@ -167,17 +174,19 @@ drawer("lightWhiteColor", "polygon", "iconMoveToStart", 0, "geometricPrecision",
 document.getElementById("iconMoveToStart").setAttributeNS(null, "transform", "translate(-188,0)");
 
 //flip board icon
-drawer("greyColorStroke", "path", "arcIconTop", 3, "geometricPrecision", "GameDisplay");
+pPoints = 0; //0 avoid to use d values, instead it uses arc function
+drawer("greyColorStroke", "path", "arcIconTop", 3, "geometricPrecision", "GameDisplay", pPoints);
 document.getElementById("arcIconTop").setAttributeNS(null, "d", describeArc(48, 132, 12, -90, 90));
 
-drawer("lightWhiteColorStroke", "path", "arcIconBot", 3, "geometricPrecision", "GameDisplay");
+drawer("lightWhiteColorStroke", "path", "arcIconBot", 3, "geometricPrecision", "GameDisplay", pPoints);
 document.getElementById("arcIconBot").setAttributeNS(null, "d", describeArc(48, 132, 12, 90, 270));
 
 //take back icon
-drawer("lightWhiteColorStroke", "path", "arcTakebackTop", 4, "geometricPrecision", "GameDisplay");
+pPoints = 0;
+drawer("lightWhiteColorStroke", "path", "arcTakebackTop", 4, "geometricPrecision", "GameDisplay", pPoints);
 document.getElementById("arcTakebackTop").setAttributeNS(null, "d", describeArc(104, 348, 10, 0, 90));
 
-drawer("greyColorStroke", "path", "arcTakebackBot", 4, "geometricPrecision", "GameDisplay");
+drawer("greyColorStroke", "path", "arcTakebackBot", 4, "geometricPrecision", "GameDisplay", pPoints);
 document.getElementById("arcTakebackBot").setAttributeNS(null, "d", describeArc(104, 348, 10, 90, 270));
 
 //draw arrow icon
@@ -193,6 +202,10 @@ svger("disable", "rect", "butMoveToEnd", 56, 36, 244, 114, 0, "geometricPrecisio
 
 svger("disable", "rect", "butSaveFile", 56, 36, 20, 330, 0, "geometricPrecision", "GameDisplay", 1, 0, 5, "blackSquare", "lightWhiteColor", "blackSquare", "whiteSquare");
 svger("disable", "rect", "butTakeback", 56, 36, 76, 330, 0, "geometricPrecision", "GameDisplay", 1, 0, 6, "blackSquare", "lightWhiteColor", "blackSquare", "whiteSquare");
+
+svger("disable", "rect", "butAddTimeTop", 30, 30, 270, 80, 0, "geometricPrecision", "GameDisplay", 1, 0, 10, "mMove", "lightWhiteColor", "mMove", "lightWhiteColor");
+svger("disable", "rect", "butAddTimeBot", 30, 30, 270, 380, 0, "geometricPrecision", "GameDisplay", 1, 0, 10, "mMove", "lightWhiteColor", "mMove", "lightWhiteColor");
+
 
 //call crono
 drawCountdown();
@@ -323,6 +336,10 @@ function displayActions(k) {
          }
          let pgnInfo = "game: Super C \nevent_id: 0 \nmatch_rating: none \nmatch_result: [learning]\nevent_type: Play yourself\nUTCDate: " + UTCGame + "\nwhite: [Visitant, 0, 100]\nblack: [Visitant, 0, 100] \nMatch Point: 0\ntime_mode: none \nmove_id: [none] \nUCI: [" + Notation + "]\n\n" + gameNotation;
          download(pgnInfo);
+      } else if (Move > 3 && Turn === "b" && (k === "butAddTimeTop" && VerseReverse === "wb") || (k === "butAddTimeBot" && VerseReverse === "bw")) {
+         realClockB += 10000;
+      } else if (Move > 3 && (Turn === "W" && k === "butAddTimeTop" && VerseReverse === "bw") || (k === "butAddTimeBot" && VerseReverse === "wb")) {
+         realClockW += 10000;
       }
    }
 }

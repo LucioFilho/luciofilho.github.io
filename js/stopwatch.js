@@ -5,6 +5,8 @@ let lockB = false;
 let lockRealTime = false;
 let lockW = false;
 let realClock = 0;
+let realClockB = 0;
+let realClockW = 0;
 let realDays = 0;
 let realHours = 0;
 let realMilliseconds = 0;
@@ -34,6 +36,8 @@ function updateCountdown() {
       realMilliseconds = realTime.getMilliseconds();
 
       realClock = realDays + realHours + realMinutes + realSeconds + realMilliseconds;
+      realClockW = realDays + realHours + realMinutes + realSeconds + realMilliseconds;
+      realClockB = realDays + realHours + realMinutes + realSeconds + realMilliseconds;
 
       lockRealTime = true;
 
@@ -58,12 +62,19 @@ function updateCountdown() {
    if (Move > 2 && gameover === 0) {
 
       if (Turn === "W") {
+
+         if (addTimeW !== 0) {
+            timeWOffset += addTimeW;
+            addTimeW = 0;
+         }
+
          if (lockW === false) {
             timeWOffset += timeWOff;
 
             checkWClock = checkDays + checkHours + checkMinutes + checkSeconds + checkMilliseconds - timeWOffset;
 
-            timeLength = checkWClock - realClock;
+            timeLength = checkWClock - realClockW;
+
             if (timeLength < timeWLength) {
                timeCounter = timeWLength - timeLength;
                if (timeCounter < 10000) {
@@ -77,7 +88,7 @@ function updateCountdown() {
          lockW = true;
          lockB = false;
 
-         timeLength = checkWClock - realClock;
+         timeLength = checkWClock - realClockW;
          timeBOff = checkWClock - timelapseB;
 
          if (timeLength < timeWLength) {
@@ -90,12 +101,18 @@ function updateCountdown() {
          }
 
       } else {
+
+         if (addTimeB !== 0) {
+            timeBOffset += addTimeB;
+            addTimeB = 0;
+         }
+
          if (lockB === false) {
             timeBOffset += timeBOff;
 
             checkBClock = checkDays + checkHours + checkMinutes + checkSeconds + checkMilliseconds - timeBOffset;
 
-            timeLength = checkBClock - realClock;
+            timeLength = checkBClock - realClockB;
             if (timeLength < timeBLength) {
                timeCounter = timeBLength - timeLength;
                if (timeCounter < 10000) {
@@ -109,7 +126,7 @@ function updateCountdown() {
          lockB = true;
          lockW = false;
 
-         timeLength = checkBClock - realClock;
+         timeLength = checkBClock - realClockB;
          timeWOff = checkBClock - timelapseA;
 
          if (timeLength < timeBLength) {
@@ -124,16 +141,7 @@ function updateCountdown() {
       }
 
       minutes = Math.floor(timeCounter / 60000);
-      if (minutes === 3) {
-         seconds = 0;
-      } else if (minutes === 2) {
-         seconds = Math.floor((timeCounter / 1000) - 120);
-      } else if (minutes === 1) {
-         seconds = Math.floor((timeCounter / 1000) - 60);
-      } else if (minutes === 0) {
-         seconds = Math.floor(timeCounter / 1000);
-
-      }
+      seconds = Math.floor((timeCounter / 1000) - (minutes * 60));
 
       minutes = minutes < 1 ? "00" : "0" + Math.floor(minutes);
       seconds = seconds < 10 ? "0" + Math.floor(seconds) : Math.floor(seconds);

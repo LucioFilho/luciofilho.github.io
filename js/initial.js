@@ -62,6 +62,8 @@ const GameDisplay = document.getElementById("GameDisplay");
 const PlayerDownRight = document.getElementById("PlayerDownRight");
 
 //vars to manage loops
+let addTimeW = 0;
+let addTimeB = 0;
 let Again = 0;
 let ArrowColor = "";
 let BlackCastlesInCheck = [];
@@ -529,6 +531,8 @@ function drawer(setColor, sType, sID, sStrokeWidth, sPrecision, rootSvg, pPoints
       pen.setAttributeNS(null, "fill", "none");
       pen.setAttributeNS(null, "stroke-linecap", strokeLinecap);
       pen.setAttributeNS(null, 'marker-end', markerEnd);
+   } else if (sType === "path" && pPoints !== 0) {
+      pen.setAttributeNS(null, "d", pPoints);
    }
 
    if (rootSvg === "Board") {

@@ -26,7 +26,8 @@ let element0 = [
    ["Take Back", "Volver hacia atrás", "Voltar atrás"],
    ["Select to learn", "Seleciona para aprender", "Selecione para aprender"],
    ["Preview", "Anterior", "Anterior"],
-   ["Next", "Próxima", "Próxima"]
+   ["Next", "Próxima", "Próxima"],
+   ["Add Time", "Adiciona Tiempo", "Adicione Tempo"]
 ];
 lang[0] = Array.from(element0);
 
