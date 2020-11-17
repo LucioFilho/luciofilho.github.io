@@ -206,7 +206,46 @@ svger("disable", "rect", "butTakeback", 56, 36, 76, 330, 0, "geometricPrecision"
 svger("disable", "rect", "butAddTimeTop", 30, 30, 270, 80, 0, "geometricPrecision", "GameDisplay", 1, 0, 10, "mMove", "lightWhiteColor", "mMove", "lightWhiteColor");
 svger("disable", "rect", "butAddTimeBot", 30, 30, 270, 380, 0, "geometricPrecision", "GameDisplay", 1, 0, 10, "mMove", "lightWhiteColor", "mMove", "lightWhiteColor");
 
+//draw pieces count
+function drawCounterPieces(pSide, y, fS1, fS2, fS3, fS4) {
 
+   drawCircles(fS3, "circle", "intCastle" + pSide + "A", 145, 24 + y, 11, 0, "geometricPrecision", "GameDisplay");
+   drawCircles(fS4, "circle", "intCastle" + pSide + "B", 145, 24 + y, 10, 0, "geometricPrecision", "GameDisplay");
+   drawCircles(fS1, "circle", "midCastle" + pSide + "A", 145, 24 + y, 13, 7, "geometricPrecision", "GameDisplay");
+   drawCircles(fS2, "circle", "midCastle" + pSide + "B", 145, 24 + y, 13, 5, "geometricPrecision", "GameDisplay");
+   drawCircles(fS1, "circle", "extCastle" + pSide + "A", 145, 24 + y, 19, 7, "geometricPrecision", "GameDisplay");
+   drawCircles(fS2, "circle", "extCastle" + pSide + "B", 145, 24 + y, 19, 5, "geometricPrecision", "GameDisplay");
+
+   //black Bishop
+   drawCircles(fS1, "circle", "midBishop" + pSide + "A", 40, 24 + y, 13, 7, "geometricPrecision", "GameDisplay");
+   drawCircles(fS2, "circle", "midBishop" + pSide + "B", 40, 24 + y, 13, 5, "geometricPrecision", "GameDisplay");
+
+   //black Rook
+   drawCircles(fS3, "circle", "intRook" + pSide + "A", 90, 24 + y, 11, 0, "geometricPrecision", "GameDisplay");
+   drawCircles(fS4, "circle", "intRook" + pSide + "B", 90, 24 + y, 10, 0, "geometricPrecision", "GameDisplay");
+
+   letterer("count8", "text", "countBishop" + pSide, 35, 31 + y, "Helvetica", "normal", 19, "geometricPrecision", "GameDisplay", 8);
+   letterer("count8", "text", "countRook" + pSide, 85, 31 + y, "Helvetica", "normal", 19, "geometricPrecision", "GameDisplay", 8);
+   letterer("count8", "text", "countCastle" + pSide, 140, 31 + y, "Helvetica", "normal", 19, "geometricPrecision", "GameDisplay", 8);
+
+   document.getElementById("countBishop" + pSide).setAttributeNS(null, "stroke-width", 0.5);
+   document.getElementById("countBishop" + pSide).setAttributeNS(null, "stroke", "rgba(0,0,0,1.0)");
+   document.getElementById("countRook" + pSide).setAttributeNS(null, "stroke-width", 0.5);
+   document.getElementById("countRook" + pSide).setAttributeNS(null, "stroke", "rgba(0,0,0,1.0)");
+   document.getElementById("countCastle" + pSide).setAttributeNS(null, "stroke-width", 0.5);
+   document.getElementById("countCastle" + pSide).setAttributeNS(null, "stroke", "rgba(0,0,0,1.0)");
+
+}
+drawCounterPieces("Top", 0, "whitePieceStrokeTransp", "blackPieceStroke", "whitePieceFillTransp", "blackPieceFill");
+drawCounterPieces("Bot", 432, "blackPieceStrokeTransp", "whitePieceStroke", "blackPieceFillTransp", "whitePieceFill");
+
+svger("disable", "rect", "butCountBishopTop", 40, 40, 20, 5, 0, "geometricPrecision", "GameDisplay", 2, 0, 11);
+svger("disable", "rect", "butCountRookTop", 40, 40, 70, 5, 0, "geometricPrecision", "GameDisplay", 2, 0, 12);
+svger("disable", "rect", "butCountCastleTop", 40, 40, 125, 5, 0, "geometricPrecision", "GameDisplay", 2, 0, 13);
+
+svger("disable", "rect", "butCountBishopBot", 40, 40, 20, 436, 0, "geometricPrecision", "GameDisplay", 2, 0, 11);
+svger("disable", "rect", "butCountRookBot", 40, 40, 70, 436, 0, "geometricPrecision", "GameDisplay", 2, 0, 12);
+svger("disable", "rect", "butCountCastleBot", 40, 40, 125, 436, 0, "geometricPrecision", "GameDisplay", 2, 0, 13);
 //call crono
 drawCountdown();
 
@@ -279,11 +318,11 @@ function displayActions(k) {
          }
       } else if (k === "butStepBackMini") {
 
-            soundRewind.play();
+         soundRewind.play();
 
       } else if (k === "butStepForwardMini") {
 
-            soundRewind.play();
+         soundRewind.play();
 
       } else if (k === "butOptionMini") {
          opChoice = 0;
@@ -336,10 +375,14 @@ function displayActions(k) {
          }
          let pgnInfo = "game: Super C \nevent_id: 0 \nmatch_rating: none \nmatch_result: [learning]\nevent_type: Play yourself\nUTCDate: " + UTCGame + "\nwhite: [Visitant, 0, 100]\nblack: [Visitant, 0, 100] \nMatch Point: 0\ntime_mode: none \nmove_id: [none] \nUCI: [" + Notation + "]\n\n" + gameNotation;
          download(pgnInfo);
-      } else if (Move > 3 && Turn === "b" && (k === "butAddTimeTop" && VerseReverse === "wb") || (k === "butAddTimeBot" && VerseReverse === "bw")) {
-         realClockB += 10000;
-      } else if (Move > 3 && (Turn === "W" && k === "butAddTimeTop" && VerseReverse === "bw") || (k === "butAddTimeBot" && VerseReverse === "wb")) {
-         realClockW += 10000;
+      } else if (Move > 3 && Turn === "b" && timeCounter < 540000) {
+         if ((k === "butAddTimeTop" && VerseReverse === "wb") || (k === "butAddTimeBot" && VerseReverse === "bw")) {
+            realClockB += 10000;
+         }
+      } else if (Move > 2 && Turn === "W" && timeCounter < 540000) {
+         if ((k === "butAddTimeTop" && VerseReverse === "bw") || (k === "butAddTimeBot" && VerseReverse === "wb")) {
+            realClockW += 10000;
+         }
       }
    }
 }

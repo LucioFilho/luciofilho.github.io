@@ -340,6 +340,146 @@ function squarer(I) {
    }
 }
 
+function gameDisplay888() {
+   if (VerseReverse === "wb") {
+      document.getElementById("digitMinutsB").setAttributeNS(null, "y", 97);
+      document.getElementById("digitSecondsB").setAttributeNS(null, "y", 97);
+      document.getElementById("digitMilisecondsB").setAttributeNS(null, "y", 97);
+      document.getElementById("digitMinutsW").setAttributeNS(null, "y", 420);
+      document.getElementById("digitSecondsW").setAttributeNS(null, "y", 420);
+      document.getElementById("digitMilisecondsW").setAttributeNS(null, "y", 420);
+
+      //counter pieces
+      document.getElementById("countBishopTop").textContent = TotalBBishops;
+      document.getElementById("countRookTop").textContent = TotalBRooks;
+      document.getElementById("countCastleTop").textContent = TotalBCastles;
+      document.getElementById("countBishopBot").textContent = TotalWBishops;
+      document.getElementById("countRookBot").textContent = TotalWRooks;
+      document.getElementById("countCastleBot").textContent = TotalWCastles;
+
+      fillerStroker("whitePieceFillTransp");
+      document.getElementById("intCastleTopA").setAttributeNS(null, "fill", Filler);
+      document.getElementById("intRookTopA").setAttributeNS(null, "fill", Filler);
+
+      fillerStroker("blackPieceFill");
+      document.getElementById("intCastleTopB").setAttributeNS(null, "fill", Filler);
+      document.getElementById("intRookTopB").setAttributeNS(null, "fill", Filler);
+
+      fillerStroker("whitePieceStrokeTransp");
+      document.getElementById("midCastleTopA").setAttributeNS(null, "stroke", Stroker);
+      document.getElementById("extCastleTopA").setAttributeNS(null, "stroke", Stroker);
+      document.getElementById("midBishopTopA").setAttributeNS(null, "stroke", Stroker);
+
+      fillerStroker("blackPieceStroke");
+      document.getElementById("midCastleTopB").setAttributeNS(null, "stroke", Stroker);
+      document.getElementById("extCastleTopB").setAttributeNS(null, "stroke", Stroker);
+      document.getElementById("midBishopTopB").setAttributeNS(null, "stroke", Stroker);
+
+      //
+      fillerStroker("blackPieceFill");
+      document.getElementById("intCastleBotA").setAttributeNS(null, "fill", Filler);
+      document.getElementById("intRookBotA").setAttributeNS(null, "fill", Filler);
+
+      fillerStroker("whitePieceFill");
+      document.getElementById("intCastleBotB").setAttributeNS(null, "fill", Filler);
+      document.getElementById("intRookBotB").setAttributeNS(null, "fill", Filler);
+
+      fillerStroker("blackPieceStroke");
+      document.getElementById("midCastleBotA").setAttributeNS(null, "stroke", Stroker);
+      document.getElementById("extCastleBotA").setAttributeNS(null, "stroke", Stroker);
+      document.getElementById("midBishopBotA").setAttributeNS(null, "stroke", Stroker);
+
+      fillerStroker("whitePieceStroke");
+      document.getElementById("midCastleBotB").setAttributeNS(null, "stroke", Stroker);
+      document.getElementById("extCastleBotB").setAttributeNS(null, "stroke", Stroker);
+      document.getElementById("midBishopBotB").setAttributeNS(null, "stroke", Stroker);
+
+      //count value colors
+      fillerStroker("count" + TotalBBishops);
+      document.getElementById("countBishopTop").setAttributeNS(null, "fill", Filler);
+      fillerStroker("count" + TotalBRooks);
+      document.getElementById("countRookTop").setAttributeNS(null, "fill", Filler);
+      fillerStroker("count" + TotalBCastles);
+      document.getElementById("countCastleTop").setAttributeNS(null, "fill", Filler);
+
+      fillerStroker("count" + TotalWBishops);
+      document.getElementById("countBishopBot").setAttributeNS(null, "fill", Filler);
+      fillerStroker("count" + TotalWRooks);
+      document.getElementById("countRookBot").setAttributeNS(null, "fill", Filler);
+      fillerStroker("count" + TotalWCastles);
+      document.getElementById("countCastleBot").setAttributeNS(null, "fill", Filler);
+
+
+   } else {
+      document.getElementById("digitMinutsB").setAttributeNS(null, "y", 420);
+      document.getElementById("digitSecondsB").setAttributeNS(null, "y", 420);
+      document.getElementById("digitMilisecondsB").setAttributeNS(null, "y", 420);
+      document.getElementById("digitMinutsW").setAttributeNS(null, "y", 97);
+      document.getElementById("digitSecondsW").setAttributeNS(null, "y", 97);
+      document.getElementById("digitMilisecondsW").setAttributeNS(null, "y", 97);
+
+      //counter pieces
+      document.getElementById("countBishopBot").textContent = TotalBBishops;
+      document.getElementById("countRookBot").textContent = TotalBRooks;
+      document.getElementById("countCastleBot").textContent = TotalBCastles;
+      document.getElementById("countBishopTop").textContent = TotalWBishops;
+      document.getElementById("countRookTop").textContent = TotalWRooks;
+      document.getElementById("countCastleTop").textContent = TotalWCastles;
+
+      fillerStroker("blackPieceFill");
+      document.getElementById("intCastleTopA").setAttributeNS(null, "fill", Filler);
+      document.getElementById("intRookTopA").setAttributeNS(null, "fill", Filler);
+
+      fillerStroker("whitePieceFill");
+      document.getElementById("intCastleTopB").setAttributeNS(null, "fill", Filler);
+      document.getElementById("intRookTopB").setAttributeNS(null, "fill", Filler);
+
+      fillerStroker("blackPieceStroke");
+      document.getElementById("midCastleTopA").setAttributeNS(null, "stroke", Stroker);
+      document.getElementById("extCastleTopA").setAttributeNS(null, "stroke", Stroker);
+      document.getElementById("midBishopTopA").setAttributeNS(null, "stroke", Stroker);
+
+      fillerStroker("whitePieceStroke");
+      document.getElementById("midCastleTopB").setAttributeNS(null, "stroke", Stroker);
+      document.getElementById("extCastleTopB").setAttributeNS(null, "stroke", Stroker);
+      document.getElementById("midBishopTopB").setAttributeNS(null, "stroke", Stroker);
+
+      //
+      fillerStroker("whitePieceFillTransp");
+      document.getElementById("intCastleBotA").setAttributeNS(null, "fill", Filler);
+      document.getElementById("intRookBotA").setAttributeNS(null, "fill", Filler);
+
+      fillerStroker("blackPieceFill");
+      document.getElementById("intCastleBotB").setAttributeNS(null, "fill", Filler);
+      document.getElementById("intRookBotB").setAttributeNS(null, "fill", Filler);
+
+      fillerStroker("whitePieceStrokeTransp");
+      document.getElementById("midCastleBotA").setAttributeNS(null, "stroke", Stroker);
+      document.getElementById("extCastleBotA").setAttributeNS(null, "stroke", Stroker);
+      document.getElementById("midBishopBotA").setAttributeNS(null, "stroke", Stroker);
+
+      fillerStroker("blackPieceStroke");
+      document.getElementById("midCastleBotB").setAttributeNS(null, "stroke", Stroker);
+      document.getElementById("extCastleBotB").setAttributeNS(null, "stroke", Stroker);
+      document.getElementById("midBishopBotB").setAttributeNS(null, "stroke", Stroker);
+
+      //count value colors
+      fillerStroker("count" + TotalWBishops);
+      document.getElementById("countBishopTop").setAttributeNS(null, "fill", Filler);
+      fillerStroker("count" + TotalWRooks);
+      document.getElementById("countRookTop").setAttributeNS(null, "fill", Filler);
+      fillerStroker("count" + TotalWCastles);
+      document.getElementById("countCastleTop").setAttributeNS(null, "fill", Filler);
+
+      fillerStroker("count" + TotalBBishops);
+      document.getElementById("countBishopBot").setAttributeNS(null, "fill", Filler);
+      fillerStroker("count" + TotalBRooks);
+      document.getElementById("countRookBot").setAttributeNS(null, "fill", Filler);
+      fillerStroker("count" + TotalBCastles);
+      document.getElementById("countCastleBot").setAttributeNS(null, "fill", Filler);
+   }
+}
+
 //reverse control to flip pieces on board game.
 function reversePieces() {
    VerseReverse = VerseReverse === "wb" ? "bw" : "wb";
@@ -357,24 +497,7 @@ function reversePieces() {
 
    }
 
-   if (VerseReverse === "wb") {
-      document.getElementById("digitMinutsB").setAttributeNS(null, "y", 97);
-      document.getElementById("digitSecondsB").setAttributeNS(null, "y", 97);
-      document.getElementById("digitMilisecondsB").setAttributeNS(null, "y", 97);
-      document.getElementById("digitMinutsW").setAttributeNS(null, "y", 420);
-      document.getElementById("digitSecondsW").setAttributeNS(null, "y", 420);
-      document.getElementById("digitMilisecondsW").setAttributeNS(null, "y", 420);
-   } else {
-      document.getElementById("digitMinutsB").setAttributeNS(null, "y", 420);
-      document.getElementById("digitSecondsB").setAttributeNS(null, "y", 420);
-      document.getElementById("digitMilisecondsB").setAttributeNS(null, "y", 420);
-      document.getElementById("digitMinutsW").setAttributeNS(null, "y", 97);
-      document.getElementById("digitSecondsW").setAttributeNS(null, "y", 97);
-      document.getElementById("digitMilisecondsW").setAttributeNS(null, "y", 97);
-   }
-
-
-
+   gameDisplay888();
    unClickSquare();
    clearMarkers();
 
@@ -597,6 +720,12 @@ function svger(fS, sType, sID, sWidth, sHeight, sX, sY, sStrokeWidth, sPrecision
          document.getElementById(sID + "BG").setAttributeNS(null, "fill", Filler);
       };
 
+   } else if (b === 2) {
+      const el = document.getElementById(sID);
+      el.onmouseover = function(event) {
+         fillerStroker(over);
+         showTooltip(l1, l2);
+      };
    }
 
 }
@@ -1181,12 +1310,28 @@ function fillerStroker(c) {
          Filler = "rgba(0,0,0,0.0)";
          Stroker = "rgba(0,0,0,1.0)";
          break;
+      case "whitePieceStrokeTransp":
+         Filler = "rgba(255,255,255,0.0)";
+         Stroker = "rgba(255,255,255,0.3)";
+         break;
+      case "blackPieceStrokeTransp":
+         Filler = "rgba(0,0,0,0.0)";
+         Stroker = "rgba(0,0,0,0.3)";
+         break;
       case "whitePieceFill":
          Filler = "rgba(255,255,255,1.0)";
          Stroker = "rgba(255,255,255,0.0)";
          break;
       case "blackPieceFill":
          Filler = "rgba(0,0,0,1.0)";
+         Stroker = "rgba(0,0,0,0.0)";
+         break;
+      case "whitePieceFillTransp":
+         Filler = "rgba(255,255,255,0.3)";
+         Stroker = "rgba(255,255,255,0.0)";
+         break;
+      case "blackPieceFillTransp":
+         Filler = "rgba(0,0,0,0.3)";
          Stroker = "rgba(0,0,0,0.0)";
          break;
       case "black":
@@ -1317,6 +1462,58 @@ function fillerStroker(c) {
          Filler = "rgba(50,50,100,1.0)";
          Stroker = "rgba(50,50,100,1.0)";
          break;
+      case "count16":
+         //fall through
+      case "count15":
+         //fall through
+      case "count14":
+         //fall through
+      case "count13":
+         //fall through
+      case "count12":
+         //fall through
+      case "count11":
+         //fall through
+      case "count10":
+         //fall through
+      case "count9":
+         //fall through
+      case "count8":
+         Filler = "rgba(160,160,160,1.0)";
+         Stroker = "rgba(100,100,100,0.9)";
+         break;
+      case "count7":
+         Filler = "rgba(140,140,140,1.0)";
+         Stroker = "rgba(100,100,100,0.9)";
+         break;
+      case "count6":
+         Filler = "rgba(120,120,120,1.0)";
+         Stroker = "rgba(100,100,100,0.9)";
+         break;
+      case "count5":
+         Filler = "rgba(100,100,100,1.0)";
+         Stroker = "rgba(100,100,100,0.9)";
+         break;
+      case "count4":
+         Filler = "rgba(80,80,80,1.0)";
+         Stroker = "rgba(100,100,100,0.9)";
+         break;
+      case "count3":
+         Filler = "rgba(60,60,60,1.0)";
+         Stroker = "rgba(100,100,100,0.9)";
+         break;
+      case "count2":
+         Filler = "rgba(255,100,0,1.0)";
+         Stroker = "rgba(255,100,0,1.0)";
+         break;
+      case "count1":
+         Filler = "rgba(255,0,0,1.0)";
+         Stroker = "rgba(255,0,0,1.0)";
+         break;
+      case "count0":
+         Filler = "rgba(200,0,0,1.0)";
+         Stroker = "rgba(200,0,0,1.0)";
+         break;
    }
 }
 
@@ -1359,15 +1556,18 @@ function call888() {
    TotalWRooks = 0;
    TotalBRooks = 0;
    PiecesPosition.forEach(count888);
+
+   if (document.getElementById("countBishopTop") !== null) {
+      gameDisplay888();
+   }
+
 }
-call888();
 
 castlesInCheck(); //get first array with all castles in check
-
+call888();
 logo_superc.setAttribute("style", "-webkit-touch-callout: none;-webkit-user-select: none;-khtml-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;");
 
 function GameVersion() {
-   letterer("lettererWhiteTextTransp", "text", "version", 10, 10, "Helvetica", "normal", 10, "geometricPrecision", "PlayerDownRight", "Alpha_0.0.4");
-
+   letterer("lettererWhiteTextTransp", "text", "version", 10, 10, "Consolas", "normal", 12, "geometricPrecision", "PlayerDownRight", "Alpha_0.0.5 | boardgameturnover@gmail.com");
 }
 GameVersion();

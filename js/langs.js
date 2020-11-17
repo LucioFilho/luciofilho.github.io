@@ -27,7 +27,10 @@ let element0 = [
    ["Select to learn", "Seleciona para aprender", "Selecione para aprender"],
    ["Preview", "Anterior", "Anterior"],
    ["Next", "Próxima", "Próxima"],
-   ["Add Time", "Adiciona Tiempo", "Adicione Tempo"]
+   ["Add Time", "Adiciona Tiempo", "Adicione Tempo"],
+   ["Forts are the most offensive piece. Forts move like Chess Bishops.", "Fuertes son las piezas más ofensivas. Fuertes se mueven como los Alfiles del Ajedrez.", "Fortes são as peças mais ofensivas. Fortes movem-se como os Bispos do Xadrez."],
+   ["Towers are essential on end game. Towers move like Chess Rooks.", "Torres son esenciales en el final de la partida. Torres se mueven como las Torres del Ajedrez.", "Torres são essenciais no final da partida. As Torres movem-se como as Torres do Xadrez."],
+   ["Castles are like your resources, use them wise. First player with no Castles lose the match.", "Los Castillos son sus recursos, utilícelos con sabiduría. El primer jugador sin castillos pierde la partida.", "Os Castelos são seus recursos, use-os com sabedoria. O primeiro jogador sem castelos perde a partida."]
 ];
 lang[0] = Array.from(element0);
 

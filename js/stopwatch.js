@@ -63,11 +63,6 @@ function updateCountdown() {
 
       if (Turn === "W") {
 
-         if (addTimeW !== 0) {
-            timeWOffset += addTimeW;
-            addTimeW = 0;
-         }
-
          if (lockW === false) {
             timeWOffset += timeWOff;
 
@@ -102,11 +97,6 @@ function updateCountdown() {
 
       } else {
 
-         if (addTimeB !== 0) {
-            timeBOffset += addTimeB;
-            addTimeB = 0;
-         }
-
          if (lockB === false) {
             timeBOffset += timeBOff;
 
@@ -137,7 +127,6 @@ function updateCountdown() {
             winner = "white";
             loserPiecesTransp();
          }
-
       }
 
       minutes = Math.floor(timeCounter / 60000);
