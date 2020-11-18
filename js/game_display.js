@@ -336,22 +336,22 @@ function displayActions(k) {
 
       } else if (k === "butOptionMini2") {
          opChoice = 2;
-         popups(1, 1, 1, 6);
+         popups(50, 57, 1, 6);
          soundRewind.play();
 
       } else if (k === "butOptionMini3") {
          opChoice = 3;
-         popups(1, 1, 1, 6);
+         popups(58, 65, 1, 6);
          soundRewind.play();
 
       } else if (k === "butOptionMini4") {
          opChoice = 4;
-         popups(1, 1, 1, 6);
+         popups(66, 73, 1, 6);
          soundRewind.play();
 
       } else if (k === "butOptionMini5") {
          opChoice = 5;
-         popups(1, 1, 1, 6);
+         popups(74, 81, 1, 6);
          soundRewind.play();
 
       } else if (k === "butMoveToEnd") {
