@@ -1568,6 +1568,6 @@ call888();
 logo_superc.setAttribute("style", "-webkit-touch-callout: none;-webkit-user-select: none;-khtml-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;");
 
 function GameVersion() {
-   letterer("lettererWhiteTextTransp", "text", "version", 10, 10, "Consolas", "normal", 12, "geometricPrecision", "PlayerDownRight", "Alpha_0.0.5 | boardgameturnover@gmail.com");
+   letterer("lettererWhiteTextTransp", "text", "version", 10, 10, "Consolas", "normal", 12, "geometricPrecision", "PlayerDownRight", "Alpha_0.0.6 | boardgameturnover@gmail.com");
 }
 GameVersion();

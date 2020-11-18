@@ -324,34 +324,34 @@ function displayActions(k) {
 
          soundRewind.play();
 
-      } else if (k === "butOptionMini") {
+      } else if (k === "butOptionMini") { //learn castles
          opChoice = 0;
-         popups(1, 3, 1, 6);
+         popups(24, 49, 1, 6);
          soundRewind.play();
 
       } else if (k === "butOptionMini1") {
          opChoice = 1;
-         popups(1, 2, 1, 6);
+         popups(1, 23, 1, 6);
          soundRewind.play();
 
       } else if (k === "butOptionMini2") {
          opChoice = 2;
-         popups(1, 2, 1, 6);
+         popups(1, 1, 1, 6);
          soundRewind.play();
 
       } else if (k === "butOptionMini3") {
          opChoice = 3;
-         popups(1, 2, 1, 6);
+         popups(1, 1, 1, 6);
          soundRewind.play();
 
       } else if (k === "butOptionMini4") {
          opChoice = 4;
-         popups(1, 2, 1, 6);
+         popups(1, 1, 1, 6);
          soundRewind.play();
 
       } else if (k === "butOptionMini5") {
          opChoice = 5;
-         popups(1, 2, 1, 6);
+         popups(1, 1, 1, 6);
          soundRewind.play();
 
       } else if (k === "butMoveToEnd") {
