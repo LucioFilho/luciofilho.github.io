@@ -23,6 +23,8 @@ let timeLength = 180000;
 let timeWLength = 180000; // 3 minutos
 let timeWOff = 0;
 let timeWOffset = 0;
+let wTurn = 0;
+let bTurn = 0;
 
 function updateCountdown() {
 
@@ -41,7 +43,6 @@ function updateCountdown() {
 
       lockRealTime = true;
 
-      //console.log(realClock + "\n" + realDays + "\n" + realHours + "\n" + realMinutes + "\n" + realSeconds + "\n" + realMilliseconds);
    }
 
    // get realtime
@@ -56,8 +57,6 @@ function updateCountdown() {
    let checkMilliseconds = checkTime.getMilliseconds();
    let checkWClock = checkDays + checkHours + checkMinutes + checkSeconds + checkMilliseconds - timeWOffset;
    let checkBClock = checkDays + checkHours + checkMinutes + checkSeconds + checkMilliseconds - timeBOffset;
-
-   //console.log("checkWClock: " + checkWClock + "\n" + "checkBClock: " + checkBClock);
 
    if (Move > 2 && gameover === 0) {
 
@@ -79,6 +78,8 @@ function updateCountdown() {
             }
 
             timelapseB = checkWClock;
+            wTurn = timeCounter;
+
          }
          lockW = true;
          lockB = false;
@@ -112,6 +113,7 @@ function updateCountdown() {
             }
 
             timelapseA = checkBClock;
+            bTurn = timeCounter;
          }
          lockB = true;
          lockW = false;
@@ -141,10 +143,46 @@ function updateCountdown() {
          document.getElementById("digitSecondsW").textContent = seconds;
          document.getElementById("digitMilisecondsW").textContent = miliseconds;
 
+         if (VerseReverse === "wb") {
+            document.getElementById("botTimeline").setAttributeNS(null, "width", 2.8 * (100 / (wTurn / timeCounter)));
+            document.getElementById("topTimeline").setAttributeNS(null, "width", 280);
+
+            document.getElementById("botTimeline").setAttributeNS(null, "fill", "rgba(" + (255 - (2.55 * (100 / (wTurn / timeCounter)))) + ", " + 2.55 * (100 / (wTurn / timeCounter)) + ", 0, 1.0)");
+            fillerStroker("blackSquare");
+            document.getElementById("topTimeline").setAttributeNS(null, "fill", Filler);
+
+         } else {
+            document.getElementById("topTimeline").setAttributeNS(null, "width", 2.8 * (100 / (wTurn / timeCounter)));
+            document.getElementById("botTimeline").setAttributeNS(null, "width", 280);
+
+            document.getElementById("topTimeline").setAttributeNS(null, "fill", "rgba(" + (255 - (2.55 * (100 / (wTurn / timeCounter)))) + ", " + 2.55 * (100 / (wTurn / timeCounter)) + ", 0, 1.0)");
+            fillerStroker("blackSquare");
+            document.getElementById("botTimeline").setAttributeNS(null, "fill", Filler);
+
+         }
+
       } else {
          document.getElementById("digitMinutsB").textContent = minutes;
          document.getElementById("digitSecondsB").textContent = seconds;
          document.getElementById("digitMilisecondsB").textContent = miliseconds;
+
+         if (VerseReverse === "wb") {
+            document.getElementById("topTimeline").setAttributeNS(null, "width", 2.8 * (100 / (bTurn / timeCounter)));
+            document.getElementById("botTimeline").setAttributeNS(null, "width", 280);
+
+            document.getElementById("topTimeline").setAttributeNS(null, "fill", "rgba(" + (255 - (2.55 * (100 / (bTurn / timeCounter)))) + ", " + 2.55 * (100 / (bTurn / timeCounter)) + ", 0, 1.0)");
+            fillerStroker("blackSquare");
+            document.getElementById("botTimeline").setAttributeNS(null, "fill", Filler);
+
+         } else {
+            document.getElementById("botTimeline").setAttributeNS(null, "width", 2.8 * (100 / (bTurn / timeCounter)));
+            document.getElementById("topTimeline").setAttributeNS(null, "width", 280);
+
+            document.getElementById("botTimeline").setAttributeNS(null, "fill", "rgba(" + (255 - (2.55 * (100 / (bTurn / timeCounter)))) + ", " + 2.55 * (100 / (bTurn / timeCounter)) + ", 0, 1.0)");
+            fillerStroker("blackSquare");
+            document.getElementById("topTimeline").setAttributeNS(null, "fill", Filler);
+
+         }
 
       }
 

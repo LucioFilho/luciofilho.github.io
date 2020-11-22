@@ -192,6 +192,7 @@ function animePiece(leaving, landing, piecesToMove) {
             }
 
             shortCode();
+            gameDisplay888(Move - 1);
 
             LockFlipBoard = 0;
 

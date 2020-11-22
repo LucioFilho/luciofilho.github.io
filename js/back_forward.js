@@ -142,6 +142,8 @@ function backForward(side) {
       i++;
    }
 
+   gameDisplay888(MoveWatch);
+
    if (MoveWatch === Move - 1) {
       castlesInCheck();
    }

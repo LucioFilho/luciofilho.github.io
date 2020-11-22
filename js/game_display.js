@@ -115,7 +115,7 @@ function drawCountdown() {
 }
 
 //bg
-svger("lightWhiteColor", "rect", "gameDisplayBG", 280, 256, 20, 110, 0, "geometricPrecision", "GameDisplay", 0, 0, 0);
+svger("lightWhiteColor", "rect", "gameDisplayBG", 280, 260, 20, 110, 0, "geometricPrecision", "GameDisplay", 0, 0, 0);
 svger("whiteSquare", "rect", "topTime", 150, 60, 20, 50, 0, "geometricPrecision", "GameDisplay", 0, 0, 0);
 svger("blackSquare", "rect", "topTimeline", 280, 4, 20, 110, 0, "geometricPrecision", "GameDisplay", 0, 0, 0);
 svger("whiteSquare", "rect", "botTime", 150, 60, 20, 370, 0, "geometricPrecision", "GameDisplay", 0, 0, 0);
@@ -277,6 +277,13 @@ function takeback() {
       MMovesLanding.pop();
       Notation.pop();
       gameLog.pop();
+
+      TurnsTotalWCastles.pop();
+      TurnsTotalBCastles.pop();
+      TurnsTotalWBishops.pop();
+      TurnsTotalBBishops.pop();
+      TurnsTotalWRooks.pop();
+      TurnsTotalBRooks.pop();
 
       Move--;
 

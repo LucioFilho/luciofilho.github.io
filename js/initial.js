@@ -139,6 +139,12 @@ let TotalWBishops = 8;
 let TotalWCastles = 8;
 let TotalWRooks = 8;
 let Turn = "W";
+let TurnsTotalWCastles = [];
+let TurnsTotalBCastles = [];
+let TurnsTotalWBishops = [];
+let TurnsTotalBBishops = [];
+let TurnsTotalWRooks = [];
+let TurnsTotalBRooks = [];
 let VerseReverse = "wb";
 let WhiteCastlesInCheck = [];
 let winner = null;
@@ -285,6 +291,16 @@ function shortCode() {
    intMoves[Move] = Array.from(intPiecesPosition);
    TurnsPiecesPosition[Move] = Array.from(PiecesPosition);
 
+   //counter pieces controller
+
+   TurnsTotalWCastles.push(TotalWCastles);
+   TurnsTotalBCastles.push(TotalBCastles);
+   TurnsTotalWBishops.push(TotalWBishops);
+   TurnsTotalBBishops.push(TotalBBishops);
+   TurnsTotalWRooks.push(TotalWRooks);
+   TurnsTotalBRooks.push(TotalBRooks);
+
+
    Move++;
    MoveWatch = Move - 1;
 
@@ -340,7 +356,7 @@ function squarer(I) {
    }
 }
 
-function gameDisplay888() {
+function gameDisplay888(turns) {
    if (VerseReverse === "wb") {
       document.getElementById("digitMinutsB").setAttributeNS(null, "y", 97);
       document.getElementById("digitSecondsB").setAttributeNS(null, "y", 97);
@@ -350,12 +366,12 @@ function gameDisplay888() {
       document.getElementById("digitMilisecondsW").setAttributeNS(null, "y", 420);
 
       //counter pieces
-      document.getElementById("countBishopTop").textContent = TotalBBishops;
-      document.getElementById("countRookTop").textContent = TotalBRooks;
-      document.getElementById("countCastleTop").textContent = TotalBCastles;
-      document.getElementById("countBishopBot").textContent = TotalWBishops;
-      document.getElementById("countRookBot").textContent = TotalWRooks;
-      document.getElementById("countCastleBot").textContent = TotalWCastles;
+      document.getElementById("countBishopTop").textContent = TurnsTotalBBishops[turns];
+      document.getElementById("countRookTop").textContent = TurnsTotalBRooks[turns];
+      document.getElementById("countCastleTop").textContent = TurnsTotalBCastles[turns];
+      document.getElementById("countBishopBot").textContent = TurnsTotalWBishops[turns];
+      document.getElementById("countRookBot").textContent = TurnsTotalWRooks[turns];
+      document.getElementById("countCastleBot").textContent = TurnsTotalWCastles[turns];
 
       fillerStroker("whitePieceFillTransp");
       document.getElementById("intCastleTopA").setAttributeNS(null, "fill", Filler);
@@ -419,12 +435,12 @@ function gameDisplay888() {
       document.getElementById("digitMilisecondsW").setAttributeNS(null, "y", 97);
 
       //counter pieces
-      document.getElementById("countBishopBot").textContent = TotalBBishops;
-      document.getElementById("countRookBot").textContent = TotalBRooks;
-      document.getElementById("countCastleBot").textContent = TotalBCastles;
-      document.getElementById("countBishopTop").textContent = TotalWBishops;
-      document.getElementById("countRookTop").textContent = TotalWRooks;
-      document.getElementById("countCastleTop").textContent = TotalWCastles;
+      document.getElementById("countBishopBot").textContent = TurnsTotalBBishops[turns];
+      document.getElementById("countRookBot").textContent = TurnsTotalBRooks[turns];
+      document.getElementById("countCastleBot").textContent = TurnsTotalBCastles[turns];
+      document.getElementById("countBishopTop").textContent = TurnsTotalWBishops[turns];
+      document.getElementById("countRookTop").textContent = TurnsTotalWRooks[turns];
+      document.getElementById("countCastleTop").textContent = TurnsTotalWCastles[turns];
 
       fillerStroker("blackPieceFill");
       document.getElementById("intCastleTopA").setAttributeNS(null, "fill", Filler);
@@ -497,7 +513,7 @@ function reversePieces() {
 
    }
 
-   gameDisplay888();
+   gameDisplay888(Move - 1);
    unClickSquare();
    clearMarkers();
 
@@ -1557,10 +1573,6 @@ function call888() {
    TotalBRooks = 0;
    PiecesPosition.forEach(count888);
 
-   if (document.getElementById("countBishopTop") !== null) {
-      gameDisplay888();
-   }
-
 }
 
 castlesInCheck(); //get first array with all castles in check
@@ -1568,6 +1580,6 @@ call888();
 logo_superc.setAttribute("style", "-webkit-touch-callout: none;-webkit-user-select: none;-khtml-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;");
 
 function GameVersion() {
-   letterer("lettererWhiteTextTransp", "text", "version", 10, 10, "Consolas", "normal", 12, "geometricPrecision", "PlayerDownRight", "Alpha_0.0.6 | boardgameturnover@gmail.com");
+   letterer("lettererWhiteTextTransp", "text", "version", 10, 10, "Consolas", "normal", 12, "geometricPrecision", "PlayerDownRight", "Alpha_0.0.7 | boardgameturnover@gmail.com");
 }
 GameVersion();
