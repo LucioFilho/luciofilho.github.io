@@ -78,7 +78,7 @@ function updateCountdown() {
             }
 
             timelapseB = checkWClock;
-            wTurn = timeCounter;
+            wTurn = timeWLength - (checkWClock - realClockW);
 
          }
          lockW = true;
@@ -113,7 +113,7 @@ function updateCountdown() {
             }
 
             timelapseA = checkBClock;
-            bTurn = timeCounter;
+            bTurn = timeBLength - (checkBClock - realClockB);
          }
          lockB = true;
          lockW = false;
