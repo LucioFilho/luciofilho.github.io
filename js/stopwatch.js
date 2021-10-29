@@ -1,5 +1,3 @@
-/*jshint esversion: 6 */
-
 let GameCountdown;
 let lockB = false;
 let lockRealTime = false;
@@ -13,14 +11,14 @@ let realMilliseconds = 0;
 let realMinutes = 0;
 let realSeconds = 0;
 let realTime = new Date();
-let timeBLength = 180000; // 3 minutos
+let timeBLength = 1800000; // 3 minutos
 let timeBOff = 0;
 let timeBOffset = 0;
-let timeCounter = 180000;
+let timeCounter = 1800000;
 let timelapseB = 0;
 let timelapseW = 0;
-let timeLength = 180000;
-let timeWLength = 180000; // 3 minutos
+let timeLength = 1800000;
+let timeWLength = 1800000; // 3 minutos
 let timeWOff = 0;
 let timeWOffset = 0;
 let wTurn = 0;
@@ -62,7 +60,7 @@ function updateCountdown() {
 
       if (Turn === "W") {
 
-         if (lockW === false) {
+         if (!lockW) {
             timeWOffset += timeWOff;
 
             checkWClock = checkDays + checkHours + checkMinutes + checkSeconds + checkMilliseconds - timeWOffset;
@@ -98,7 +96,7 @@ function updateCountdown() {
 
       } else {
 
-         if (lockB === false) {
+         if (!lockB) {
             timeBOffset += timeBOff;
 
             checkBClock = checkDays + checkHours + checkMinutes + checkSeconds + checkMilliseconds - timeBOffset;
