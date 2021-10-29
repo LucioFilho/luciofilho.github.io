@@ -133,6 +133,7 @@ function updateCountdown() {
       seconds = Math.floor((timeCounter / 1000) - (minutes * 60));
 
       minutes = minutes < 1 ? "00" : "0" + Math.floor(minutes);
+      minutes = minutes > 9 ? Math.floor(minutes) : minutes;
       seconds = seconds < 10 ? "0" + Math.floor(seconds) : Math.floor(seconds);
       miliseconds = timeCounter < 10000 ? Math.floor((timeCounter - (seconds * 1000)) / 100) : "";
 
@@ -194,10 +195,10 @@ function updateCountdown() {
       timeBOff = 0;
       lockW = false;
       lockB = false;
-      document.getElementById("digitMinutsW").textContent = "03";
+      document.getElementById("digitMinutsW").textContent = "30";
       document.getElementById("digitSecondsW").textContent = "00";
       document.getElementById("digitMilisecondsW").textContent = "";
-      document.getElementById("digitMinutsB").textContent = "03";
+      document.getElementById("digitMinutsB").textContent = "30";
       document.getElementById("digitSecondsB").textContent = "00";
       document.getElementById("digitMilisecondsB").textContent = "";
    }
