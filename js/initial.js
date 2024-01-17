@@ -197,7 +197,7 @@ midMoves[0] = Array.from(midPiecesPosition);
 intMoves[0] = Array.from(intPiecesPosition);
 
 //take initial pieces position
-const InitialNotation = "cOcOcOc2OcOcOcOc33OCOCOCO2COCOC"; //compact code to initial position on board
+const InitialNotation = "cOcOcOc2OcOcOcOc33OCOCOCO2COCOCOCO"; //compact code to initial position on board
 
 //split the compacted code to work with its Letters and Numbers
 const ReadInitialNotation = InitialNotation.split("");
